@@ -1,9 +1,10 @@
-export const Concierge = () => {
+
+export const Users = () => {
 
     return (
         <>
         <div>
-            <h1>Concierge</h1>
+            <h1>Guest</h1>
         </div>
         </>
     )

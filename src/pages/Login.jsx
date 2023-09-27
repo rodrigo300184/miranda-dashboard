@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import icon from "../icons/5-estrellas.png";
+import hotelIcon from "../icons/5-estrellas.png";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -90,7 +90,7 @@ export const Login = (props) => {
   return (
     <Container>
       <Form onSubmit={handleSubmit}>
-        <Image src={icon} />
+        <Image src={hotelIcon} />
         <H2>Login</H2>
         <Label>Email:</Label>
         <Input

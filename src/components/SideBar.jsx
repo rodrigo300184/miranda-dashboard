@@ -1,36 +1,36 @@
-
-import { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
-import icons from '../icons/5-estrellas.png';
-
+import { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import styled from "styled-components";
+import icons from "../styles/icons";
+import colors from "../styles/colors";
+import hotelIcon from "../icons/5-estrellas.png";
 
 const SideMenuContainer = styled.div`
   width: 345px;
-  background-color: #ffffff;
-  padding-top: 32px;
+  background-color: white;
+  padding: 32px 0px;
   display: block;
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 5;
   box-shadow: 13px 3px 40px #00000005;
   }
 `;
 
 const NavItem = styled.li`
-  color: #799283;
+  color: ${colors.green};
   font-weight: 600;
-  padding: 20px 48px;
+  padding: 20px 56px 20px 50px;
   position: relative;
   list-style: none;
   &.active {
-    color: #E23428;
+    color: ${colors.red};
     &::after {
-      content: '';
+      content: "";
       width: 8px;
       height: 67px;
-      background-color: #E23428;
+      background-color: ${colors.red};
       border-radius: 0px 6px 6px 0px;
       position: absolute;
       left: 0;
@@ -41,7 +41,7 @@ const NavItem = styled.li`
     text-decoration: none;
   }
   & i {
-    margin-right: 22px;
+    margin-right: 15px;
   }
 `;
 
@@ -50,7 +50,9 @@ const UserContainer = styled.div`
   border-radius: 18px;
   text-align: center;
   padding: 24px 35px;
-  margin: 41px 56px 62px;
+  margin: 41px auto 62px;
+  min-width: 230px;
+  width: fit-content;
   & .sidemenu__user-name {
     font-weight: 500;
     display: block;
@@ -79,91 +81,135 @@ const SideMenuFooter = styled.div`
   padding-left: 56px;
   & .sidemenu-footer {
     &__name {
-        font-weight: 600;
-        display: block;
+      font-weight: 600;
+      display: block;
     }
     &__copy {
-        font-weight: 200;
-        font-size: 14px;
-        line-height: 21px;
-        color:blue;
-        display: block;
+      font-weight: 200;
+      font-size: 14px;
+      line-height: 21px;
+      color: blue;
+      display: block;
     }
     &__made {
-        margin-bottom: 50px;
-        color: red;
+      margin-bottom: 50px;
+      color: red;
     }
   }
 `;
 
-const Button = styled.button`
-  border: solid red;
-  background-color: blue;
+const Button = styled.button.attrs({ type: "button" })`
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  color: ${(props) => (props.green ? colors.lightGreen : colors.lightRed)};
+  background-color: ${(props) => (props.green ? colors.hardGreen : colors.red)};
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 12px 40px;
+  margin: 0 auto;
+  border: 1px solid;
+  &:hover {
+    color: ${colors.hardGreen};
+    background-color: ${(props) =>
+      props.green ? colors.lightGreen : colors.red};
+  }
+`;
+
+const StyledLink = styled(Link)`
+  margin-left: 20px;
+`;
+const Image = styled.img`
+  height: 60px;
+  width: 60px;
+`;
+
+const Logo = styled.div`
+  margin-left: 50px;
+  margin-bottom: 62px;
+  display: flex;
+  gap: 20px;
+`;
+
+const LetterHead = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const H1 = styled.h1`
+  margin-top: -1px;
+  max-height: 35px;
+  font-size: 36px;
+`;
+const H2 = styled.h2`
+  font-size: 12px;
+  font-weight: 300;
 `;
 
 export const SideBar = () => {
-  //   const location = useLocation();
+    const location = useLocation();
 
-  // useEffect(() => {
-  //   let path = location.pathname.split('/')[1];
-  //   if (path === '') path = 'dashboard';
+  useEffect(() => {
+    let path = location.pathname.split('/')[1];
+    if (path === '') path = 'dashboard';
 
-  //   const activeItem = document.querySelector(`#${path}`);
-  //   activeItem.classList.add('active');
+    const activeItem = document.querySelector(`#${path}`);
+    activeItem.classList.add('active');
 
-  //   return (() => activeItem.classList.remove('active'));
-  // }, [location]);
+    return (() => activeItem.classList.remove('active'));
+  }, [location]);
 
-    return(
-        <SideMenuContainer >
-        <ul>
-          <NavItem id="dashboard">
-            <Link to="/">
-            {icons.dashboard}
-            {' '}
-              Dashboard
-            </Link>
-          </NavItem>
-          <NavItem id="bookings">
-            <Link to="/bookings">
-              {icons.bookings}
-              {' '}
-              Bookings
-            </Link>
-          </NavItem>
-          <NavItem id="rooms">
-            <Link to="/rooms">
-              {icons.rooms}
-              {' '}
-              Rooms
-            </Link>
-          </NavItem>
-          <NavItem id="contact">
-            <Link to="/contact">
-              {icons.contact}
-              {' '}
-              Contact
-            </Link>
-          </NavItem>
-          <NavItem id="users">
-            <Link to="/users">
-              {icons.users}
-              {' '}
-              Users
-            </Link>
-          </NavItem>
-        </ul>
-        <UserContainer>
-          <UserPhoto />
-          <span className="sidemenu__user-name">Rodrigo Martinez</span>
-          <span className="sidemenu__email">rodrigomartinez.correo@gmail.com</span>
-          <Button green>Editar</Button>
-        </UserContainer>
-        <SideMenuFooter>
-          <span className="sidemenu-footer__name">Travl Hotel Admin Dashboard</span>
-          <span className="sidemenu-footer__copy">© 2023 All Rights Reserved</span><br/><br/>
-          <span className="sidemenu-footer__made">Made with ♥ by Rodrigo</span>
-        </SideMenuFooter>
-      </SideMenuContainer>
-        )
-}
+  return (
+    <SideMenuContainer>
+      <Logo>
+        <Image src={hotelIcon} />{" "}
+        <LetterHead>
+          <H1>travl</H1> <H2>Hotel Admin Dashboard</H2>
+        </LetterHead>
+      </Logo>
+      <ul>
+        <NavItem id="dashboard">
+          {icons.dashboard}
+          <StyledLink to="/">Dashboard</StyledLink>
+        </NavItem>
+        <NavItem id="bookings">
+          {icons.bookings}
+          <StyledLink to="/bookings">Bookings</StyledLink>
+        </NavItem>
+        <NavItem id="rooms">
+          {icons.rooms}
+          <StyledLink to="/rooms">Rooms</StyledLink>
+        </NavItem>
+        <NavItem id="contact">
+          {icons.contact}
+          <StyledLink to="/contact">Contact</StyledLink>
+        </NavItem>
+        <NavItem id="users">
+          {icons.users}
+          <StyledLink to="/users">Users</StyledLink>
+        </NavItem>
+      </ul>
+      <UserContainer>
+        <UserPhoto />
+        <span className="sidemenu__user-name">Rodrigo Martinez</span>
+        <span className="sidemenu__email">
+          rodrigomartinez.correo@gmail.com
+        </span>
+        <Button green>Editar</Button>
+      </UserContainer>
+      <SideMenuFooter>
+        <span className="sidemenu-footer__name">
+          Travl Hotel Admin Dashboard
+        </span>
+        <span className="sidemenu-footer__copy">
+          © 2023 All Rights Reserved
+        </span>
+        <br />
+        <br />
+        <span className="sidemenu-footer__made">Made with ♥ by Rodrigo</span>
+      </SideMenuFooter>
+    </SideMenuContainer>
+  );
+};

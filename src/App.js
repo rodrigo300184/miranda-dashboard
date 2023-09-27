@@ -2,8 +2,7 @@ import "./App.css";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { Bookings } from "./pages/Bookings";
 import { Rooms } from "./pages/Rooms";
-import { Guest } from "./pages/Guest";
-import { Concierge } from "./pages/Concierge";
+import { Users } from "./pages/Users";
 import { Contact } from "./pages/Contact";
 import { SideBar } from "./components/SideBar";
 import { useState } from "react";
@@ -18,7 +17,9 @@ function App() {
     <BrowserRouter>
      
       <Routes>
+        
         <Route path="/login" element={<Login setAuthenticated={setAuthenticated} />} />
+       
         <Route
           path="/"
           element={
@@ -29,11 +30,10 @@ function App() {
             </PrivateRoute>
           }/>
 
-        <Route path="/rooms" element={<Rooms />} />
-        <Route path="/bookings" element={<Bookings />} />
-        <Route path="/guest" element={<Guest />} />
-        <Route path="/concierge" element={<Concierge />} />
-        <Route path="/contact" element={<Contact />} />
+        <Route path="/rooms" element={ <><SideBar /><Rooms /></>} />
+        <Route path="/bookings" element={ <><SideBar /><Bookings /></>} />
+        <Route path="/contact" element={ <><SideBar /><Contact /></>} />
+        <Route path="/users" element={ <><SideBar /><Users /></>} />
       </Routes>
     </BrowserRouter>
   );
