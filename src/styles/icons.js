@@ -38,13 +38,11 @@ const SideBarIcons = styled.i`
 
 
 
+
+
 const icons = {
   dashboard: <SideBarIcons><DashboardIcon /></SideBarIcons>,
-  bookings: (
-    <SideBarIcons>
-      <BookingIcon />
-    </SideBarIcons>
-  ),
+  bookings:  <SideBarIcons><BookingIcon /></SideBarIcons>,
   rooms: <SideBarIcons><RoomsIcon /></SideBarIcons>,
   contact: <SideBarIcons><ContactIcon /></SideBarIcons>,
   users: <SideBarIcons><UsersIcon /></SideBarIcons>,

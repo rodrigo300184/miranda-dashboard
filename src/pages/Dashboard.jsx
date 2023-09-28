@@ -1,6 +1,9 @@
-
+import { Kpis } from "../components/Kpis";
 export const Dashboard = () => {
-    
-    
-    return <h1>Dashboard</h1>;
-}
+  return (
+    <>
+      <Kpis />
+      <h1>Dashboard</h1>
+    </>
+  );
+};

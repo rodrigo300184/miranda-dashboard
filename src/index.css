@@ -10,8 +10,9 @@ a,
 }
 
 body {
+  background-color: #F8F8F8;
   font-family: Poppins, sans-serif;
-  min-width: 320px;
+  min-width: 1000px;
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
