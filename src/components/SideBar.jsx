@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import icons from "../styles/icons";
 import colors from "../styles/colors";
 import hotelIcon from "../icons/5-estrellas.png";
+import EditUser from "../components/EditUser";
 
 const SideMenuContainer = styled.div`
   width: 345px;
@@ -11,7 +12,7 @@ const SideMenuContainer = styled.div`
   padding: 32px 0px;
   z-index: 5;
   box-shadow: 13px 3px 40px #00000005;
-  float:left;
+  float: left;
 `;
 
 const NavItem = styled.li`
@@ -94,25 +95,6 @@ const SideMenuFooter = styled.div`
   }
 `;
 
-const Button = styled.button.attrs({ type: "button" })`
-  font-family: Poppins;
-  font-size: 14px;
-  font-weight: 600;
-  text-align: center;
-  color: ${(props) => (props.green ? colors.lightGreen : colors.lightRed)};
-  background-color: ${(props) => (props.green ? colors.hardGreen : colors.red)};
-  border-radius: 8px;
-  cursor: pointer;
-  padding: 12px 40px;
-  margin: 0 auto;
-  border: 1px solid;
-  &:hover {
-    color: ${colors.hardGreen};
-    background-color: ${(props) =>
-      props.green ? colors.lightGreen : colors.red};
-  }
-`;
-
 const StyledLink = styled(Link)`
   margin-left: 20px;
 `;
@@ -145,21 +127,21 @@ const H2 = styled.h2`
 `;
 
 export const SideBar = () => {
-    const location = useLocation();
+  
+  const location = useLocation();
+
+  const [user, setUser] = useState(localStorage.getItem('username') || 'Name Lastname');
+  const [email, setEmail] = useState(localStorage.getItem('email') || 'email@email.com');
 
   useEffect(() => {
-    let path = location.pathname.split('/')[1];
-    if (path === '') path = 'dashboard';
+    let path = location.pathname.split("/")[1];
+    if (path === "") path = "dashboard";
 
     const activeItem = document.querySelector(`#${path}`);
-    activeItem.classList.add('active');
+    activeItem.classList.add("active");
 
-    return (() => activeItem.classList.remove('active'));
+    return () => activeItem.classList.remove("active");
   }, [location]);
-
-  const handleEdit = () => {
-    
-  }
 
   return (
     <SideMenuContainer>
@@ -192,12 +174,12 @@ export const SideBar = () => {
         </NavItem>
       </ul>
       <UserContainer>
-        <UserPhoto />
-        <span className="sidemenu__user-name">Rodrigo Martinez</span>
+        <UserPhoto style={{backgroundImage: `url('https://robohash.org/${user}.png')`}} />
+        <span className="sidemenu__user-name">{user}</span>
         <span className="sidemenu__email">
-          rodrigomartinez.correo@gmail.com
+          {email}
         </span>
-        <Button green onClick={handleEdit}>Editar</Button>
+        <EditUser email={email} setEmail={setEmail} user={user} setUser={setUser} />
       </UserContainer>
       <SideMenuFooter>
         <span className="sidemenu-footer__name">

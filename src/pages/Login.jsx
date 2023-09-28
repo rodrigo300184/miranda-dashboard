@@ -79,11 +79,16 @@ export const Login = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(email, password);
     if (email === "email@email.com" && password === "1234") {
       props.setAuthenticated(true);
       localStorage.setItem("logged", true);
       navigate("/");
+    }else{
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Invalid login: Check Email or Password',
+      })
     }
   };
 
