@@ -9,13 +9,9 @@ const SideMenuContainer = styled.div`
   width: 345px;
   background-color: white;
   padding: 32px 0px;
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
   z-index: 5;
   box-shadow: 13px 3px 40px #00000005;
-  }
+  float:left;
 `;
 
 const NavItem = styled.li`
