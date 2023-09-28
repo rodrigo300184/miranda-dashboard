@@ -13,7 +13,7 @@ import { Header } from "./components/Header";
 
 function App() {
 
-  const [authenticated,setAuthenticated] = useState(localStorage.getItem('logged')||false);
+  const [authenticated,setAuthenticated] = useState(localStorage.getItem('logged')||'false');
 
   return (
     <BrowserRouter>
@@ -21,21 +21,12 @@ function App() {
       <Routes>
         
         <Route path="/login" element={<Login setAuthenticated={setAuthenticated} />} />
-       
-        <Route
-          path="/"
-          element={
-            <PrivateRoute authenticated={authenticated}>
-              
-              <SideBar /><Header/><Dashboard/>
-           
-            </PrivateRoute>
-          }/>
 
-        <Route path="/rooms" element={ <><SideBar /><Header/><Rooms /></>} />
-        <Route path="/bookings" element={ <><SideBar /><Header/><Bookings /></>} />
-        <Route path="/contact" element={ <><SideBar /><Header/><Contact /></>} />
-        <Route path="/users" element={ <><SideBar /><Header/><Users /></>} />
+          <Route path="/" element={<PrivateRoute authenticated={authenticated}> <SideBar /><Header setAuthenticated={setAuthenticated}/><Dashboard/></PrivateRoute>}/>
+          <Route path="/rooms" element={<PrivateRoute authenticated={authenticated}><SideBar /><Header/><Rooms /></PrivateRoute>} />
+          <Route path="/bookings" element={<PrivateRoute authenticated={authenticated}><SideBar /><Header/><Bookings /></PrivateRoute>} />
+          <Route path="/contact" element={ <PrivateRoute authenticated={authenticated}><SideBar /><Header/><Contact /></PrivateRoute>} />
+         <Route path="/users" element={<PrivateRoute authenticated={authenticated}><SideBar /><Header/><Users /></PrivateRoute>} />
       </Routes>
     </BrowserRouter>
   );

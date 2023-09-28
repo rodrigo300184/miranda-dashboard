@@ -157,6 +157,10 @@ export const SideBar = () => {
     return (() => activeItem.classList.remove('active'));
   }, [location]);
 
+  const handleEdit = () => {
+    
+  }
+
   return (
     <SideMenuContainer>
       <Logo>
@@ -193,7 +197,7 @@ export const SideBar = () => {
         <span className="sidemenu__email">
           rodrigomartinez.correo@gmail.com
         </span>
-        <Button green>Editar</Button>
+        <Button green onClick={handleEdit}>Editar</Button>
       </UserContainer>
       <SideMenuFooter>
         <span className="sidemenu-footer__name">

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import colors from '../styles/colors';
 // SideBar Icons
 import { LuLayoutDashboard as DashboardIcon } from "react-icons/lu";
 import { LuCalendarCheck2 as BookingIcon } from "react-icons/lu";
@@ -20,7 +21,7 @@ import { BiLogIn as CheckInIcon } from "react-icons/bi";
 import { BiLogOut as CheckOutIcon } from "react-icons/bi";
 import { AiOutlineCheckCircle as CheckCircle } from "react-icons/ai";
 
-const Icon = styled.i`
+const SideBarIcons = styled.i`
   font-size: 18px;
   min-width: 48px;
   min-height: 48px;
@@ -35,16 +36,18 @@ const Icon = styled.i`
   }
 `;
 
+
+
 const icons = {
-  dashboard: <Icon><DashboardIcon /></Icon>,
+  dashboard: <SideBarIcons><DashboardIcon /></SideBarIcons>,
   bookings: (
-    <Icon>
+    <SideBarIcons>
       <BookingIcon />
-    </Icon>
+    </SideBarIcons>
   ),
-  rooms: <Icon><RoomsIcon /></Icon>,
-  contact: <Icon><ContactIcon /></Icon>,
-  users: <Icon><UsersIcon /></Icon>,
+  rooms: <SideBarIcons><RoomsIcon /></SideBarIcons>,
+  contact: <SideBarIcons><ContactIcon /></SideBarIcons>,
+  users: <SideBarIcons><UsersIcon /></SideBarIcons>,
   menu: <MenuIcon />,
   message: <MessageIcon />,
   bell: <BellIcon />,
