@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import icons from "../styles/icons";
 import colors from "../styles/colors";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const HeaderContainer = styled.header`
   background-color: white;
@@ -31,44 +32,52 @@ const InnerRight = styled.div`
 `;
 
 const Button = styled.button`
-background-color: transparent;
-border: none;
-min-width: 30px;
-min-height: 30px;
-border-radius: 8px;
-position: relative;
-cursor:pointer;
-& svg {
-  width: 24px;
-  height: 24px;
-  margin: auto;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  
-}
-&:hover{
-    scale:1.15;
-    background-color: ${colors.lightGreen}
+  background-color: transparent;
+  border: none;
+  min-width: 30px;
+  min-height: 30px;
+  border-radius: 8px;
+  position: relative;
+  cursor: pointer;
+  & svg {
+    width: 24px;
+    height: 24px;
+    margin: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+  &:hover {
+    scale: 1.15;
+    background-color: ${colors.lightGreen};
   }
 `;
 
 export const Header = (props) => {
-
-    const navigate = useNavigate();
-    const handleLogout = () =>{
-        localStorage.setItem('logged',false);
-        props.setAuthenticated('false');
-        navigate('/login');
-    }
+  const [headerTitle, setHeaderTitle] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.setItem("logged", false);
+    props.setAuthenticated("false");
+    navigate("/login");
+  };
+  useEffect(() => {
+    let path = location.pathname.split("/")[1];
+    path = path.charAt(0).toUpperCase() + path.slice(1);
+    setHeaderTitle(path);
+  }, [location]);
 
   return (
     <>
       <HeaderContainer>
         <InnerContainer>
-          <InnerLeft><Button>{icons.menu}</Button></InnerLeft>
+          <InnerLeft>
+            <Button>{icons.menu} </Button>
+            <h1>{headerTitle === "" ? "Dashboard" : headerTitle}</h1>
+          </InnerLeft>
           <InnerRight>
             <Button>{icons.message}</Button>
             <Button>{icons.bell}</Button>

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import icons from "../styles/icons";
 import colors from "../styles/colors";
@@ -13,33 +13,6 @@ const SideMenuContainer = styled.div`
   z-index: 5;
   box-shadow: 13px 3px 40px #00000005;
   float: left;
-`;
-
-const NavItem = styled.li`
-  color: ${colors.green};
-  font-weight: 600;
-  padding: 20px 56px 20px 50px;
-  position: relative;
-  list-style: none;
-  &.active {
-    color: ${colors.red};
-    &::after {
-      content: "";
-      width: 8px;
-      height: 67px;
-      background-color: ${colors.red};
-      border-radius: 0px 6px 6px 0px;
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
-  }
-  & a {
-    text-decoration: none;
-  }
-  & i {
-    margin-right: 15px;
-  }
 `;
 
 const UserContainer = styled.div`
@@ -76,27 +49,49 @@ const UserPhoto = styled.div`
 
 const SideMenuFooter = styled.div`
   padding-left: 56px;
-  & .sidemenu-footer {
-    &__name {
-      font-weight: 600;
-      display: block;
-    }
-    &__copy {
-      font-weight: 200;
-      font-size: 14px;
-      line-height: 21px;
-      color: blue;
-      display: block;
-    }
-    &__made {
-      margin-bottom: 50px;
-      color: red;
-    }
-  }
 `;
 
-const StyledLink = styled(Link)`
-  margin-left: 20px;
+const AppName = styled.span`
+  font-weight: 600;
+  display: block;
+`;
+
+const CopyRight = styled.span`
+  font-weight: 200;
+  font-size: 14px;
+  line-height: 21px;
+  color: blue;
+  display: block;
+`;
+const AppMade = styled.span`
+  margin-bottom: 50px;
+  color: red;
+`;
+
+const Li = styled.li`
+position:relative;
+margin-bottom: 40px;
+`;
+
+const StyledLink = styled(NavLink)`
+  margin-left: 56px;
+  padding: 20px 48px 50px 48px;
+  color: ${colors.green};
+  font-weight: 600;
+  &.active {
+    color: ${colors.red};
+    &::after {
+      content: '';
+      width: 8px;
+      height: 67px;
+      background-color: ${colors.red};
+      border-radius: 0px 6px 6px 0px;
+      position: absolute;
+      left: 0;
+      top:-20px;
+      
+    }
+  }
 `;
 const Image = styled.img`
   height: 60px;
@@ -127,21 +122,12 @@ const H2 = styled.h2`
 `;
 
 export const SideBar = () => {
-  
-  const location = useLocation();
-
-  const [user, setUser] = useState(localStorage.getItem('username') || 'Name Lastname');
-  const [email, setEmail] = useState(localStorage.getItem('email') || 'email@email.com');
-
-  useEffect(() => {
-    let path = location.pathname.split("/")[1];
-    if (path === "") path = "dashboard";
-
-    const activeItem = document.querySelector(`#${path}`);
-    activeItem.classList.add("active");
-
-    return () => activeItem.classList.remove("active");
-  }, [location]);
+  const [user, setUser] = useState(
+    localStorage.getItem("username") || "Name Lastname"
+  );
+  const [email, setEmail] = useState(
+    localStorage.getItem("email") || "email@email.com"
+  );
 
   return (
     <SideMenuContainer>
@@ -152,45 +138,42 @@ export const SideBar = () => {
         </LetterHead>
       </Logo>
       <ul>
-        <NavItem id="dashboard">
-          {icons.dashboard}
-          <StyledLink to="/">Dashboard</StyledLink>
-        </NavItem>
-        <NavItem id="bookings">
-          {icons.bookings}
-          <StyledLink to="/bookings">Bookings</StyledLink>
-        </NavItem>
-        <NavItem id="rooms">
-          {icons.rooms}
-          <StyledLink to="/rooms">Rooms</StyledLink>
-        </NavItem>
-        <NavItem id="contact">
-          {icons.contact}
-          <StyledLink to="/contact">Contact</StyledLink>
-        </NavItem>
-        <NavItem id="users">
-          {icons.users}
-          <StyledLink to="/users">Users</StyledLink>
-        </NavItem>
+        <Li>
+          <StyledLink to="/">{icons.dashboard}<span>Dashboard</span></StyledLink>
+        </Li>
+
+        <Li>
+          <StyledLink to="/bookings">{icons.bookings}<span>Bookings</span></StyledLink>
+        </Li>
+        <Li>
+          <StyledLink to="/rooms">{icons.rooms}<span>Rooms</span></StyledLink>
+        </Li>
+        <Li>
+          <StyledLink to="/contact">{icons.contact}<span>Contact</span></StyledLink>
+        </Li>
+        <Li>
+          <StyledLink to="/users">{icons.users}<span>Users</span></StyledLink>
+        </Li>
       </ul>
       <UserContainer>
-        <UserPhoto style={{backgroundImage: `url('https://robohash.org/${user}.png')`}} />
+        <UserPhoto
+          style={{ backgroundImage: `url('https://robohash.org/${user}.png')` }}
+        />
         <p>{user}</p>
-        <span>
-          {email}
-        </span>
-        <EditUser email={email} setEmail={setEmail} user={user} setUser={setUser} />
+        <span>{email}</span>
+        <EditUser
+          email={email}
+          setEmail={setEmail}
+          user={user}
+          setUser={setUser}
+        />
       </UserContainer>
       <SideMenuFooter>
-        <span className="sidemenu-footer__name">
-          Travl Hotel Admin Dashboard
-        </span>
-        <span className="sidemenu-footer__copy">
-          © 2023 All Rights Reserved
-        </span>
+        <AppName>Travl Hotel Admin Dashboard</AppName>
+        <CopyRight>© 2023 All Rights Reserved</CopyRight>
         <br />
         <br />
-        <span className="sidemenu-footer__made">Made with ♥ by Rodrigo</span>
+        <AppMade>Made with ♥ by Rodrigo</AppMade>
       </SideMenuFooter>
     </SideMenuContainer>
   );

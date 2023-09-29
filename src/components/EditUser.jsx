@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
@@ -132,7 +132,6 @@ export default function TransitionsModal(props) {
       >
         <Fade in={open}>
           <Box>
-            
             <Form onSubmit={handleSave}>
             <Icon onClick={handleDiscard}>{icons.close}</Icon>
               <H2>Profile</H2>

@@ -76,9 +76,9 @@ export const Kpis = () => {
           <ItemContainer>
             <IconContainer red>
               <IconContext.Provider value={{ color: "white",
-                                             size: '1.1em',
+                                             size: '1.2em',
             }}>
-                {icons.bookings}
+                {icons.bookings2}
               </IconContext.Provider>
             </IconContainer>
             <TextContainer> <H1>963</H1><H2>Scheduled Room</H2> </TextContainer>

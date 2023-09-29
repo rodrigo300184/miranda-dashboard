@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import colors from '../styles/colors';
 // SideBar Icons
 import { LuLayoutDashboard as DashboardIcon } from "react-icons/lu";
 import { LuCalendarCheck2 as BookingIcon } from "react-icons/lu";
@@ -29,7 +28,7 @@ const SideBarIcons = styled.i`
   & svg {
     margin: auto;
     position: absolute;
-    left: 0;
+    left: -50px ;
     right: 0;
     top: 0;
     bottom: 0;
@@ -58,6 +57,7 @@ const icons = {
   heart: <HeartIcon />,
   email: <EmailIcon />,
   close: <CloseIcon />,
+  bookings2: <BookingIcon />,
 };
 
 export default icons;
