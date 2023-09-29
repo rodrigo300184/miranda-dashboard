@@ -12,6 +12,7 @@ const Container = styled.div`
   height: 100vh;
 `;
 const Image = styled.img`
+  margin-bottom: 10px;
   height: 120px;
   width: 120px;
 `;
@@ -20,7 +21,7 @@ const Form = styled.form`
   box-shadow: 0px 16px 30px #00000014;
   text-align: center;
   background-color: #ffffff;
-  padding: 30px;
+  padding: 25px;
   border-radius: 12px;
   font-family: "Poppins", sans-serif;
   font-size: 20px;
@@ -28,7 +29,7 @@ const Form = styled.form`
 const H2 = styled.h2`
   color: #e23428;
   line-height: 30px;
-  cursor: default;
+  margin: 5px 0px 15px;
 `;
 const Label = styled.label`
   display: block;
@@ -64,6 +65,12 @@ const P = styled.p`
   font-weight: ${(props) => (props.bold ? "bold" : "normal")};
 `;
 
+const H1 = styled.h1`
+  color: black;
+  display: inline-block;
+  font-size: 36px;
+`;
+
 export const Login = (props) => {
   const navigate = useNavigate();
 
@@ -84,12 +91,12 @@ export const Login = (props) => {
       props.setAuthenticated(true);
       localStorage.setItem("logged", true);
       navigate("/");
-    }else{
+    } else {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Invalid login: Check Email or Password',
-      })
+        icon: "error",
+        title: "Oops...",
+        text: "Invalid login: Check Email or Password",
+      });
     }
   };
 
@@ -97,7 +104,9 @@ export const Login = (props) => {
     <Container>
       <Form onSubmit={handleSubmit}>
         <Image src={hotelIcon} />
-        <H2>Login</H2>
+        <H2>
+          <H1>travl</H1> Login
+        </H2>
         <Label>Email:</Label>
         <Input
           onChange={handleEmailChange}
