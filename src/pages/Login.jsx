@@ -24,12 +24,12 @@ const Form = styled.form`
   padding: 25px;
   border-radius: 12px;
   font-family: "Poppins", sans-serif;
-  font-size: 20px;
+  font-size: 18px;
 `;
 const H2 = styled.h2`
   color: #e23428;
   line-height: 30px;
-  margin: 5px 0px 15px;
+  margin: 5px 0px 20px;
 `;
 const Label = styled.label`
   display: block;
@@ -68,6 +68,7 @@ const P = styled.p`
 const H1 = styled.h1`
   color: black;
   display: inline-block;
+  max-height: 35px;
   font-size: 36px;
 `;
 
