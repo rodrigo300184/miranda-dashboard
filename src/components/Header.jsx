@@ -22,6 +22,7 @@ const InnerContainer = styled.div`
 
 const InnerLeft = styled.div`
   display: flex;
+  align-items:center;
   color: black;
   padding: 0 30px;
 `;
@@ -34,8 +35,8 @@ const InnerRight = styled.div`
 const Button = styled.button`
   background-color: transparent;
   border: none;
-  min-width: 30px;
-  min-height: 30px;
+  width: 30px;
+  height: 30px;
   border-radius: 8px;
   position: relative;
   cursor: pointer;
