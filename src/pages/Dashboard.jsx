@@ -3,7 +3,7 @@ export const Dashboard = () => {
   return (
     <>
       <Kpis />
-      <h1>Dashboard</h1>
+   
     </>
   );
 };

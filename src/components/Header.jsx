@@ -55,6 +55,12 @@ const Button = styled.button`
   }
 `;
 
+const Title = styled.h1`
+  margin-left: 50px;
+  font-size: 28px;
+  font-weight: 600;
+`;
+
 export const Header = (props) => {
   const [headerTitle, setHeaderTitle] = useState("");
   const location = useLocation();
@@ -76,7 +82,7 @@ export const Header = (props) => {
         <InnerContainer>
           <InnerLeft>
             <Button>{icons.menu} </Button>
-            <h1>{headerTitle === "" ? "Dashboard" : headerTitle}</h1>
+            <Title>{headerTitle === "" ? "Dashboard" : headerTitle}</Title>
           </InnerLeft>
           <InnerRight>
             <Button>{icons.message}</Button>
