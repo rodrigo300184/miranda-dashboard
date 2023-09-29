@@ -19,12 +19,12 @@ const InnerContainer = styled.div`
   align-items: center;
 `;
 
-const Inner_left = styled.div`
+const InnerLeft = styled.div`
   display: flex;
   color: black;
   padding: 0 30px;
 `;
-const Inner_right = styled.div`
+const InnerRight = styled.div`
   padding: 0 40px;
   display: flex;
   gap: 50px;
@@ -68,12 +68,12 @@ export const Header = (props) => {
     <>
       <HeaderContainer>
         <InnerContainer>
-          <Inner_left><Button>{icons.menu}</Button></Inner_left>
-          <Inner_right>
+          <InnerLeft><Button>{icons.menu}</Button></InnerLeft>
+          <InnerRight>
             <Button>{icons.message}</Button>
             <Button>{icons.bell}</Button>
             <Button onClick={handleLogout}>{icons.logout}</Button>
-          </Inner_right>
+          </InnerRight>
         </InnerContainer>
       </HeaderContainer>
     </>

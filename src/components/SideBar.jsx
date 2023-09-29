@@ -50,11 +50,11 @@ const UserContainer = styled.div`
   margin: 41px auto 62px;
   min-width: 230px;
   width: fit-content;
-  & .sidemenu__user-name {
+  & p {
     font-weight: 500;
     display: block;
   }
-  & .sidemenu__email {
+  & span {
     font-weight: 200;
     font-size: 12px;
     line-height: 18px;
@@ -175,8 +175,8 @@ export const SideBar = () => {
       </ul>
       <UserContainer>
         <UserPhoto style={{backgroundImage: `url('https://robohash.org/${user}.png')`}} />
-        <span className="sidemenu__user-name">{user}</span>
-        <span className="sidemenu__email">
+        <p>{user}</p>
+        <span>
           {email}
         </span>
         <EditUser email={email} setEmail={setEmail} user={user} setUser={setUser} />

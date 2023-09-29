@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import styled from "styled-components";
 import hotelIcon from "../icons/5-estrellas.png";
 import { useState } from "react";

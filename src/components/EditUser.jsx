@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
-import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import styled from "styled-components";
 import colors from "../styles/colors";
+import icons from "../styles/icons";
 
 const Button = styled.button.attrs({ type: "button" })`
   font-family: Poppins;
@@ -35,6 +35,7 @@ const Form = styled.form`
   font-size: 20px;
 `;
 const H2 = styled.h2`
+  margin-bottom: 15px;
   color: #e23428;
   line-height: 30px;
   cursor: default;
@@ -52,7 +53,7 @@ const Input = styled.input`
   outline: none;
   border-bottom: 2px solid #c5c5c5;
 `;
-const Button2 = styled.button`
+const SubmitButton = styled.button`
   display: block;
   border: none;
   border-radius: 8px;
@@ -61,39 +62,56 @@ const Button2 = styled.button`
   padding: 10px 40px;
   color: #135846;
   background: #ebf1ef 0% 0% no-repeat padding-box;
-  margin: 0 auto 30px;
+  margin: 10px auto 0px;
   &:hover {
     color: #ebf1ef;
     background-color: #135846;
   }
 `;
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+const Box = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: fit-content;
+`;
+
+const Icon = styled.i`
+  position:absolute;
+  right: 5px;
+  top: 5px;
+  color: ${colors.green}
+`;
 
 export default function TransitionsModal(props) {
+  const oldEmail = localStorage.getItem("email");
+  const oldUser = localStorage.getItem("username");
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  const handleSubmit = () => {
-    const user = document.getElementById('user').value;
-    const email = document.getElementById('email').value;
-
-    props.setUser(user);
-    props.setEmail(email);
-    localStorage.setItem("email", email);
-    localStorage.setItem("username", user);
+  const handleSave = () => {
+    localStorage.setItem("email", props.email);
+    localStorage.setItem("username", props.user);
+    setOpen(false);
   };
+
+  const handleEmailChange = (event) => {
+    props.setEmail(event.target.value);
+  };
+
+  const handleUsernameChange = (event) => {
+    props.setUser(event.target.value);
+  };
+
+  const handleDiscard = () => {
+    props.setEmail(oldEmail);
+    props.setUser(oldUser);
+    localStorage.setItem("email", oldEmail);
+    localStorage.setItem("username", oldUser);
+    setOpen(false);
+  };
+
   return (
     <div>
       <Button green onClick={handleOpen}>
@@ -103,7 +121,7 @@ export default function TransitionsModal(props) {
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={open}
-        onClose={handleClose}
+        onClose={handleDiscard}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         slotProps={{
@@ -113,26 +131,30 @@ export default function TransitionsModal(props) {
         }}
       >
         <Fade in={open}>
-          <Box sx={style}>
-            <Form onSubmit={handleSubmit}>
+          <Box>
+            
+            <Form onSubmit={handleSave}>
+            <Icon onClick={handleDiscard}>{icons.close}</Icon>
               <H2>Profile</H2>
               <Label>Email:</Label>
               <Input
+                onChange={handleEmailChange}
                 type="email"
                 name="email"
                 id="email"
-                defaultValue={props.email}
+                value={props.email}
                 required
               />
               <Label>Username:</Label>
               <Input
+                onChange={handleUsernameChange}
                 type="text"
                 name="user"
                 id="user"
-                defaultValue={props.user}
+                value={props.user}
                 required
               />
-              <Button2 type="submit">Change</Button2>
+              <SubmitButton type="submit">Change</SubmitButton>
             </Form>
           </Box>
         </Fade>
