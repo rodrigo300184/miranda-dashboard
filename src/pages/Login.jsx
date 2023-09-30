@@ -3,12 +3,13 @@ import styled from "styled-components";
 import hotelIcon from "../icons/5-estrellas.png";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import colors from "../styles/colors";
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fff;
+  background-color: white;
   height: 100vh;
 `;
 const Image = styled.img`
@@ -20,8 +21,8 @@ const Image = styled.img`
 const Form = styled.form`
   box-shadow: 0px 16px 30px #00000014;
   text-align: center;
-  background-color: #ffffff;
-  padding: 25px;
+  background-color: white;
+  padding: 25px 35px;
   border-radius: 12px;
   font-family: "Poppins", sans-serif;
   font-size: 18px;
@@ -38,7 +39,7 @@ const Input = styled.input`
   margin-bottom: 30px;
   border: none;
   outline: none;
-  border-bottom: 2px solid #c5c5c5;
+  border-bottom: 2px solid ${colors.bottomBorderGray};
 `;
 const Button = styled.button`
   display: block;
@@ -47,12 +48,12 @@ const Button = styled.button`
   font-family: "Poppins", sans-serif;
   font-size: 18px;
   padding: 10px 40px;
-  color: #135846;
-  background: #ebf1ef 0% 0% no-repeat padding-box;
+  color:  ${colors.hardGreen};
+  background: ${colors.lightGreen} 0% 0% no-repeat padding-box;
   margin: 0 auto 30px;
   &:hover {
-    color: #ebf1ef;
-    background-color: #135846;
+    color: ${colors.lightGreen};
+    background-color: ${colors.hardGreen};
   }
 `;
 const P = styled.p`
@@ -63,11 +64,11 @@ const P = styled.p`
 
 const H1 = styled.h1`
   color: black;
-  margin: 5px 0px 20px;
+  margin: 5px 0px 25px;
   max-height: 35px;
   font-size: 36px;
   & span {
-    color: #e23428;
+    color:  ${colors.red};
     line-height: 30px;
   }
 `;

@@ -9,6 +9,7 @@ const colors = {
     bgGray: '#F8F8F8',
     gray: '#6E6E6E',
     borderGray: '#D4D4D4',
+    bottomBorderGray: '#c5c5c5',
     white: 'white',
     yellow: '#FFFF4E',
     lightYellow: '#ffffcc',

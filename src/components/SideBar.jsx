@@ -12,7 +12,6 @@ const SideMenuContainer = styled.div`
   padding: 32px 0px;
   z-index: 5;
   box-shadow: 13px 3px 40px #00000005;
-  float: left;
 `;
 
 const UserContainer = styled.div`
