@@ -67,8 +67,8 @@ export const Header = (props) => {
   const location = useLocation();
   const navigate = useNavigate();
   const handleLogout = () => {
-    localStorage.setItem("logged", false);
-    props.setAuthenticated("false");
+    localStorage.removeItem("logged");
+    props.setAuthenticated(false);
     navigate("/login");
   };
   useEffect(() => {

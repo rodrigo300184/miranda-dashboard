@@ -122,12 +122,9 @@ const H2 = styled.h2`
 `;
 
 export const SideBar = () => {
-  const [user, setUser] = useState(
-    localStorage.getItem("username") || "Name Lastname"
-  );
-  const [email, setEmail] = useState(
-    localStorage.getItem("email") || "email@email.com"
-  );
+ 
+  const [user, setUser] = useState(localStorage.getItem("username") || "Name Lastname");  
+  const [email, setEmail] = useState(localStorage.getItem("email") || "email@email.com");
 
   return (
     <SideMenuContainer>

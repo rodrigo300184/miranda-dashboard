@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 import styled from "styled-components";
 import hotelIcon from "../icons/5-estrellas.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
@@ -26,11 +26,7 @@ const Form = styled.form`
   font-family: "Poppins", sans-serif;
   font-size: 18px;
 `;
-const H2 = styled.h2`
-  color: #e23428;
-  line-height: 30px;
-  margin: 5px 0px 20px;
-`;
+
 const Label = styled.label`
   display: block;
   text-align: left;
@@ -67,9 +63,13 @@ const P = styled.p`
 
 const H1 = styled.h1`
   color: black;
-  display: inline-block;
+  margin: 5px 0px 20px;
   max-height: 35px;
   font-size: 36px;
+  & span {
+    color: #e23428;
+    line-height: 30px;
+  }
 `;
 
 export const Login = (props) => {
@@ -90,7 +90,7 @@ export const Login = (props) => {
     event.preventDefault();
     if (email === "email@email.com" && password === "1234") {
       props.setAuthenticated(true);
-      localStorage.setItem("logged", true);
+      localStorage.setItem("logged", 1);
       navigate("/");
     } else {
       Swal.fire({
@@ -101,13 +101,23 @@ export const Login = (props) => {
     }
   };
 
+  useEffect(() => {
+    if (props.authenticated) {
+      navigate("/");
+
+      return () => {};
+    }
+  });
+
   return (
     <Container>
       <Form onSubmit={handleSubmit}>
         <Image src={hotelIcon} />
-        <H2>
-          <H1>travl</H1> Login
-        </H2>
+
+        <H1>
+          travl <span>Login</span>
+        </H1>
+
         <Label>Email:</Label>
         <Input
           onChange={handleEmailChange}
