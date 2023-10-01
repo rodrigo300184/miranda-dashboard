@@ -1,10 +1,13 @@
-export const Contact = () => {
+import { TabsMenuContainer, TabButton } from "../components/Tabs";
 
-    return (
-        <>
-        <div>
-        
-        </div>
-        </>
-    )
-}
+export const Contact = () => {
+  return (
+    <>
+      <TabsMenuContainer>
+        <TabButton>All Contact</TabButton>
+        <TabButton>Archived</TabButton>
+        <TabButton>Non Archived</TabButton>
+      </TabsMenuContainer>
+    </>
+  );
+};

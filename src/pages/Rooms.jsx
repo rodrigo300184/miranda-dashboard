@@ -1,10 +1,13 @@
-export const Rooms = () => {
+import { TabsMenuContainer, TabButton } from "../components/Tabs";
 
-    return (
-        <>
-        <div>
-    
-        </div>
-        </>
-    )
-}
+export const Rooms = () => {
+  return (
+    <>
+      <TabsMenuContainer>
+        <TabButton>All Rooms</TabButton>
+        <TabButton>Available</TabButton>
+        <TabButton>Booked</TabButton>
+      </TabsMenuContainer>
+    </>
+  );
+};
