@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import icons from "../styles/icons";
 import colors from "../styles/colors";
 import hotelIcon from "../icons/5-estrellas.png";
 import EditUser from "../components/EditUser";
+import { GeneralContext } from "../App";
+
 
 const SideMenuContainer = styled.div`
   width: 345px;
@@ -12,6 +14,7 @@ const SideMenuContainer = styled.div`
   padding: 32px 0px;
   z-index: 5;
   box-shadow: 13px 3px 40px #00000005;
+  display: ${(props) => props.viewSidebar ? 'block': 'none'}
 `;
 
 const UserContainer = styled.div`
@@ -124,9 +127,10 @@ export const SideBar = () => {
  
   const [user, setUser] = useState(localStorage.getItem("username") || "Name Lastname");  
   const [email, setEmail] = useState(localStorage.getItem("email") || "email@email.com");
-
+  const {viewSidebar} = useContext(GeneralContext);
+  console.log(viewSidebar) ;
   return (
-    <SideMenuContainer>
+    <SideMenuContainer viewSidebar={viewSidebar}>
       <Logo>
         <Image src={hotelIcon} />{" "}
         <LetterHead>

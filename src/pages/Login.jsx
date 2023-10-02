@@ -1,9 +1,10 @@
 import Swal from "sweetalert2";
 import styled from "styled-components";
 import hotelIcon from "../icons/5-estrellas.png";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import colors from "../styles/colors";
+import { GeneralContext } from "../App";
 
 const Container = styled.div`
   display: flex;
@@ -73,7 +74,9 @@ const H1 = styled.h1`
   }
 `;
 
-export const Login = (props) => {
+export const Login = () => {
+
+  const {authenticated,setAuthenticated} = useContext(GeneralContext);
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -90,7 +93,7 @@ export const Login = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (email === "email@email.com" && password === "1234") {
-      props.setAuthenticated(true);
+      setAuthenticated(true);
       localStorage.setItem("logged", 1);
       navigate("/");
     } else {
@@ -103,7 +106,7 @@ export const Login = (props) => {
   };
 
   useEffect(() => {
-    if (props.authenticated) {
+    if (authenticated) {
       navigate("/");
 
       return () => {};

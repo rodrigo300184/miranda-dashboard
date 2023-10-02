@@ -2,7 +2,8 @@ import styled from "styled-components";
 import icons from "../styles/icons";
 import colors from "../styles/colors";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
+import { GeneralContext } from "../App";
 
 const HeaderContainer = styled.header`
   background-color: white;
@@ -63,6 +64,8 @@ const Title = styled.h1`
 `;
 
 export const Header = (props) => {
+  const {viewSidebar, setViewSidebar} = useContext(GeneralContext);
+
   const [headerTitle, setHeaderTitle] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
@@ -77,12 +80,16 @@ export const Header = (props) => {
     setHeaderTitle(path);
   }, [location]);
 
+  const handleSideBarView = () =>{
+    setViewSidebar(!viewSidebar);
+  }
+
   return (
     <>
       <HeaderContainer>
         <InnerContainer>
           <InnerLeft>
-            <Button>{icons.menu} </Button>
+            <Button onClick={handleSideBarView}>{icons.menu} </Button>
             <Title>{headerTitle === "" ? "Dashboard" : headerTitle}</Title>
           </InnerLeft>
           <InnerRight>
