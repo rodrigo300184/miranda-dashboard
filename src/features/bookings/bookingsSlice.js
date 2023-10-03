@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const bookingsSlice = createSlice({
-    name: "bookingsList",
+    name: "bookings",
     initialState: {
       bookings: [],
       booking: null,
@@ -12,7 +12,7 @@ const bookingsSlice = createSlice({
     extraReducers(builder) {
       builder
         .addCase(fetchBookings.pending, (state) => {
-          state.isLaoding = true;
+          state.isLoading = true;
           state.hasError = false;
         })
         .addCase(fetchBookings.fulfilled, (state, action) => {
@@ -25,7 +25,7 @@ const bookingsSlice = createSlice({
           state.hasError = true;
         })
         .addCase(fetchBooking.pending, (state) => {
-          state.isLaoding = true;
+          state.isLoading = true;
           state.hasError = false;
           state.booking = null;
         })
@@ -40,7 +40,7 @@ const bookingsSlice = createSlice({
           state.booking = null;
         })
        .addCase(createBooking.pending, (state) => {
-          state.isLaoding = true;
+          state.isLoading = true;
           state.hasError = false;
         })
         .addCase(createBooking.fulfilled, (state, action) => {
