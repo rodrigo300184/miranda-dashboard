@@ -1,53 +1,62 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
-const initialState = {
-  favorites: JSON.parse(localStorage.getItem("localFavs")) || [],
-  status: "idle",
-  error: null,
-};
-
-const favoriteSlice = createSlice({
-  name: "favoritePhotos",
-  initialState,
-  reducers: {
-    addPhoto: (state, action) => {
-      const repeated = state.favorites.some((photo) => photo.id === action.payload.id);
-      if (!repeated && state.favorites.length <= 30) {
-        state.favorites.push(action.payload);
-        localStorage.setItem("localFavs", JSON.stringify(state.favorites));
-        state.length += 1;
-      }
+const bookingsSlice = createSlice({
+    name: "bookingsList",
+    initialState: {
+      bookings: [],
+      booking: null,
+      isLoading: false,
+      hasError: false,
     },
-    removePhoto: (state, action) => {
-      state.favorites = state.favorites.filter(
-        (photo) => photo.id !== action.payload.id
-      );
-      localStorage.setItem("localFavs", JSON.stringify(state.favorites));
-      if (state.length > 0) {
-        state.length -= 1;
-      }
+    reducers: {},
+    extraReducers(builder) {
+      builder
+        .addCase(fetchBookings.pending, (state) => {
+          state.isLaoding = true;
+          state.hasError = false;
+        })
+        .addCase(fetchBookings.fulfilled, (state, action) => {
+          state.isLoading = false;
+          state.hasError = false;
+          state.bookings = action.payload;
+        })
+        .addCase(fetchBookings.rejected, (state) => {
+          state.isLoading = false;
+          state.hasError = true;
+        })
+        .addCase(fetchBooking.pending, (state) => {
+          state.isLaoding = true;
+          state.hasError = false;
+          state.booking = null;
+        })
+        .addCase(fetchBooking.fulfilled, (state, action) => {
+          state.isLoading = false;
+          state.hasError = false;
+          state.booking = action.payload;
+        })
+        .addCase(fetchBooking.rejected, (state) => {
+          state.isLoading = false;
+          state.hasError = true;
+          state.booking = null;
+        })
+       .addCase(createBooking.pending, (state) => {
+          state.isLaoding = true;
+          state.hasError = false;
+        })
+        .addCase(createBooking.fulfilled, (state, action) => {
+          state.isLoading = false;
+          state.hasError = false;
+          state.bookings = [...state.bookings, action.payload]
+        })
+        .addCase(createBooking.rejected, (state) => {
+          state.isLoading = false;
+          state.hasError = true;
+        })
     },
-    editDescription: (state, action) => {
-        const copyOfFavorites = [...state.favorites];
-        const indexForEditing = copyOfFavorites.findIndex(
-                  (photo) => photo.id === action.payload.id
-                 );
-        const newPhoto = {
-                ...copyOfFavorites[indexForEditing],
-                description: action.payload.newDescription,
-        };  
-        copyOfFavorites[indexForEditing] = newPhoto;
-        state.favorites = copyOfFavorites;
-        localStorage.setItem("localFavs", JSON.stringify(state.favorites));
-      
-    },
-  },
-  extraReducers: {},
-});
+  });
 
-export default favoriteSlice.reducer;
-export const { addPhoto, removePhoto, editDescription } = favoriteSlice.actions;
-export const getFavPhotosStatus = (state) => state.favoritePhotos.status;
-export const getFavPhotos = (state) => state.favoritePhotos.favorites;
-export const getFavLength = (state) => state.favoritePhotos.favorites.length;
+export default bookingsSlice.reducer;
+// export const { addPhoto, removePhoto, editDescription } = favoriteSlice.actions;
+// export const getFavPhotosStatus = (state) => state.favoritePhotos.status;
+// export const getFavPhotos = (state) => state.favoritePhotos.favorites;
+// export const getFavLength = (state) => state.favoritePhotos.favorites.length; 

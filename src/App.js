@@ -6,43 +6,49 @@ import { Rooms } from "./pages/Rooms";
 import { Users } from "./pages/Users";
 import { Contact } from "./pages/Contact";
 import { SideBar } from "./components/SideBar";
-import { useState, createContext, useReducer} from "react";
+import { useState, createContext, useReducer, useEffect} from "react";
 import { Login } from "./pages/Login";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { Header } from "./components/Header";
 import { Layout, LeftContainer, RightContainer } from "./components/Layout";
 
 export const GeneralContext = createContext(null);
+
 const loginActionType = {
   LOGIN: "LOGIN",
   LOGOUT: "LOGOUT",
   UPDATE: "UPDATE",
 };
-const initialState = {username: localStorage.getItem('username') || '', 
-                      email: localStorage.getItem('email') || '',
-                      photo:'',
-                      authenticated: localStorage.getItem('logged')? true:false};
 
-const reducer = (state, action) => {
+const loginReducer = (state, action) => {
   switch (action.type) {
     case loginActionType.LOGIN:
-      localStorage.setItem('username',action.payload.username);
-      localStorage.setItem('email',action.payload.email);
       return {...action.payload,authenticated: true};
     case loginActionType.LOGOUT:
-      localStorage.removeItem('logged');
-      return {initialState};
+      return {...state,authenticated: false};
     case loginActionType.UPDATE:
-      localStorage.setItem('email',action.payload);
-      return {...state,email: action.payload};
+      console.log(action.payload)
+      return {...state,...action.payload};
     default: 
       return {...state};
   }
 }
 
 function App() {
-  const [loginState, dispatchLogin] = useReducer(reducer, initialState);
+
+  const  initialLoginState = () => {
+    if (localStorage.getItem('logged')) {
+        return JSON.parse(localStorage.getItem('logged'));
+    } else {
+        return {authenticated: false, username: null, email: null, photo: null};
+    }
+  } 
+  const [loginState, dispatchLogin] = useReducer(loginReducer, initialLoginState());
   const [viewSidebar, setViewSidebar] = useState(true);
+
+  useEffect(() => {
+      localStorage.setItem('logged', JSON.stringify(loginState));
+  }, [loginState]);
  
 return (
     <BrowserRouter>

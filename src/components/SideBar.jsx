@@ -125,9 +125,7 @@ const H2 = styled.h2`
 
 export const SideBar = () => {
  
-  const [user, setUser] = useState(localStorage.getItem("username") || "Name Lastname");  
-  const [email, setEmail] = useState(localStorage.getItem("email") || "email@email.com");
-  const {viewSidebar} = useContext(GeneralContext);
+   const {viewSidebar, loginState} = useContext(GeneralContext);
   return (
     <SideMenuContainer viewSidebar={viewSidebar}>
       <Logo>
@@ -156,16 +154,11 @@ export const SideBar = () => {
       </ul>
       <UserContainer>
         <UserPhoto
-          style={{ backgroundImage: `url('https://robohash.org/${user}.png')` }}
+          style={{ backgroundImage: `url('https://robohash.org/${loginState.username}.png')` }}
         />
-        <p>{user}</p>
-        <span>{email}</span>
-        <EditUser
-          email={email}
-          setEmail={setEmail}
-          user={user}
-          setUser={setUser}
-        />
+        <p>{loginState.username}</p>
+        <span>{loginState.email}</span>
+        <EditUser />
       </UserContainer>
       <SideMenuFooter>
         <AppName>Travl Hotel Admin Dashboard</AppName>

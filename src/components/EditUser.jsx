@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
@@ -86,31 +86,27 @@ const Icon = styled.i`
 `;
 
 export default function TransitionsModal(props) {
-  const {loginActionType, dispatchLogin} = useContext(GeneralContext);
-  const oldEmail = localStorage.getItem("email");
-  const oldUser = localStorage.getItem("username");
+  const {loginState,loginActionType, dispatchLogin} = useContext(GeneralContext);
+  const [currentEmail, setCurrentEmail] = useState(loginState.email);
+  const [currentUsername, setCurrentUsername] = useState(loginState.username);
+  
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleSave = () => {
-    dispatchLogin({type: loginActionType.UPDATE, payload: props.email})
-    localStorage.setItem("username", props.user);
+    dispatchLogin({type: loginActionType.UPDATE, payload: {email: currentEmail, username: currentUsername}})
     setOpen(false);
   };
 
   const handleEmailChange = (event) => {
-    props.setEmail(event.target.value);
+    setCurrentEmail(event.target.value);
   };
 
   const handleUsernameChange = (event) => {
-    props.setUser(event.target.value);
+    setCurrentUsername(event.target.value);
   };
 
   const handleDiscard = () => {
-    props.setEmail(oldEmail);
-    props.setUser(oldUser);
-    localStorage.setItem("email", oldEmail);
-    localStorage.setItem("username", oldUser);
     setOpen(false);
   };
 
@@ -143,7 +139,7 @@ export default function TransitionsModal(props) {
                 type="email"
                 name="email"
                 id="email"
-                value={props.email}
+                defaultValue={loginState.email}
                 required
               />
               <Label>Username:</Label>
@@ -152,7 +148,7 @@ export default function TransitionsModal(props) {
                 type="text"
                 name="user"
                 id="user"
-                value={props.user}
+                defaultValue={loginState.username}
                 required
               />
               <SubmitButton type="submit">Change</SubmitButton>

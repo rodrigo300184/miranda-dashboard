@@ -49,7 +49,7 @@ const Button = styled.button`
   font-family: "Poppins", sans-serif;
   font-size: 18px;
   padding: 10px 40px;
-  color:  ${colors.hardGreen};
+  color: ${colors.hardGreen};
   background: ${colors.lightGreen} 0% 0% no-repeat padding-box;
   margin: 0 auto 30px;
   &:hover {
@@ -69,14 +69,14 @@ const H1 = styled.h1`
   max-height: 35px;
   font-size: 36px;
   & span {
-    color:  ${colors.red};
+    color: ${colors.red};
     line-height: 30px;
   }
 `;
 
 export const Login = () => {
-
-  const {loginState, loginActionType ,dispatchLogin} = useContext(GeneralContext);
+  const { loginState, loginActionType, dispatchLogin } =
+    useContext(GeneralContext);
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -93,8 +93,16 @@ export const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (email === "email@email.com" && password === "1234") {
-      dispatchLogin({type: loginActionType.LOGIN, payload: {username: localStorage.getItem('username') || 'Default Username', email: localStorage.getItem('email') || email, photo: ''}});
-      localStorage.setItem("logged", true);
+      dispatchLogin({
+        type: loginActionType.LOGIN,
+        payload: {
+          username:
+            JSON.parse(localStorage.getItem("logged")).username ||
+            "Default Username",
+          email: JSON.parse(localStorage.getItem("logged")).email || email,
+          photo: "",
+        },
+      });
       navigate("/");
     } else {
       Swal.fire({
@@ -106,7 +114,7 @@ export const Login = () => {
   };
 
   useEffect(() => {
-    if (loginState.authenticated===true) {
+    if (loginState.authenticated === true) {
       navigate("/");
     }
   });
