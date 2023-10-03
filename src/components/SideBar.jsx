@@ -128,7 +128,6 @@ export const SideBar = () => {
   const [user, setUser] = useState(localStorage.getItem("username") || "Name Lastname");  
   const [email, setEmail] = useState(localStorage.getItem("email") || "email@email.com");
   const {viewSidebar} = useContext(GeneralContext);
-  console.log(viewSidebar) ;
   return (
     <SideMenuContainer viewSidebar={viewSidebar}>
       <Logo>

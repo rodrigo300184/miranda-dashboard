@@ -64,14 +64,13 @@ const Title = styled.h1`
 `;
 
 export const Header = (props) => {
-  const {viewSidebar, setViewSidebar} = useContext(GeneralContext);
+  const {viewSidebar, setViewSidebar, dispatchLogin, loginActionType} = useContext(GeneralContext);
 
   const [headerTitle, setHeaderTitle] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
   const handleLogout = () => {
-    localStorage.removeItem("logged");
-    props.setAuthenticated(false);
+    dispatchLogin({type: loginActionType.LOGOUT});
     navigate("/login");
   };
   useEffect(() => {

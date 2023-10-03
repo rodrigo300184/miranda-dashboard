@@ -3,8 +3,8 @@ import { GeneralContext } from "../App";
 import { useContext } from "react";
 
 export const PrivateRoute = (props) =>{
-    const {authenticated} = useContext(GeneralContext);
-    if(authenticated===true){
+    const {loginState} = useContext(GeneralContext);
+    if(loginState.authenticated===true){
         return props.children;
     }else{
         return <Navigate to='/login'/>

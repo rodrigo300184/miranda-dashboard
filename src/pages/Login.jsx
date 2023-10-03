@@ -76,7 +76,7 @@ const H1 = styled.h1`
 
 export const Login = () => {
 
-  const {authenticated,setAuthenticated} = useContext(GeneralContext);
+  const {loginState, loginActionType ,dispatchLogin} = useContext(GeneralContext);
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -93,8 +93,9 @@ export const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (email === "email@email.com" && password === "1234") {
-      setAuthenticated(true);
-      localStorage.setItem("logged", 1);
+      dispatchLogin({type: loginActionType.LOGIN, payload: {username: 'Default Username', email: email, photo: ''}});
+      localStorage.setItem("logged", true);
+      console.log(loginState.authenticated)
       navigate("/");
     } else {
       Swal.fire({
@@ -106,12 +107,11 @@ export const Login = () => {
   };
 
   useEffect(() => {
-    if (authenticated) {
+    console.log(loginState.authenticated);
+    if (loginState.authenticated===true) {
       navigate("/");
-
-      return () => {};
     }
-  });
+  },[loginState]);
 
   return (
     <Container>
