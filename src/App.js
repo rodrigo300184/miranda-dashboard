@@ -18,20 +18,22 @@ const loginActionType = {
   LOGOUT: "LOGOUT",
   UPDATE: "UPDATE",
 };
-const initialState = {username: '', 
-                      email: '',
+const initialState = {username: localStorage.getItem('username') || '', 
+                      email: localStorage.getItem('email') || '',
                       photo:'',
-                      authenticated: false};
+                      authenticated: localStorage.getItem('logged')? true:false};
 
 const reducer = (state, action) => {
   switch (action.type) {
     case loginActionType.LOGIN:
-      console.log(action.payload)
+      localStorage.setItem('username',action.payload.username);
+      localStorage.setItem('email',action.payload.email);
       return {...action.payload,authenticated: true};
     case loginActionType.LOGOUT:
       localStorage.removeItem('logged');
-      return {...initialState};
+      return {initialState};
     case loginActionType.UPDATE:
+      localStorage.setItem('email',action.payload);
       return {...state,email: action.payload};
     default: 
       return {...state};
@@ -41,7 +43,6 @@ const reducer = (state, action) => {
 function App() {
   const [loginState, dispatchLogin] = useReducer(reducer, initialState);
   const [viewSidebar, setViewSidebar] = useState(true);
-  console.log(loginState);
  
 return (
     <BrowserRouter>

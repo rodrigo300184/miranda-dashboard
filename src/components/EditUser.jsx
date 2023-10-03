@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import styled from "styled-components";
 import colors from "../styles/colors";
 import icons from "../styles/icons";
+import { GeneralContext } from "../App";
 
 const Button = styled.button.attrs({ type: "button" })`
   font-family: Poppins;
@@ -85,13 +86,14 @@ const Icon = styled.i`
 `;
 
 export default function TransitionsModal(props) {
+  const {loginActionType, dispatchLogin} = useContext(GeneralContext);
   const oldEmail = localStorage.getItem("email");
   const oldUser = localStorage.getItem("username");
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleSave = () => {
-    localStorage.setItem("email", props.email);
+    dispatchLogin({type: loginActionType.UPDATE, payload: props.email})
     localStorage.setItem("username", props.user);
     setOpen(false);
   };

@@ -93,9 +93,8 @@ export const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (email === "email@email.com" && password === "1234") {
-      dispatchLogin({type: loginActionType.LOGIN, payload: {username: 'Default Username', email: email, photo: ''}});
+      dispatchLogin({type: loginActionType.LOGIN, payload: {username: localStorage.getItem('username') || 'Default Username', email: localStorage.getItem('email') || email, photo: ''}});
       localStorage.setItem("logged", true);
-      console.log(loginState.authenticated)
       navigate("/");
     } else {
       Swal.fire({
@@ -107,11 +106,10 @@ export const Login = () => {
   };
 
   useEffect(() => {
-    console.log(loginState.authenticated);
     if (loginState.authenticated===true) {
       navigate("/");
     }
-  },[loginState]);
+  });
 
   return (
     <Container>
@@ -122,21 +120,23 @@ export const Login = () => {
           travl <span>Login</span>
         </H1>
 
-        <Label>Email:</Label>
+        <Label htmlFor="email">Email:</Label>
         <Input
           onChange={handleEmailChange}
           type="email"
           name="email"
           id="email"
           required
+          autoComplete="on"
         />
-        <Label>Password:</Label>
+        <Label htmlFor="password">Password:</Label>
         <Input
           onChange={handlePasswordChange}
           type="password"
           name="password"
           id="password"
           required
+          autoComplete="current-password"
         />
         <Button type="submit">Login</Button>
         <P bold="true">To see the demo:</P>
