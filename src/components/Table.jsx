@@ -10,7 +10,7 @@ const TableContainer = styled.div`
 
 const TableHeaderContainer = styled.div`
   display: flex;
-   text-align: center;
+  text-align: center;
   justify-content: space-around;
   align-items: center;
   height: 65px;
@@ -34,8 +34,9 @@ const TableContent = styled.div`
   background-color: white;
   text-align: center;
   width: 100%;
-  height: 100%;
-  border-radius: 0 0 20px 20px;
+  max-height: 100%;
+  border: 1px solid ${colors.borderGray};
+  border-radius: 0 0 20px 20px ;
   overflow-y: auto;
   &::-webkit-scrollbar {
     width: 0px;
@@ -66,15 +67,26 @@ const TableContent = styled.div`
 const RowContainer = styled.div`
   display: flex;
   width: 100%;
+  border-bottom: 1px solid ${colors.borderGray};
   & div {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 1px solid ${colors.borderGray};
+    border-left: 1px solid ${colors.borderGray};
     width: 100%;
     height: 135px;
+    &:first-child{
+      border: none;
+    }
   }
+  &:last-child{
+    border:none;
+  }
+  &:hover{
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 170px;
+  }
+  
 `;
 
 export const Table = (props) => {

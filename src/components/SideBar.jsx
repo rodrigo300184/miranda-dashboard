@@ -14,7 +14,7 @@ const SideMenuContainer = styled.div`
   padding: 32px 0px;
   z-index: 5;
   box-shadow: 13px 3px 40px #00000005;
-  display: ${(props) => props.viewSidebar ? 'block': 'none'}
+  display: ${(props) => props.viewsidebar ? 'block': 'none'}
 `;
 
 const UserContainer = styled.div`
@@ -127,7 +127,7 @@ export const SideBar = () => {
  
    const {viewSidebar, loginState} = useContext(GeneralContext);
   return (
-    <SideMenuContainer viewSidebar={viewSidebar}>
+    <SideMenuContainer viewsidebar={viewSidebar}>
       <Logo>
         <Image src={hotelIcon} />{" "}
         <LetterHead>

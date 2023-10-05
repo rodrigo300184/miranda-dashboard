@@ -3,7 +3,12 @@ import colors from "../styles/colors";
 import { TabsMenuContainer, TabButton } from "../components/Tabs";
 import { Table } from "../components/Table";
 import { NavLink } from "react-router-dom";
-import { getBookings, fetchBookings, getBookingsStatus, getBookingsError,} from "../features/bookings/bookingsSlice";
+import {
+  getBookings,
+  fetchBookings,
+  getBookingsStatus,
+  getBookingsError,
+} from "../features/bookings/bookingsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { Spinner } from "../components/Spinner";
@@ -12,7 +17,8 @@ import { ErrorMessage } from "../components/ErrorMessage";
 const TextFormatter = styled.span`
   display: block;
   text-align: left;
-  color: ${(props) => (props.small === "small" ? `${colors.green}` : `${colors.mattBlack}`)};
+  color: ${(props) =>
+    props.small === "small" ? `${colors.green}` : `${colors.mattBlack}`};
   font: ${(props) =>
     props.small === "small" ? "300 13px Poppins" : "500 16px Poppins"};
 `;
@@ -24,17 +30,17 @@ const Status = styled.button`
   border: none;
   border-radius: 8px;
   color: ${(props) =>
-    props.status === "CheckIn"
+    props.status === "Check In"
       ? `${colors.checkInBtnText}`
-      : props.status === "CheckOut"
+      : props.status === "Check Out"
       ? `${colors.checkOutBtnText}`
       : props.status === "In Progress"
       ? `${colors.inProgressBtnText}`
       : "transparent"};
   background-color: ${(props) =>
-    props.status === "CheckIn"
+    props.status === "Check In"
       ? `${colors.checkInBtnBgr}`
-      : props.status === "CheckOut"
+      : props.status === "Check Out"
       ? `${colors.checkOutBtnBgr}`
       : props.status === "In Progress"
       ? `${colors.inProgressBtnBgr}`
@@ -49,10 +55,13 @@ const SpecialRequest = styled.button`
   height: 48px;
   border: none;
   border-radius: 8px;
-  color: ${(props) => (props.specialrequest >= 1 ? `${colors.green}` : "black")};
+  cursor:pointer;
+  color: ${(props) =>
+    props.specialrequest >= 1 ? `${colors.green}` : "black"};
   background-color: ${(props) =>
     props.specialrequest >= 1 ? "white" : `${colors.viewNotesBtnBgr}`};
-  border: ${(props) => props.specialrequest >= 1 && `1px solid ${colors.green}`};
+  border: ${(props) =>
+    props.specialrequest >= 1 && `1px solid ${colors.green}`};
 `;
 
 const CustomerPhoto = styled.img`
@@ -68,11 +77,26 @@ export const Bookings = () => {
   const bookingsData = useSelector(getBookings);
   const bookingsDataStatus = useSelector(getBookingsStatus);
   const bookingsDataError = useSelector(getBookingsError);
-  const [filteredBookingsData, setFilteredBookingsData] = useState();
+  const [filter, setFilter] = useState("All Bookings");
 
   useEffect(() => {
     dispatch(fetchBookings());
   }, []);
+
+  const filteredBookingsData = bookingsData.filter((booking) => {
+    switch (filter) {
+      case "All Bookings":
+        return true;
+      case "Check In":
+        return booking.status === 'Check In';
+      case "Check Out":
+        return booking.status === 'Check Out';
+      case "In Progress":
+        return booking.status === 'In Progress';
+      default:
+        return false;
+    }
+  });
 
   const whoAmI = {
     name: "bookings",
@@ -132,17 +156,65 @@ export const Bookings = () => {
   return (
     <>
       <TabsMenuContainer>
-        <TabButton>All Guest</TabButton>
-        <TabButton>Check In</TabButton>
-        <TabButton>Check Out</TabButton>
-        <TabButton>In Progress</TabButton>
+        <TabButton
+          onClick={() => setFilter("All Bookings")}
+          style={
+            filter === "All Bookings"
+              ? {
+                  color: `${colors.hardGreen}`,
+                  borderBottom: `3px solid ${colors.hardGreen}`,
+                }
+              : null
+          }
+        >
+          All Bookings
+        </TabButton>
+        <TabButton
+          onClick={() => setFilter("Check In")}
+          style={
+            filter === "Check In"
+              ? {
+                  color: `${colors.hardGreen}`,
+                  borderBottom: `3px solid ${colors.hardGreen}`,
+                }
+              : null
+          }
+        >
+          Check In
+        </TabButton>
+        <TabButton
+          onClick={() => setFilter("Check Out")}
+          style={
+            filter === "Check Out"
+              ? {
+                  color: `${colors.hardGreen}`,
+                  borderBottom: `3px solid ${colors.hardGreen}`,
+                }
+              : null
+          }
+        >
+          Check Out
+        </TabButton>
+        <TabButton
+          onClick={() => setFilter("In Progress")}
+          style={
+            filter === "In Progress"
+              ? {
+                  color: `${colors.hardGreen}`,
+                  borderBottom: `3px solid ${colors.hardGreen}`,
+                }
+              : null
+          }
+        >
+          In Progress
+        </TabButton>
       </TabsMenuContainer>
       {bookingsDataError ? (
         <ErrorMessage />
       ) : bookingsDataStatus ? (
         <Spinner />
       ) : (
-        <Table whoAmI={whoAmI} columns={columns} data={bookingsData} />
+        <Table whoAmI={whoAmI} columns={columns} data={filteredBookingsData} />
       )}
     </>
   );

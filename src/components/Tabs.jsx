@@ -20,8 +20,4 @@ export const TabButton = styled.button`
   width: 165px;
   font-size: 16px;
   font-weight: 600;
-  &:hover {
-    color: ${colors.hardGreen};
-    border-bottom: 3px solid ${colors.hardGreen};
-  }
 `;
