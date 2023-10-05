@@ -74,5 +74,7 @@ const bookingsSlice = createSlice({
 
 export default bookingsSlice.reducer;
 export const getBookings = (state) => state.bookings.bookings;
+export const getBookingsStatus = (state) => state.bookings.isLoading;
+export const getBookingsError = (state) => state.bookings.hasError;
 export const getBooking = (state) => state.bookings.booking;
  

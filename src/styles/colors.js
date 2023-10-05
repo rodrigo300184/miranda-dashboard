@@ -9,6 +9,13 @@ const colors = {
     bgGray: '#F8F8F8',
     gray: '#6E6E6E',
     borderGray: '#D4D4D4',
+    checkInBtnText: "#5AD07A",
+    checkInBtnBgr: "#E8FFEE",
+    checkOutBtnText: "#E23428",
+    checkOutBtnBgr: "#FFEDEC",
+    inProgressBtnText: "#6D6D6D",
+    inProgressBtnBgr: "#E2E2E2",
+    viewNotesBtnBgr:"#EEF9F2",
     bottomBorderGray: '#c5c5c5',
     white: 'white',
     yellow: '#FFFF4E',
@@ -17,6 +24,7 @@ const colors = {
     lightViolet: '#eee6ff',
     hardViolet: '#884dff',
     redLess: "#e0564c",
+    mattBlack: "#393939",
   };
   
   export default colors;

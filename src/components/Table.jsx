@@ -10,6 +10,7 @@ const TableContainer = styled.div`
 
 const TableHeaderContainer = styled.div`
   display: flex;
+   text-align: center;
   justify-content: space-around;
   align-items: center;
   height: 65px;
