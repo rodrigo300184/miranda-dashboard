@@ -11,6 +11,8 @@ import { Login } from "./pages/Login";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { Header } from "./components/Header";
 import { Layout, LeftContainer, RightContainer } from "./components/Layout";
+import { Provider } from "react-redux";
+import { store } from "./app/store";
 
 export const GeneralContext = createContext(null);
 
@@ -52,6 +54,7 @@ function App() {
  
 return (
     <BrowserRouter>
+     <Provider store={store}>
       <GeneralContext.Provider value={{viewSidebar,setViewSidebar,loginState,loginActionType,dispatchLogin}}>
         <Layout>
          <LeftContainer><PrivateRoute><SideBar /></PrivateRoute></LeftContainer>
@@ -69,6 +72,7 @@ return (
           </RightContainer>
         </Layout>
       </GeneralContext.Provider>
+      </Provider>
     </BrowserRouter>
   );
 }

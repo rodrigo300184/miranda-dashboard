@@ -1,8 +1,10 @@
 import { TabsMenuContainer, TabButton } from "../components/Tabs";
-import bookings from '../data/bookings.json';
 import { Table } from "../components/Table";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { getBookings, fetchBookings } from "../features/bookings/bookingsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 const TextFormatter = styled.span`
 	display: block;
@@ -59,6 +61,15 @@ const CustomerPhoto = styled.img`
 `;
 
 export const Bookings = () => {
+	const dispatch = useDispatch();
+	const bookingsData = useSelector(getBookings);
+	const [filteredBookingsData, setFilteredBookingsData] = useState();
+	
+	
+	useEffect(() => {
+	 	dispatch(fetchBookings());
+	 },[])
+
 	const whoAmI = {
 		name: 'bookings',
 	}
@@ -122,7 +133,7 @@ export const Bookings = () => {
         <TabButton>Check Out</TabButton>
         <TabButton>In Progress</TabButton>
       </TabsMenuContainer>
-      <Table whoAmI={whoAmI} columns={columns} data={bookings} />
+      <Table whoAmI={whoAmI} columns={columns} data={bookingsData} />
     </>
   );
 };

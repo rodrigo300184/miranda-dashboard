@@ -1,4 +1,21 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import bookingsData from '../../data/bookingsData.json';
+import delay from "../../utils/delay/delay";
+
+export const fetchBookings = createAsyncThunk('bookings/fetchBookings', async () => {
+    const response = await delay(bookingsData);
+    return response;
+})
+
+export const fetchBooking = createAsyncThunk('bookings/fetchBooking', async () => {
+    const response = await delay(bookingsData);
+    return response;
+})
+
+export const createBooking = createAsyncThunk('bookings/createBooking', async () => {
+    const response = await delay(bookingsData);
+    return response;
+})
 
 const bookingsSlice = createSlice({
     name: "bookings",
@@ -9,7 +26,7 @@ const bookingsSlice = createSlice({
       hasError: false,
     },
     reducers: {},
-    extraReducers(builder) {
+    extraReducers:(builder) => {
       builder
         .addCase(fetchBookings.pending, (state) => {
           state.isLoading = true;
@@ -56,7 +73,6 @@ const bookingsSlice = createSlice({
   });
 
 export default bookingsSlice.reducer;
-// export const { addPhoto, removePhoto, editDescription } = favoriteSlice.actions;
-// export const getFavPhotosStatus = (state) => state.favoritePhotos.status;
-// export const getFavPhotos = (state) => state.favoritePhotos.favorites;
-// export const getFavLength = (state) => state.favoritePhotos.favorites.length; 
+export const getBookings = (state) => state.bookings.bookings;
+export const getBooking = (state) => state.bookings.booking;
+ 
