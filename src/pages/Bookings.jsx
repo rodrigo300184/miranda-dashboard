@@ -3,7 +3,11 @@ import colors from "../styles/colors";
 import { TabsMenuContainer, TabButton } from "../components/Tabs";
 import { Table } from "../components/Table";
 import { NavLink } from "react-router-dom";
-import { getBookings, fetchBookings, getBookingsStatus } from "../features/bookings/bookingsSlice";
+import {
+  getBookings,
+  fetchBookings,
+  getBookingsStatus,
+} from "../features/bookings/bookingsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { Spinner } from "../components/Spinner";
@@ -102,20 +106,18 @@ export const Bookings = () => {
   const bookingsData = useSelector(getBookings);
   const bookingsDataStatus = useSelector(getBookingsStatus);
   const [filter, setFilter] = useState("All Bookings");
-  const [filteredData, setFilteredData] = useState();
+  const [filteredData, setFilteredData] = useState([]);
+  const [selected, setSelected] = useState('guest');
 
   useEffect(() => {
     dispatch(fetchBookings());
   }, [dispatch]);
 
   useEffect(() => {
-    if (bookingsDataStatus === "pending") {
-    } else if (bookingsDataStatus === "fulfilled") {
       setFilteredData(bookingsData);
-    }
-  }, [bookingsData, bookingsDataStatus]);
+  }, [bookingsData]);
 
-  const filteredBookingsData = bookingsData.filter((booking) => {
+  const filteredBookingsData = filteredData.filter((booking) => {
     switch (filter) {
       case "All Bookings":
         return true;
@@ -130,27 +132,25 @@ export const Bookings = () => {
     }
   });
 
-  const handleOrder = (event) => {
-    switch (event.target.value) {
+ 
+    switch (selected) {
       case "guest":
         filteredBookingsData.sort((a, b) => b.guest.localeCompare(a.guest));
         break;
       case "order_date":
-        filteredBookingsData.sort((a, b) => {
-          return b.order_date - a.order_date;
-        });
-
+        filteredBookingsData.sort((b, a) => new Date(a.order_date) - new Date(b.order_date)
+        );
         break;
       case "check_in":
-        filteredBookingsData.sort((b, a) => a.check_in - b.check_in);
+        filteredBookingsData.sort((b, a) => new Date(a.check_in) - new Date(b.check_in));
         break;
       case "check_Out":
-        filteredBookingsData.sort((b, a) => a.check_out - b.check_out);
+        filteredBookingsData.sort((b, a) => new Date(a.check_out) - new Date(b.check_out));
         break;
       default:
         break;
-    }
-  };
+    };
+
 
   const whoAmI = {
     name: "bookings",
@@ -265,7 +265,7 @@ export const Bookings = () => {
           </TabButton>
         </TabsMenuContainer>
         <Search></Search>
-        <Select onChange={handleOrder}>
+        <Select onChange={(event) => setSelected(event.target.value)}>
           <option value="guest">Guest</option>
           <option value="order_date">Order Date</option>
           <option value="check_in">Check In</option>
