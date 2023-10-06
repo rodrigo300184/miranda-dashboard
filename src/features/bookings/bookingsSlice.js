@@ -22,24 +22,20 @@ const bookingsSlice = createSlice({
     initialState: {
       bookings: [],
       booking: null,
-      isLoading: false,
-      hasError: false,
+      status: 'idle'
     },
     reducers: {},
     extraReducers:(builder) => {
       builder
         .addCase(fetchBookings.pending, (state) => {
-          state.isLoading = true;
-          state.hasError = false;
+          state.status = 'pending';
         })
         .addCase(fetchBookings.fulfilled, (state, action) => {
-          state.isLoading = false;
-          state.hasError = false;
           state.bookings = action.payload;
+          state.status = 'fulfilled';
         })
         .addCase(fetchBookings.rejected, (state) => {
-          state.isLoading = false;
-          state.hasError = true;
+          state.status = 'rejected';
         })
         .addCase(fetchBooking.pending, (state) => {
           state.isLoading = true;
@@ -74,7 +70,6 @@ const bookingsSlice = createSlice({
 
 export default bookingsSlice.reducer;
 export const getBookings = (state) => state.bookings.bookings;
-export const getBookingsStatus = (state) => state.bookings.isLoading;
-export const getBookingsError = (state) => state.bookings.hasError;
+export const getBookingsStatus = (state) => state.bookings.status;
 export const getBooking = (state) => state.bookings.booking;
  

@@ -13,6 +13,7 @@ const TableHeaderContainer = styled.div`
   text-align: center;
   justify-content: space-around;
   align-items: center;
+  padding-right: 10px;
   height: 65px;
   border-radius: 20px 20px 0px 0px;
   font-size: 16px;
@@ -39,7 +40,7 @@ const TableContent = styled.div`
   border-radius: 0 0 20px 20px ;
   overflow-y: auto;
   &::-webkit-scrollbar {
-    width: 0px;
+    width: 10px;
     background-color: #ebf1ef;
   }
   &::-webkit-scrollbar-thumb {
@@ -60,7 +61,6 @@ const TableContent = styled.div`
   }
   & div {
     width: 100%;
-    height: 100%;
   }
 `;
 

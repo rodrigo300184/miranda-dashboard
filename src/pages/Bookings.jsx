@@ -3,12 +3,7 @@ import colors from "../styles/colors";
 import { TabsMenuContainer, TabButton } from "../components/Tabs";
 import { Table } from "../components/Table";
 import { NavLink } from "react-router-dom";
-import {
-  getBookings,
-  fetchBookings,
-  getBookingsStatus,
-  getBookingsError,
-} from "../features/bookings/bookingsSlice";
+import { getBookings, fetchBookings, getBookingsStatus } from "../features/bookings/bookingsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { Spinner } from "../components/Spinner";
@@ -55,7 +50,7 @@ const SpecialRequest = styled.button`
   height: 48px;
   border: none;
   border-radius: 8px;
-  cursor:pointer;
+  cursor: pointer;
   color: ${(props) =>
     props.specialrequest >= 1 ? `${colors.green}` : "black"};
   background-color: ${(props) =>
@@ -72,31 +67,90 @@ const CustomerPhoto = styled.img`
   border-radius: 8px;
 `;
 
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-right: 50px;
+`;
+
+const Select = styled.select`
+  margin-top: 50px;
+  width: 129px;
+  height: 40px;
+  font: 500 16px Poppins;
+  color: ${colors.green};
+  border: 2px solid rgb(19, 88, 70);
+  border-radius: 12px;
+  cursor: pointer;
+  outline: none;
+  padding-left: 15px;
+`;
+
+const Search = styled.input`
+  font: 500 16px Poppins;
+  color: ${colors.green};
+  padding: 5px;
+  width: 220px;
+  height: 40px;
+  margin-top: 50px;
+  border-radius: 12px;
+  border: 2px solid rgb(19, 88, 70);
+`;
+
 export const Bookings = () => {
   const dispatch = useDispatch();
   const bookingsData = useSelector(getBookings);
   const bookingsDataStatus = useSelector(getBookingsStatus);
-  const bookingsDataError = useSelector(getBookingsError);
   const [filter, setFilter] = useState("All Bookings");
+  const [filteredData, setFilteredData] = useState();
 
   useEffect(() => {
     dispatch(fetchBookings());
-  }, []);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (bookingsDataStatus === "pending") {
+    } else if (bookingsDataStatus === "fulfilled") {
+      setFilteredData(bookingsData);
+    }
+  }, [bookingsData, bookingsDataStatus]);
 
   const filteredBookingsData = bookingsData.filter((booking) => {
     switch (filter) {
       case "All Bookings":
         return true;
       case "Check In":
-        return booking.status === 'Check In';
+        return booking.status === "Check In";
       case "Check Out":
-        return booking.status === 'Check Out';
+        return booking.status === "Check Out";
       case "In Progress":
-        return booking.status === 'In Progress';
+        return booking.status === "In Progress";
       default:
         return false;
     }
   });
+
+  const handleOrder = (event) => {
+    switch (event.target.value) {
+      case "guest":
+        filteredBookingsData.sort((a, b) => b.guest.localeCompare(a.guest));
+        break;
+      case "order_date":
+        filteredBookingsData.sort((a, b) => {
+          return b.order_date - a.order_date;
+        });
+
+        break;
+      case "check_in":
+        filteredBookingsData.sort((b, a) => a.check_in - b.check_in);
+        break;
+      case "check_Out":
+        filteredBookingsData.sort((b, a) => a.check_out - b.check_out);
+        break;
+      default:
+        break;
+    }
+  };
 
   const whoAmI = {
     name: "bookings",
@@ -155,63 +209,73 @@ export const Bookings = () => {
 
   return (
     <>
-      <TabsMenuContainer>
-        <TabButton
-          onClick={() => setFilter("All Bookings")}
-          style={
-            filter === "All Bookings"
-              ? {
-                  color: `${colors.hardGreen}`,
-                  borderBottom: `3px solid ${colors.hardGreen}`,
-                }
-              : null
-          }
-        >
-          All Bookings
-        </TabButton>
-        <TabButton
-          onClick={() => setFilter("Check In")}
-          style={
-            filter === "Check In"
-              ? {
-                  color: `${colors.hardGreen}`,
-                  borderBottom: `3px solid ${colors.hardGreen}`,
-                }
-              : null
-          }
-        >
-          Check In
-        </TabButton>
-        <TabButton
-          onClick={() => setFilter("Check Out")}
-          style={
-            filter === "Check Out"
-              ? {
-                  color: `${colors.hardGreen}`,
-                  borderBottom: `3px solid ${colors.hardGreen}`,
-                }
-              : null
-          }
-        >
-          Check Out
-        </TabButton>
-        <TabButton
-          onClick={() => setFilter("In Progress")}
-          style={
-            filter === "In Progress"
-              ? {
-                  color: `${colors.hardGreen}`,
-                  borderBottom: `3px solid ${colors.hardGreen}`,
-                }
-              : null
-          }
-        >
-          In Progress
-        </TabButton>
-      </TabsMenuContainer>
-      {bookingsDataError ? (
+      <Container>
+        <TabsMenuContainer>
+          <TabButton
+            onClick={() => setFilter("All Bookings")}
+            style={
+              filter === "All Bookings"
+                ? {
+                    color: `${colors.hardGreen}`,
+                    borderBottom: `3px solid ${colors.hardGreen}`,
+                  }
+                : null
+            }
+          >
+            All Bookings
+          </TabButton>
+          <TabButton
+            onClick={() => setFilter("Check In")}
+            style={
+              filter === "Check In"
+                ? {
+                    color: `${colors.hardGreen}`,
+                    borderBottom: `3px solid ${colors.hardGreen}`,
+                  }
+                : null
+            }
+          >
+            Check In
+          </TabButton>
+          <TabButton
+            onClick={() => setFilter("Check Out")}
+            style={
+              filter === "Check Out"
+                ? {
+                    color: `${colors.hardGreen}`,
+                    borderBottom: `3px solid ${colors.hardGreen}`,
+                  }
+                : null
+            }
+          >
+            Check Out
+          </TabButton>
+          <TabButton
+            onClick={() => setFilter("In Progress")}
+            style={
+              filter === "In Progress"
+                ? {
+                    color: `${colors.hardGreen}`,
+                    borderBottom: `3px solid ${colors.hardGreen}`,
+                  }
+                : null
+            }
+          >
+            In Progress
+          </TabButton>
+        </TabsMenuContainer>
+        <Search></Search>
+        <Select onChange={handleOrder}>
+          <option value="guest">Guest</option>
+          <option value="order_date">Order Date</option>
+          <option value="check_in">Check In</option>
+          <option value="check_out">Check Out</option>
+        </Select>
+      </Container>
+
+      {bookingsDataStatus === "rejected" ? (
         <ErrorMessage />
-      ) : bookingsDataStatus ? (
+      ) : bookingsDataStatus === "pending" ? (
         <Spinner />
       ) : (
         <Table whoAmI={whoAmI} columns={columns} data={filteredBookingsData} />
