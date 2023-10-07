@@ -1,21 +1,5 @@
 [
-	{
-		"id": "1ABCD123",
-		"guest": "Alice Smith",
-		"phone_number": "+1 123-456-7890",
-		"order_date": "2023-10-01",
-		"check_in": "2023-10-10",
-		"check_out": "2023-10-15",
-		"special_request": "",
-		"room_type": "Double Bed",
-		"room_number": "201",
-		"status": "Check Out",
-		"photos": [
-			"https://i.pinimg.com/originals/56/2c/97/562c97a653e162511371c8bb97286486.jpg",
-			"https://media.istockphoto.com/id/1384894485/photo/interior-of-a-small-double-bed-hotel-bedroom.jpg?s=612x612&w=0&k=20&c=hMvvnAlfTvDYz5ltQHhBKzWcZt6yGUoHqCZeD6gRWRE=",
-			"https://c8.alamy.com/comp/RKKRNM/simple-small-hotel-room-classic-single-bed-RKKRNM.jpg"
-		]
-	},
+	
 	{
 		"id": "2EFGH234",
 		"guest": "Bob Johnson",
@@ -48,6 +32,23 @@
 			"https://example.com/room_photos/suite_1_medium.jpg",
 			"https://example.com/room_photos/suite_2_medium.jpg",
 			"https://example.com/room_photos/suite_3_medium.jpg"
+		]
+	},
+	{
+		"id": "1ABCD123",
+		"guest": "Alice Smith",
+		"phone_number": "+1 123-456-7890",
+		"order_date": "2023-10-03",
+		"check_in": "2023-10-12",
+		"check_out": "2023-10-18",
+		"special_request": "",
+		"room_type": "Double Bed",
+		"room_number": "201",
+		"status": "Check Out",
+		"photos": [
+			"https://i.pinimg.com/originals/56/2c/97/562c97a653e162511371c8bb97286486.jpg",
+			"https://media.istockphoto.com/id/1384894485/photo/interior-of-a-small-double-bed-hotel-bedroom.jpg?s=612x612&w=0&k=20&c=hMvvnAlfTvDYz5ltQHhBKzWcZt6yGUoHqCZeD6gRWRE=",
+			"https://c8.alamy.com/comp/RKKRNM/simple-small-hotel-room-classic-single-bed-RKKRNM.jpg"
 		]
 	},
 	{
