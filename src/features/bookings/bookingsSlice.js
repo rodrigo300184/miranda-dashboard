@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit";
 import bookingsData from '../../data/bookingsData.json';
 import delay from "../../utils/delay/delay";
 
@@ -7,69 +7,87 @@ export const fetchBookings = createAsyncThunk('bookings/fetchBookings', async ()
     return response;
 })
 
-export const fetchBooking = createAsyncThunk('bookings/fetchBooking', async () => {
-    const response = await delay(bookingsData);
+export const fetchBooking = createAsyncThunk('bookings/fetchBooking', async (id) => {
+    const response = await delay(bookingsData.find(id));
     return response;
 })
 
-export const createBooking = createAsyncThunk('bookings/createBooking', async () => {
-    const response = await delay(bookingsData);
+export const createBooking = createAsyncThunk('bookings/createBooking', async (newBooking) => {
+    const response = await delay(newBooking);
     return response;
 })
+export const updateBooking = createAsyncThunk('bookings/updateBooking', async(id) => {
+  const response = await delay(bookingsData.find((booking) => booking.id === id));
+  return response;
+})
+
+export const deleteBooking = createAsyncThunk('bookings/deleteBooking', async (id) => {
+  const response = await delay(id);
+  return response;
+})
+
 
 const bookingsSlice = createSlice({
     name: "bookings",
     initialState: {
-      bookings: [],
-      booking: null,
+      data: [],
+      item: null,
       status: 'idle'
     },
     reducers: {},
     extraReducers:(builder) => {
       builder
-        .addCase(fetchBookings.pending, (state) => {
-          state.status = 'pending';
-        })
         .addCase(fetchBookings.fulfilled, (state, action) => {
-          state.bookings = action.payload;
+          state.data = action.payload;
           state.status = 'fulfilled';
         })
-        .addCase(fetchBookings.rejected, (state) => {
-          state.status = 'rejected';
-        })
         .addCase(fetchBooking.pending, (state) => {
-          state.isLoading = true;
-          state.hasError = false;
-          state.booking = null;
+          state.status = 'pending';
+          state.item = null;
         })
         .addCase(fetchBooking.fulfilled, (state, action) => {
-          state.isLoading = false;
-          state.hasError = false;
-          state.booking = action.payload;
+          state.status = 'fulfilled';
+          state.item = action.payload;
         })
         .addCase(fetchBooking.rejected, (state) => {
-          state.isLoading = false;
-          state.hasError = true;
-          state.booking = null;
-        })
-       .addCase(createBooking.pending, (state) => {
-          state.isLoading = true;
-          state.hasError = false;
+          state.status = 'rejected';
+          state.item = null;
         })
         .addCase(createBooking.fulfilled, (state, action) => {
-          state.isLoading = false;
-          state.hasError = false;
-          state.bookings = [...state.bookings, action.payload]
+          state.status = 'fulfilled';
+          state.data = [...state.data, action.payload]
         })
-        .addCase(createBooking.rejected, (state) => {
-          state.isLoading = false;
-          state.hasError = true;
+        .addCase(deleteBooking.fulfilled, (state, action) => {
+          state.status = 'fulfilled';
+          state.data = state.data.filter((item)=> item.id !== action.payload.id);
         })
+        .addMatcher(
+          isAnyOf(
+            fetchBookings.pending,
+            createBooking.pending,
+            updateBooking.pending,
+            deleteBooking.pending,
+          ),
+          (state) => {
+            state.status = 'pending';
+          }
+        )
+        .addMatcher(
+          isAnyOf(
+            fetchBookings.rejected,
+            createBooking.rejected,
+            updateBooking.rejected,
+            deleteBooking.rejected,
+          ),
+          (state) => {
+            state.status = 'rejected';
+          }
+        )
     },
   });
 
 export default bookingsSlice.reducer;
-export const getBookings = (state) => state.bookings.bookings;
+export const getBookings = (state) => state.bookings.data;
 export const getBookingsStatus = (state) => state.bookings.status;
-export const getBooking = (state) => state.bookings.booking;
+export const getBooking = (state) => state.bookings.item;
  

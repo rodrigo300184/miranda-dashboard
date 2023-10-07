@@ -132,20 +132,21 @@ export const Bookings = () => {
     }
   });
 
- 
+  console.log('averga')
     switch (selected) {
+      
       case "guest":
-        filteredBookingsData.sort((a, b) => b.guest.localeCompare(a.guest));
+        filteredBookingsData.sort((a, b) => a.guest.localeCompare(b.guest));
         break;
       case "order_date":
-        filteredBookingsData.sort((b, a) => new Date(a.order_date) - new Date(b.order_date)
+        filteredBookingsData.sort((a, b) => new Date(a.order_date) - new Date(b.order_date)
         );
         break;
       case "check_in":
-        filteredBookingsData.sort((b, a) => new Date(a.check_in) - new Date(b.check_in));
+        filteredBookingsData.sort((a, b) => new Date(a.check_in) - new Date(b.check_in));
         break;
-      case "check_Out":
-        filteredBookingsData.sort((b, a) => new Date(a.check_out) - new Date(b.check_out));
+      case "check_out":
+        filteredBookingsData.sort((a, b) => new Date(a.check_out) - new Date(b.check_out));
         break;
       default:
         break;
