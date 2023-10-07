@@ -105,57 +105,40 @@ export const Bookings = () => {
   const dispatch = useDispatch();
   const bookingsData = useSelector(getBookings);
   const bookingsDataStatus = useSelector(getBookingsStatus);
-  const [filter, setFilter] = useState("All Bookings");
   const [filteredData, setFilteredData] = useState([]);
-  const [selected, setSelected] = useState('guest');
+  const [filter, setFilter] = useState("All Bookings");
+  const [orderBy, setOrderby] = useState('guest');
+  const filterAndOrder = (array,filter,orderBy) =>{
+    const filteredArray = array.filter((booking) => {
+      if(filter==='All Bookings'){
+        return true;
+      } else{
+        return booking.status === filter;
+      }
+    });
+    if(orderBy === 'guest'){
+      filteredArray.sort((a, b) => a.guest.localeCompare(b.guest,undefined,{ sensitivity: 'base' }));
+    } else {
+      filteredArray.sort((a, b) => {
+          const dateComparison = new Date(a[orderBy]) - new Date(b[orderBy]);
+          if (dateComparison === 0) {
+            return a.guest.localeCompare(b.guest);
+          }
+          return dateComparison;
+        });
+    }
+    return filteredArray;
+  }
 
   useEffect(() => {
     dispatch(fetchBookings());
   }, [dispatch]);
 
   useEffect(() => {
-      setFilteredData(bookingsData);
-  }, [bookingsData]);
+    const filteredBookingsData = filterAndOrder(bookingsData,filter,orderBy);
+    setFilteredData(filteredBookingsData);
+}, [bookingsData, filter, orderBy]);
 
-  const filteredBookingsData = filteredData.filter((booking) => {
-    switch (filter) {
-      case "All Bookings":
-        return true;
-      case "Check In":
-        return booking.status === "Check In";
-      case "Check Out":
-        return booking.status === "Check Out";
-      case "In Progress":
-        return booking.status === "In Progress";
-      default:
-        return false;
-    }
-  });
-
-  console.log('averga')
-    switch (selected) {
-      
-      case "guest":
-        filteredBookingsData.sort((a, b) => a.guest.localeCompare(b.guest));
-        break;
-      case "order_date":
-        filteredBookingsData.sort((a, b) => new Date(a.order_date) - new Date(b.order_date)
-        );
-        break;
-      case "check_in":
-        filteredBookingsData.sort((a, b) => new Date(a.check_in) - new Date(b.check_in));
-        break;
-      case "check_out":
-        filteredBookingsData.sort((a, b) => new Date(a.check_out) - new Date(b.check_out));
-        break;
-      default:
-        break;
-    };
-
-
-  const whoAmI = {
-    name: "bookings",
-  };
   const columns = [
     {
       property: "guest",
@@ -266,7 +249,7 @@ export const Bookings = () => {
           </TabButton>
         </TabsMenuContainer>
         <Search></Search>
-        <Select onChange={(event) => setSelected(event.target.value)}>
+        <Select onChange={(event) => setOrderby(event.target.value)}>
           <option value="guest">Guest</option>
           <option value="order_date">Order Date</option>
           <option value="check_in">Check In</option>
@@ -279,8 +262,10 @@ export const Bookings = () => {
       ) : bookingsDataStatus === "pending" ? (
         <Spinner />
       ) : (
-        <Table whoAmI={whoAmI} columns={columns} data={filteredBookingsData} />
+        <Table name="bookings" columns={columns} data={filteredData} />
       )}
     </>
   );
 };
+
+
