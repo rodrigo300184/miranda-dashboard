@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { Spinner } from "../components/Spinner";
 import { ErrorMessage } from "../components/ErrorMessage";
+import ViewNotes from "../components/ViewNotes";
 
 const TextFormatter = styled.span`
   display: block;
@@ -21,6 +22,7 @@ const TextFormatter = styled.span`
   font: ${(props) =>
     props.small === "small" ? "300 13px Poppins" : "500 16px Poppins"};
 `;
+
 const Status = styled.button`
   font: 600 16px Poppins;
   width: 80%;
@@ -46,21 +48,6 @@ const Status = styled.button`
       : "transparent"};
   &:hover {
   }
-`;
-const SpecialRequest = styled.button`
-  font: 400 16px Poppins;
-  width: 80%;
-  max-width: 120px;
-  height: 48px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  color: ${(props) =>
-    props.specialrequest >= 1 ? `${colors.green}` : "black"};
-  background-color: ${(props) =>
-    props.specialrequest >= 1 ? "white" : `${colors.viewNotesBtnBgr}`};
-  border: ${(props) =>
-    props.specialrequest >= 1 && `1px solid ${colors.green}`};
 `;
 
 const CustomerPhoto = styled.img`
@@ -90,6 +77,7 @@ const Select = styled.select`
   padding-left: 15px;
 `;
 
+
 const Search = styled.input`
   font: 500 16px Poppins;
   color: ${colors.green};
@@ -107,37 +95,39 @@ export const Bookings = () => {
   const bookingsDataStatus = useSelector(getBookingsStatus);
   const [filteredData, setFilteredData] = useState([]);
   const [filter, setFilter] = useState("All Bookings");
-  const [orderBy, setOrderby] = useState('guest');
-  const filterAndOrder = (array,filter,orderBy) =>{
+  const [orderBy, setOrderBy] = useState(["guest", true]);
+  const filterAndOrder = (array, filter, orderBy) => {
     const filteredArray = array.filter((booking) => {
-      if(filter==='All Bookings'){
+      if (filter === "All Bookings") {
         return true;
-      } else{
+      } else {
         return booking.status === filter;
       }
     });
-    if(orderBy === 'guest'){
-      filteredArray.sort((a, b) => a.guest.localeCompare(b.guest,undefined,{ sensitivity: 'base' }));
+    if (orderBy === "guest") {
+      filteredArray.sort((a, b) =>
+        a.guest.localeCompare(b.guest, undefined, { sensitivity: "base" })
+      );
     } else {
       filteredArray.sort((a, b) => {
-          const dateComparison = new Date(a[orderBy]) - new Date(b[orderBy]);
-          if (dateComparison === 0) {
-            return a.guest.localeCompare(b.guest);
-          }
-          return dateComparison;
-        });
+        const dateComparison = new Date(a[orderBy]) - new Date(b[orderBy]);
+        if (dateComparison === 0) {
+          return a.guest.localeCompare(b.guest);
+        }
+        return dateComparison;
+      });
     }
     return filteredArray;
-  }
+  };
 
   useEffect(() => {
     dispatch(fetchBookings());
   }, [dispatch]);
 
   useEffect(() => {
-    const filteredBookingsData = filterAndOrder(bookingsData,filter,orderBy);
+    const filteredBookingsData = filterAndOrder(bookingsData, filter, orderBy);
     setFilteredData(filteredBookingsData);
-}, [bookingsData, filter, orderBy]);
+  }, [bookingsData, filter, orderBy]);
 
   const columns = [
     {
@@ -170,14 +160,7 @@ export const Bookings = () => {
       property: "special_request",
       label: "Special Request",
       display: ({ special_request }) => (
-        <SpecialRequest
-          onClick={() => {
-            console.log("im here");
-          }}
-          specialrequest={special_request.length}
-        >
-          View Notes
-        </SpecialRequest>
+        <ViewNotes specialrequest={special_request.length} message={special_request} />
       ),
     },
     {
@@ -249,7 +232,7 @@ export const Bookings = () => {
           </TabButton>
         </TabsMenuContainer>
         <Search></Search>
-        <Select onChange={(event) => setOrderby(event.target.value)}>
+        <Select onChange={(event) => setOrderBy(event.target.value)}>
           <option value="guest">Guest</option>
           <option value="order_date">Order Date</option>
           <option value="check_in">Check In</option>
@@ -267,5 +250,3 @@ export const Bookings = () => {
     </>
   );
 };
-
-
