@@ -13,6 +13,7 @@ import { Header } from "./components/Header";
 import { Layout, LeftContainer, RightContainer } from "./components/Layout";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
+import { BookingDetails } from "./components/BookingDetails";
 
 export const GeneralContext = createContext(null);
 
@@ -65,6 +66,7 @@ return (
               <Route path="/rooms" element={<PrivateRoute><Rooms /></PrivateRoute>} />
               <Route path="/login" element={<Login />} />
               <Route path="/bookings" element={<PrivateRoute><Bookings /></PrivateRoute>} />
+              <Route path='/bookings/:bookingId' element={<BookingDetails />}	/>
               <Route path="/contact" element={ <PrivateRoute><Contact /></PrivateRoute>} />
               <Route path="/users" element={<PrivateRoute><Users /></PrivateRoute>} />
           

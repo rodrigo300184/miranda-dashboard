@@ -4,6 +4,7 @@ import colors from "../styles/colors";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState,useContext } from "react";
 import { GeneralContext } from "../App";
+import { HeaderButton } from "./HeaderButton";
 
 const HeaderContainer = styled.header`
   background-color: white;
@@ -21,7 +22,7 @@ const InnerContainer = styled.div`
   align-items: center;
 `;
 
-const InnerLeft = styled.div`
+export const InnerLeft = styled.div`
   display: flex;
   align-items:center;
   color: black;
@@ -33,29 +34,7 @@ const InnerRight = styled.div`
   gap: 50px;
 `;
 
-const Button = styled.button`
-  background-color: transparent;
-  border: none;
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  position: relative;
-  cursor: pointer;
-  & svg {
-    width: 24px;
-    height: 24px;
-    margin: auto;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-  }
-  &:hover {
-    scale: 1.15;
-    background-color: ${colors.lightGreen};
-  }
-`;
+
 
 const Title = styled.h1`
   margin-left: 50px;
@@ -88,13 +67,14 @@ export const Header = (props) => {
       <HeaderContainer>
         <InnerContainer>
           <InnerLeft>
-            <Button onClick={handleSideBarView}>{icons.menu} </Button>
+            <HeaderButton color={'red'} onClick={handleSideBarView} icon={icons.menu} data-testid='sidebar-button'/> 
+            {/* <Button onClick={handleSideBarView}>{icons.menu} </Button> */}
             <Title>{headerTitle === "" ? "Dashboard" : headerTitle}</Title>
           </InnerLeft>
           <InnerRight>
-            <Button>{icons.message}</Button>
-            <Button>{icons.bell}</Button>
-            <Button onClick={handleLogout}>{icons.logout}</Button>
+            <HeaderButton icon={icons.message} />
+            <HeaderButton icon={icons.bell} />
+            <HeaderButton icon={icons.logout} onClick={handleLogout}/>
           </InnerRight>
         </InnerContainer>
       </HeaderContainer>

@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { Spinner } from "../components/Spinner";
 import { ErrorMessage } from "../components/ErrorMessage";
 import ViewNotes from "../components/ViewNotes";
+import PopMenu from "../components/PopMenu";
 
 const TextFormatter = styled.span`
   display: block;
@@ -23,9 +24,15 @@ const TextFormatter = styled.span`
     props.small === "small" ? "300 13px Poppins" : "500 16px Poppins"};
 `;
 
+const StatusContainer = styled.div`
+  display:flex;
+    
+    
+`;
+
 const Status = styled.button`
   font: 600 16px Poppins;
-  width: 80%;
+  width: 70%;
   max-width: 120px;
   height: 48px;
   border: none;
@@ -76,7 +83,6 @@ const Select = styled.select`
   outline: none;
   padding-left: 15px;
 `;
-
 
 const Search = styled.input`
   font: 500 16px Poppins;
@@ -170,8 +176,13 @@ export const Bookings = () => {
     {
       property: "status",
       label: "Status",
-      display: ({ status }) => <Status status={status}>{status}</Status>,
+      display: ({ status }) => 
+        <StatusContainer>
+          <Status status={status}>{status}</Status>
+            <PopMenu />
+        </StatusContainer>,
     },
+  
   ];
 
   return (

@@ -4,7 +4,7 @@ import { useContext } from "react";
 
 export const PrivateRoute = (props) =>{
     const {loginState} = useContext(GeneralContext);
-    if(loginState.authenticated===true){
+    if(loginState.authenticated){
         return props.children;
     }else{
         return <Navigate to='/login'/>
