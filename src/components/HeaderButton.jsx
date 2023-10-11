@@ -10,7 +10,7 @@ export const Button = styled.button`
   border-radius: 8px;
   position: relative;
   cursor: pointer;
-  color: ${(props) => props.color==='red' ? 'red': 'black' };
+  color: ${(props) => props.color};
   & svg {
     width: 24px;
     height: 24px;

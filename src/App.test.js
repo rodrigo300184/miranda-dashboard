@@ -12,8 +12,11 @@ describe("test", () => {
   });
 
   test("renders learn react link", () => {
+   const props = {
+      color: 'red',
+    }
     
-    render(<HeaderButton color={'red'} />);
+    render(<HeaderButton {...props}/>);
     const button = screen.getByTestId('sidebar-button');
     expect(button).toHaveStyle("color: red");
   });

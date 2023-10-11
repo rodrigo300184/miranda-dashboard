@@ -68,7 +68,6 @@ export const Header = (props) => {
         <InnerContainer>
           <InnerLeft>
             <HeaderButton color={'red'} onClick={handleSideBarView} icon={icons.menu} data-testid='sidebar-button'/> 
-            {/* <Button onClick={handleSideBarView}>{icons.menu} </Button> */}
             <Title>{headerTitle === "" ? "Dashboard" : headerTitle}</Title>
           </InnerLeft>
           <InnerRight>
