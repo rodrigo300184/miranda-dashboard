@@ -2,7 +2,7 @@ import styled from "styled-components";
 import colors from "../styles/colors";
 
 
-const Button = styled.button`
+export const Button = styled.button`
   background-color: transparent;
   border: none;
   width: 30px;

@@ -15,7 +15,7 @@ describe("test", () => {
     
     render(<HeaderButton color={'red'} />);
     const button = screen.getByTestId('sidebar-button');
-    expect(button).toHaveStyle({color: 'red'});
+    expect(button).toHaveStyle("color: red");
   });
 });
 
