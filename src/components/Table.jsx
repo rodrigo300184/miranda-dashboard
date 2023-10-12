@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import colors from "../styles/colors";
 
+
 const TableContainer = styled.div`
   padding: 0px 50px;
   margin-bottom: 30px;
@@ -114,7 +115,7 @@ export const Table = (props) => {
     const key = `${props.name}-${row.id}-${index}`;
     
       return (
-        <RowContainer key={key}>
+        <RowContainer key={key} >
           {rowContent}
         </RowContainer>
       );
@@ -123,7 +124,7 @@ export const Table = (props) => {
 
   return (
     <>
-      <TableContainer>
+      <TableContainer >
         <TableHeaderContainer>
           {columns.map((col) => (
             <div>
@@ -131,7 +132,7 @@ export const Table = (props) => {
             </div>
           ))}
         </TableHeaderContainer>
-        <TableContent>
+        <TableContent  >
           {data.map((bookingRowObject,index) => displayRow(bookingRowObject, index))}
         </TableContent>
       </TableContainer>

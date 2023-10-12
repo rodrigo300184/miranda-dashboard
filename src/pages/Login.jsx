@@ -136,6 +136,7 @@ export const Login = () => {
           id="email"
           required
           autoComplete="on"
+          data-cy='email'
         />
         <Label htmlFor="password">Password:</Label>
         <Input
@@ -145,8 +146,9 @@ export const Login = () => {
           id="password"
           required
           autoComplete="current-password"
+          data-cy='password'
         />
-        <Button type="submit">Login</Button>
+        <Button type="submit" data-cy='submit'>Login</Button>
         <P bold="true">To see the demo:</P>
         <P>Mail: email@email.com</P>
         <P>Password: 1234</P>

@@ -6,6 +6,7 @@ import { useEffect, useState,useContext } from "react";
 import { GeneralContext } from "../App";
 import { HeaderButton } from "./HeaderButton";
 
+
 const HeaderContainer = styled.header`
   background-color: white;
   box-shadow: 0px 3px 10px #00000005;
@@ -67,7 +68,7 @@ export const Header = (props) => {
       <HeaderContainer>
         <InnerContainer>
           <InnerLeft>
-            <HeaderButton color={'red'} onClick={handleSideBarView} icon={icons.menu} data-testid='sidebar-button'/> 
+            <HeaderButton color={viewSidebar? `${colors.hardGreen}`: `${colors.red}`} onClick={handleSideBarView} icon={icons.menu} /> 
             <Title>{headerTitle === "" ? "Dashboard" : headerTitle}</Title>
           </InnerLeft>
           <InnerRight>

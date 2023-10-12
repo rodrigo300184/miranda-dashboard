@@ -30,7 +30,7 @@ export const HeaderButton = (props) => {
 
     return (
         
-        <Button color={props.color} onClick={props.onClick} data-testid='sidebar-button'>{props.icon}  </Button>
+        <Button color={props.color} onClick={props.onClick} data-testid='sidebar-button'>{props.icon}</Button>
       
     )
 }

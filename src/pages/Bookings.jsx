@@ -15,6 +15,9 @@ import { ErrorMessage } from "../components/ErrorMessage";
 import ViewNotes from "../components/ViewNotes";
 import PopMenu from "../components/PopMenu";
 
+
+
+
 const TextFormatter = styled.span`
   display: block;
   text-align: left;
@@ -257,6 +260,7 @@ export const Bookings = () => {
         <Spinner />
       ) : (
         <Table name="bookings" columns={columns} data={filteredData} />
+        
       )}
     </>
   );

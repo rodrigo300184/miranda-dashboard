@@ -39,6 +39,7 @@ export default function FadeMenu() {
           vertical: 'center',
           horizontal: 'right',
         }}
+        sx={{fontFamily:'Poppins'}}
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>My account</MenuItem>
