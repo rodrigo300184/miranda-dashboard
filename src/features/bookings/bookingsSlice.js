@@ -8,7 +8,9 @@ export const fetchBookings = createAsyncThunk('bookings/fetchBookings', async ()
 })
 
 export const fetchBooking = createAsyncThunk('bookings/fetchBooking', async (id) => {
-    const response = await delay(bookingsData.find(id));
+  console.log('entre')
+    const response = await delay(bookingsData.find((booking) => booking.id === id));
+    console.log(response)
     return response;
 })
 
@@ -38,10 +40,11 @@ const bookingsSlice = createSlice({
     extraReducers:(builder) => {
       builder
         .addCase(fetchBookings.fulfilled, (state, action) => {
-          state.data = action.payload;
           state.status = 'fulfilled';
+          state.data = action.payload;
         })
         .addCase(fetchBooking.pending, (state) => {
+          console.log('pending')
           state.status = 'pending';
           state.item = null;
         })
@@ -90,4 +93,3 @@ export default bookingsSlice.reducer;
 export const getBookings = (state) => state.bookings.data;
 export const getBookingsStatus = (state) => state.bookings.status;
 export const getBooking = (state) => state.bookings.item;
- 

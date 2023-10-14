@@ -179,10 +179,10 @@ export const Bookings = () => {
     {
       property: "status",
       label: "Status",
-      display: ({ status }) => 
+      display: ({ status, id }) => 
         <StatusContainer>
           <Status status={status}>{status}</Status>
-            <PopMenu />
+            <PopMenu path={'bookings'} id={id} />
         </StatusContainer>,
     },
   

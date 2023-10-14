@@ -10,16 +10,18 @@ describe('template spec', () => {
     cy.location('pathname').should('include','/login')
     cy.visit('http://localhost:3000/rooms')
     cy.location('pathname').should('include','/login')
-    cy.visit('http://localhost:3000/users')
+    cy.visit('http://localhost:3000/users')                         
     cy.location('pathname').should('include','/login')
 
   })
-  it('Loguea si los datos son correctos y se redirige al home', () => {
+  it('Loguea si los datos son correctos y se redirige al home y puede navegar a otra pagina', () => {
     cy.visit('http://localhost:3000')
     cy.get('[data-cy="email"]').type('email@email.com').should('have.value', 'email@email.com')
     cy.get('[data-cy="password"]').type('1234').should('have.value', '1234')
     cy.get('[data-cy="submit"]').click()
     cy.location('pathname').should('not.include','/login')
+    cy.visit('http://localhost:3000/rooms')
+    cy.location('pathname').should('include','/rooms')
 
   })
   it('Si los datos no son correctos muestra un modal y se redirige al login', () => {

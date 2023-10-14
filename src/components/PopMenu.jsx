@@ -4,7 +4,9 @@ import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
-export default function FadeMenu() {
+import { NavLink } from "react-router-dom";
+
+export default function PopMenu(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -41,9 +43,10 @@ export default function FadeMenu() {
         }}
         sx={{fontFamily:'Poppins'}}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+         <NavLink to={`/${props.path}/update/${props.id}`}>
+            <MenuItem >Edit</MenuItem>
+        </NavLink>
+        <MenuItem >Delete</MenuItem>
       </Menu>
     </>
   );

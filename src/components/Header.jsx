@@ -10,7 +10,7 @@ import { HeaderButton } from "./HeaderButton";
 const HeaderContainer = styled.header`
   background-color: white;
   box-shadow: 0px 3px 10px #00000005;
-  height: 120px;
+  height: 100px;
   width: 100%;
   color: ${colors.hardGreen};
 `;
@@ -34,8 +34,6 @@ const InnerRight = styled.div`
   display: flex;
   gap: 50px;
 `;
-
-
 
 const Title = styled.h1`
   margin-left: 50px;

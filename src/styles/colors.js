@@ -25,6 +25,7 @@ const colors = {
     hardViolet: '#884dff',
     redLess: "#e0564c",
     mattBlack: "#393939",
+    phoneBtnBgr: '#E8F2EF',
   };
   
   export default colors;
