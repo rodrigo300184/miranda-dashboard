@@ -8,9 +8,7 @@ export const fetchBookings = createAsyncThunk('bookings/fetchBookings', async ()
 })
 
 export const fetchBooking = createAsyncThunk('bookings/fetchBooking', async (id) => {
-  console.log('entre')
     const response = await delay(bookingsData.find((booking) => booking.id === id));
-    console.log(response)
     return response;
 })
 
@@ -18,7 +16,7 @@ export const createBooking = createAsyncThunk('bookings/createBooking', async (n
     const response = await delay(newBooking);
     return response;
 })
-export const updateBooking = createAsyncThunk('bookings/updateBooking', async(id) => {
+export const updateBooking = createAsyncThunk('bookings/updateBooking', async(id, updatedBooking) => {
   const response = await delay(bookingsData.find((booking) => booking.id === id));
   return response;
 })
@@ -44,7 +42,6 @@ const bookingsSlice = createSlice({
           state.data = action.payload;
         })
         .addCase(fetchBooking.pending, (state) => {
-          console.log('pending')
           state.status = 'pending';
           state.item = null;
         })
@@ -59,6 +56,10 @@ const bookingsSlice = createSlice({
         .addCase(createBooking.fulfilled, (state, action) => {
           state.status = 'fulfilled';
           state.data = [...state.data, action.payload]
+        })
+        .addCase(updateBooking.fulfilled, (state, action) => {
+          state.status = 'fulfilled';
+          state.item = [...state.item, action.payload]
         })
         .addCase(deleteBooking.fulfilled, (state, action) => {
           state.status = 'fulfilled';

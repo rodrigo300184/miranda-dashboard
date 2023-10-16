@@ -91,8 +91,7 @@ const StyledLink = styled(NavLink)`
       border-radius: 0px 6px 6px 0px;
       position: absolute;
       left: 0;
-      top:-20px;
-      
+      top:-20px;   
     }
   }
 `;

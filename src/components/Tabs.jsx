@@ -20,4 +20,9 @@ export const TabButton = styled.button`
   width: 165px;
   font-size: 16px;
   font-weight: 600;
+  cursor:pointer;
+  &:hover{
+    color: ${colors.green};
+    border-bottom: 3px solid ${colors.green};
+  }
 `;

@@ -113,7 +113,7 @@ export default function TransitionsModal(props) {
   return (
     <div>
       <Button green onClick={handleOpen}>
-        Open modal
+        Edit User
       </Button>
       <Modal
         aria-labelledby="transition-modal-title"

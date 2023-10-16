@@ -22,7 +22,8 @@ export default function PopMenu(props) {
         onClick={handleClick}
         icon={faEllipsisVertical}
         size="xl"
-        style={{ color: "#6e6e6e" }}
+        style={{ color: "#6e6e6e", cursor:'pointer' }}
+       
       />
       <Menu
         id="fade-menu"
