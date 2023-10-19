@@ -9,7 +9,7 @@ export const fetchBookings = createAsyncThunk<BookingsInterface[]>('bookings/fet
     return response;
 })
 
-export const fetchBooking = createAsyncThunk('bookings/fetchBooking', async (id:string) => {
+export const fetchBooking = createAsyncThunk('bookings/fetchBooking', async (id:string | undefined) => {
     const response = (await delay(bookingsData.find((booking) => booking.id === id))) as BookingsInterface;
     return response;
 })
@@ -18,7 +18,7 @@ export const createBooking = createAsyncThunk('bookings/createBooking', async (n
     const response = (await delay(newBooking)) as BookingsInterface;
     return response;
 })
-export const updateBooking = createAsyncThunk('bookings/updateBooking', async(id:string, updatedBooking) => {
+export const updateBooking = createAsyncThunk('bookings/updateBooking', async(id:string | undefined, updatedBooking) => {
   const response = (await delay(bookingsData.find((booking) => booking.id === id))) as BookingsInterface;
   return response;
 })

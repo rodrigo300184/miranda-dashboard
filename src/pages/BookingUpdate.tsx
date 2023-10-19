@@ -7,11 +7,12 @@ import {
   updateBooking,
 } from "../features/bookings/bookingsSlice";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { useEffect } from "react";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { Spinner } from "../components/Spinner";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { BookingsInterface } from "../features/interfaces/interfaces";
 
 const Container = styled.div`
   margin: 50px;
@@ -96,21 +97,21 @@ const Button = styled.button`
 `;
 
 export const BookingUpdate = () => {
-  const { bookingId } = useParams();
-  const selectBooking = useSelector(getBooking);
-  const bookingStatus = useSelector(getBookingsStatus);
-  const [booking, setBooking] = useState(null);
-  const [newGuestName, setNewGuestName] = useState();
-  const [newPhoneNumber, setNewPhoneNumber] = useState();
-  const [newOrderDate, setNewOrderDate] = useState();
-  const [newCheckIn, setNewCheckIn] = useState();
-  const [newCheckOut, setNewCheckOut] = useState();
-  const [newRoomType,setNewRoomType] = useState();
-  const [newRoomNumber, setNewRoomNumber] = useState();
-  const [newStatus, setNewStatus] = useState();
-  const [newSpecialRequest, setNewSpecialRequest] = useState();
+  const  bookingId  = useParams().bookingId;
+  const selectBooking = useAppSelector(getBooking);
+  const bookingStatus = useAppSelector(getBookingsStatus);
+  const [booking, setBooking] = useState<BookingsInterface | null>(null);
+  const [newGuestName, setNewGuestName] = useState<string>();
+  const [newPhoneNumber, setNewPhoneNumber] = useState<string>();
+  const [newOrderDate, setNewOrderDate] = useState<string>();
+  const [newCheckIn, setNewCheckIn] = useState<string>();
+  const [newCheckOut, setNewCheckOut] = useState<string>();
+  const [newRoomType,setNewRoomType] = useState<string>();
+  const [newRoomNumber, setNewRoomNumber] = useState<string>();
+  const [newStatus, setNewStatus] = useState<string>();
+  const [newSpecialRequest, setNewSpecialRequest] = useState<string>();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchBooking(bookingId));
@@ -134,7 +135,8 @@ export const BookingUpdate = () => {
 		"room_number": newRoomNumber,
 		"status": newStatus,
 	};
-    dispatch(updateBooking(bookingId,newBooking));
+  dispatch(updateBooking(bookingId));
+  //dispatch(updateBooking(bookingId,newBooking)); Corregir cuando usemos base de datos
   }
   return (
     <>

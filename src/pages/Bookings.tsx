@@ -8,17 +8,22 @@ import {
   fetchBookings,
   getBookingsStatus,
 } from "../features/bookings/bookingsSlice";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { Spinner } from "../components/Spinner";
 import { ErrorMessage } from "../components/ErrorMessage";
 import ViewNotes from "../components/ViewNotes";
 import PopMenu from "../components/PopMenu";
+import { BookingsInterface } from "../features/interfaces/interfaces";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+
+type Props = {
+  small?: string,
+  status?: string,
+  name?: string,
+}
 
 
-
-
-const TextFormatter = styled.span`
+const TextFormatter = styled.span<Props>`
   display: block;
   text-align: left;
   color: ${(props) =>
@@ -33,7 +38,7 @@ const StatusContainer = styled.div`
     
 `;
 
-const Status = styled.button`
+const Status = styled.button<Props>`
   font: 600 16px Poppins;
   width: 70%;
   max-width: 120px;
@@ -99,14 +104,14 @@ const Search = styled.input`
 `;
 
 export const Bookings = () => {
-  const dispatch = useDispatch();
-  const bookingsData = useSelector(getBookings);
-  const bookingsDataStatus = useSelector(getBookingsStatus);
-  const [filteredData, setFilteredData] = useState([]);
+  const dispatch = useAppDispatch();
+  const bookingsData = useAppSelector(getBookings);
+  const bookingsDataStatus = useAppSelector(getBookingsStatus);
+  const [filteredData, setFilteredData] = useState<BookingsInterface[]>([]);
   const [filter, setFilter] = useState("All Bookings");
-  const [orderBy, setOrderBy] = useState(["guest", true]);
-  const filterAndOrder = (array, filter, orderBy) => {
-    const filteredArray = array.filter((booking) => {
+  const [orderBy, setOrderBy] = useState<keyof BookingsInterface>("guest");
+  const filterAndOrder = (array: BookingsInterface[], filter: string, orderBy: keyof BookingsInterface) => {
+    const filteredArray = array.filter((booking: BookingsInterface) => {
       if (filter === "All Bookings") {
         return true;
       } else {
@@ -114,12 +119,12 @@ export const Bookings = () => {
       }
     });
     if (orderBy === "guest") {
-      filteredArray.sort((a, b) =>
+      filteredArray.sort((a: BookingsInterface, b: BookingsInterface) =>
         a.guest.localeCompare(b.guest, undefined, { sensitivity: "base" })
       );
     } else {
-      filteredArray.sort((a, b) => {
-        const dateComparison = new Date(a[orderBy]) - new Date(b[orderBy]);
+      filteredArray.sort((a: BookingsInterface, b: BookingsInterface) => {
+        const dateComparison = new Date(a[orderBy] as string).getTime() - new Date(b[orderBy] as string).getTime();
         if (dateComparison === 0) {
           return a.guest.localeCompare(b.guest);
         }
@@ -142,7 +147,7 @@ export const Bookings = () => {
     {
       property: "guest",
       label: "Guest Details",
-      display: ({ guest, phone_number, id }) => (
+      display: ({ guest, phone_number, id }: BookingsInterface) => (
         <>
           <CustomerPhoto src={`https://robohash.org/${guest}.png?set=any`} />
           <TextFormatter name="name">{guest}</TextFormatter>
@@ -168,7 +173,7 @@ export const Bookings = () => {
     {
       property: "special_request",
       label: "Special Request",
-      display: ({ special_request }) => (
+      display: ({ special_request }: BookingsInterface) => (
         <ViewNotes specialrequest={special_request.length} message={special_request} />
       ),
     },
@@ -179,7 +184,7 @@ export const Bookings = () => {
     {
       property: "status",
       label: "Status",
-      display: ({ status, id }) => 
+      display: ({ status, id }: BookingsInterface) => 
         <StatusContainer>
           <Status status={status}>{status}</Status>
             <PopMenu path={'bookings'} id={id} />
@@ -200,7 +205,7 @@ export const Bookings = () => {
                     color: `${colors.hardGreen}`,
                     borderBottom: `3px solid ${colors.hardGreen}`,
                   }
-                : null
+                : undefined
             }
           >
             All Bookings
@@ -213,7 +218,7 @@ export const Bookings = () => {
                     color: `${colors.hardGreen}`,
                     borderBottom: `3px solid ${colors.hardGreen}`,
                   }
-                : null
+                : undefined
             }
           >
             Check In
@@ -226,7 +231,7 @@ export const Bookings = () => {
                     color: `${colors.hardGreen}`,
                     borderBottom: `3px solid ${colors.hardGreen}`,
                   }
-                : null
+                : undefined
             }
           >
             Check Out
@@ -239,14 +244,14 @@ export const Bookings = () => {
                     color: `${colors.hardGreen}`,
                     borderBottom: `3px solid ${colors.hardGreen}`,
                   }
-                : null
+                : undefined
             }
           >
             In Progress
           </TabButton>
         </TabsMenuContainer>
         <Search></Search>
-        <Select onChange={(event) => setOrderBy(event.target.value)}>
+        <Select onChange={(event) => setOrderBy(event.target.value as keyof BookingsInterface)}>
           <option value="guest">Guest</option>
           <option value="order_date">Order Date</option>
           <option value="check_in">Check In</option>

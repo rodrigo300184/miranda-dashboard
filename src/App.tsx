@@ -17,21 +17,60 @@ import { BookingDetails } from "./pages/BookingDetails";
 import { BookingUpdate } from "./pages/BookingUpdate";
 
 
-export const GeneralContext = createContext(null);
+interface GeneralContextInterface {
+  loginState: InititialStateInterface;
+  dispatchLogin: React.Dispatch<ActionsInterface>;
+  viewSidebar: boolean;
+  setViewSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+}
+export const GeneralContext = createContext<GeneralContextInterface>({
+  loginState: { 
+    authenticated: false,
+    username: '',
+    email: '',
+    photo: ''},
+  dispatchLogin: () => {},
+  viewSidebar: true,
+  setViewSidebar: () => {},
+});
 
-const loginActionType = {
-  LOGIN: "LOGIN",
-  LOGOUT: "LOGOUT",
-  UPDATE: "UPDATE",
-};
+interface InititialStateInterface {
+  authenticated: boolean;
+  username: string;
+  email: string;
+  photo: string;
+}
 
-const loginReducer = (state, action) => {
+
+interface LoginInterface {
+  type: 'LOGIN';
+  payload: {
+    username: string;
+    email: string;
+    photo: string;
+  }
+}
+interface LogoutInterface {
+  type: 'LOGOUT';
+  payload: null
+}
+interface UpdateInterface {
+  type: 'UPDATE';
+  payload: {
+    email: string;
+    username: string;
+  }
+}
+type ActionsInterface = LoginInterface | LogoutInterface | UpdateInterface;
+
+
+const loginReducer = (state: InititialStateInterface, action: ActionsInterface) => {
   switch (action.type) {
-    case loginActionType.LOGIN:
+    case 'LOGIN':
       return {...action.payload,authenticated: true};
-    case loginActionType.LOGOUT:
+    case 'LOGOUT':
       return {...state,authenticated: false};
-    case loginActionType.UPDATE:
+    case 'UPDATE':
       console.log(action.payload)
       return {...state,...action.payload};
     default: 
@@ -41,11 +80,11 @@ const loginReducer = (state, action) => {
 
 function App() {
 
-  const  initialLoginState = () => {
+  const  initialLoginState = () : InititialStateInterface => {
     if (localStorage.getItem('logged')) {
-        return JSON.parse(localStorage.getItem('logged'));
+        return JSON.parse(localStorage.getItem('logged') || '') as InititialStateInterface;
     } else {
-        return {authenticated: false, username: null, email: null, photo: null};
+        return {authenticated: false, username: '', email: '', photo: ''} as InititialStateInterface;
     }
   } 
   const [loginState, dispatchLogin] = useReducer(loginReducer, initialLoginState());
@@ -58,7 +97,7 @@ function App() {
 return (
     <BrowserRouter>
      <Provider store={store}>
-      <GeneralContext.Provider value={{viewSidebar,setViewSidebar,loginState,loginActionType,dispatchLogin}}>
+      <GeneralContext.Provider value={{viewSidebar,setViewSidebar,loginState,dispatchLogin}}>
         <Layout>
          <LeftContainer><PrivateRoute><SideBar /></PrivateRoute></LeftContainer>
           <RightContainer><PrivateRoute><Header/></PrivateRoute>

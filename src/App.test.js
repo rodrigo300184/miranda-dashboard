@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { HeaderButton } from "./components/HeaderButton";
 import icons from "./styles/icons";
 

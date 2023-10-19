@@ -5,7 +5,7 @@ import Fade from "@mui/material/Fade";
 import styled from "styled-components";
 import colors from "../styles/colors";
 
-const Button = styled.button`
+const Button = styled.button<Props>`
   font: 400 16px Poppins;
   width: 80%;
   max-width: 120px;
@@ -39,7 +39,12 @@ const Box = styled.div`
   width: fit-content;
 `;
 
-export default function ViewNotes(props) {
+type Props = {
+  specialrequest: number,
+  message: string
+}
+
+export default function ViewNotes(props: Props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
     const handleClose = () => {
@@ -48,7 +53,7 @@ export default function ViewNotes(props) {
 
   return (
     <div>
-      <Button specialrequest={props.specialrequest} onClick={handleOpen} disabled={props.specialrequest  >= 1 ? false : true}>
+      <Button message={props.message} specialrequest={props.specialrequest} onClick={handleOpen} disabled={props.specialrequest  >= 1 ? false : true}>
         View Notes
       </Button>
       <Modal

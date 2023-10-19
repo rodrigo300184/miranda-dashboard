@@ -57,7 +57,12 @@ const Button = styled.button`
     background-color: ${colors.hardGreen};
   }
 `;
-const P = styled.p`
+
+type Props = {
+  bold?: boolean,
+}
+
+const P = styled.p<Props>`
   margin: 1px;
   font-size: 12px;
   font-weight: ${(props) => (props.bold ? "bold" : "normal")};
@@ -75,34 +80,35 @@ const H1 = styled.h1`
 `;
 
 export const Login = () => {
-  const { loginState, loginActionType, dispatchLogin } =
-    useContext(GeneralContext);
+  const Gcontext = useContext(GeneralContext);
+  const loginState = Gcontext.loginState;
+  const dispatchLogin = Gcontext.dispatchLogin;
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleEmailChange = (event) => {
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
 
-  const handlePasswordChange = (event) => {
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event:React.FormEvent<HTMLFormElement> ) => {
     event.preventDefault();
     if (email === "email@email.com" && password === "1234") {
       dispatchLogin({
-        type: loginActionType.LOGIN,
+        type: 'LOGIN',
         payload: {
           username:
-            JSON.parse(localStorage.getItem("logged")).username ||
+            JSON.parse(localStorage.getItem("logged") || '').username ||
             "Default Username",
-          email: JSON.parse(localStorage.getItem("logged")).email || email,
+          email: JSON.parse(localStorage.getItem("logged")|| '').email || email,
           photo: "",
         },
-      });
+      }); 
       navigate("/");
     } else {
       Swal.fire({
@@ -149,7 +155,7 @@ export const Login = () => {
           data-cy='password'
         />
         <Button type="submit" data-cy='submit'>Login</Button>
-        <P bold="true">To see the demo:</P>
+        <P bold>To see the demo:</P>
         <P>Mail: email@email.com</P>
         <P>Password: 1234</P>
       </Form>

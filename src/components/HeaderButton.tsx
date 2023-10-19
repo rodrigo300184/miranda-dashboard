@@ -2,7 +2,7 @@ import styled from "styled-components";
 import colors from "../styles/colors";
 
 
-export const Button = styled.button`
+export const HeaderButton = styled.button`
   background-color: transparent;
   border: none;
   width: 30px;
@@ -26,11 +26,3 @@ export const Button = styled.button`
     background-color: ${colors.lightGreen};
   }
 `;
-export const HeaderButton = (props) => {
-
-    return (
-        
-        <Button color={props.color} onClick={props.onClick} data-testid='sidebar-button'>{props.icon}</Button>
-      
-    )
-}

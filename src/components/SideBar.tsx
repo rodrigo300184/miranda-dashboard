@@ -4,11 +4,14 @@ import styled from "styled-components";
 import icons from "../styles/icons";
 import colors from "../styles/colors";
 import hotelIcon from "../icons/5-estrellas.png";
-import EditUser from "../components/EditUser";
+import EditUser from "./EditUser";
 import { GeneralContext } from "../App";
 
+type Props = {
+  viewsidebar: boolean
+}
 
-const SideMenuContainer = styled.div`
+const SideMenuContainer = styled.div<Props>`
   width: 345px;
   background-color: white;
   padding: 32px 0px;
@@ -125,7 +128,9 @@ const H2 = styled.h2`
 
 export const SideBar = () => {
  
-   const {viewSidebar, loginState} = useContext(GeneralContext);
+   const Gcontext = useContext(GeneralContext);
+   const viewSidebar = Gcontext.viewSidebar;
+   const loginState =  Gcontext.loginState;
   return (
     <SideMenuContainer viewsidebar={viewSidebar}>
       <Logo>
