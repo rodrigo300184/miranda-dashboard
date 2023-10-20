@@ -31,6 +31,7 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
+    "plus-build": "tsc && vite build && aws s3 sync build/ s3://rodrigo300184-miranda-dashboard --profile default",
     "serve": "vite preview",
     "test": "vite test",
     "eject": "vite eject",

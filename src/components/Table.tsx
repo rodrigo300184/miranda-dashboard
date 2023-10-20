@@ -129,8 +129,8 @@ export const Table = (props: TableProps) => {
     <>
       <TableContainer>
         <TableHeaderContainer>
-          {columns.map((col: any) => (
-            <div>
+          {columns.map((col: any, index:number) => (
+            <div key={index}>
               <p>{col.label}</p>
             </div>
           ))}

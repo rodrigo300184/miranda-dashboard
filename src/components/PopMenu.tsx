@@ -53,7 +53,7 @@ export default function PopMenu(props: Props) {
          <NavLink to={`/${props.path}/update/${props.id}`}>
             <MenuItem >Edit</MenuItem>
         </NavLink>
-        <MenuItem >Delete</MenuItem>
+        <MenuItem onClick={() => console.log(props.id)} >Delete</MenuItem>
       </Menu>
     </>
   );
