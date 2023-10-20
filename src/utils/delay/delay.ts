@@ -1,4 +1,8 @@
-function delay (data) {
+import { BookingsInterface } from "../../features/interfaces/interfaces";
+
+type DelayType = string | BookingsInterface | BookingsInterface[] | undefined;
+
+function delay (data: DelayType) {
     const time = Math.round(Math.random () * 600);
     return new Promise((resolve, reject) => {
         if(time < 500){

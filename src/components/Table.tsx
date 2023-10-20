@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import colors from "../styles/colors";
+import { BookingsInterface } from "../features/interfaces/interfaces";
 
 
 const TableContainer = styled.div`
@@ -94,13 +95,19 @@ const RowContainer = styled.div`
   
 `;
 
-export const Table = (props) => {
+type TableProps = {
+  columns: any,
+  data: BookingsInterface[],
+  name: string,
+}
+
+export const Table = (props: TableProps) => {
   const { columns, data } = props;
 
-  const displayRow = (row, index) => {
+  const displayRow = (row:any, index: number) => {
     const rowContent = (
       <>
-        {props.columns.map((col, i) => (
+        {props.columns.map((col:any, i: number) => (
           <div key={i}>
             
             
@@ -126,14 +133,14 @@ export const Table = (props) => {
     <>
       <TableContainer >
         <TableHeaderContainer>
-          {columns.map((col) => (
+          {columns.map((col:any) => (
             <div>
               <p>{col.label}</p>
             </div>
           ))}
         </TableHeaderContainer>
         <TableContent  >
-          {data.map((bookingRowObject,index) => displayRow(bookingRowObject, index))}
+          {data.map((bookingRowObject: BookingsInterface,index: number) => displayRow(bookingRowObject, index))}
         </TableContent>
       </TableContainer>
     </>
