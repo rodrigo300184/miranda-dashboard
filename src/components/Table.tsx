@@ -2,12 +2,11 @@ import styled from "styled-components";
 import colors from "../styles/colors";
 import { BookingsInterface } from "../features/interfaces/interfaces";
 
-
 const TableContainer = styled.div`
   padding: 0px 50px;
   margin-bottom: 30px;
   height: 690px;
-  overflow:hidden;
+  overflow: hidden;
 `;
 
 const TableHeaderContainer = styled.div`
@@ -39,7 +38,7 @@ const TableContent = styled.div`
   width: 100%;
   max-height: 100%;
   border: 1px solid ${colors.borderGray};
-  border-radius: 0 0 20px 20px ;
+  border-radius: 0 0 20px 20px;
   overflow-y: auto;
   &::-webkit-scrollbar {
     width: 10px;
@@ -78,69 +77,68 @@ const RowContainer = styled.div`
     border-left: 1px solid ${colors.borderGray};
     width: 100%;
     height: 135px;
-    &:first-child{
+    &:first-child {
       border: none;
-      &:last-child{
+      &:last-child {
         flex-direction: row;
         justify-content: space-evenly;
       }
     }
   }
-  &:last-child{
-    border:none;
+  &:last-child {
+    border: none;
   }
-  &:hover{
+  &:hover {
     box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 170px;
   }
-  
 `;
 
+type Column = {
+  property: string;
+  label: string;
+  display?: (arg:any) => any;
+};
+
 type TableProps = {
-  columns: any,
-  data: BookingsInterface[],
-  name: string,
-}
+  columns: Column[];
+  data: BookingsInterface[];
+  name: string;
+};
 
 export const Table = (props: TableProps) => {
   const { columns, data } = props;
 
-  const displayRow = (row:any, index: number) => {
+  const displayRow = (row: BookingsInterface, index: number) => {
     const rowContent = (
       <>
-        {props.columns.map((col:any, i: number) => (
+        {props.columns.map((col: any, i: number) => (
           <div key={i}>
-            
-            
-              {typeof col.display === "function"
-                ? col.display(row)
-                : row[col.property]}
-            
+            {typeof col.display === "function"
+              ? col.display(row)
+              : row[col.property as keyof BookingsInterface]}
           </div>
         ))}
       </>
     );
     const key = `${props.name}-${row.id}-${index}`;
-    
-      return (
-        <RowContainer key={key} >
-          {rowContent}
-        </RowContainer>
-      );
-    
+
+    return <RowContainer key={key}>{rowContent}</RowContainer>;
   };
 
   return (
     <>
-      <TableContainer >
+      <TableContainer>
         <TableHeaderContainer>
-          {columns.map((col:any) => (
+          {columns.map((col: any) => (
             <div>
               <p>{col.label}</p>
             </div>
           ))}
         </TableHeaderContainer>
-        <TableContent  >
-          {data.map((bookingRowObject: BookingsInterface,index: number) => displayRow(bookingRowObject, index))}
+        <TableContent>
+          {data.map((bookingRowObject: BookingsInterface, index: number) =>
+            displayRow(bookingRowObject, index)
+          )}
         </TableContent>
       </TableContainer>
     </>
