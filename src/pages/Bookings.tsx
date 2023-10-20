@@ -8,7 +8,7 @@ import {
   fetchBookings,
   getBookingsStatus,
 } from "../features/bookings/bookingsSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Spinner } from "../components/Spinner";
 import { ErrorMessage } from "../components/ErrorMessage";
 import ViewNotes from "../components/ViewNotes";
@@ -107,17 +107,10 @@ export const Bookings = () => {
   const dispatch = useAppDispatch();
   const bookingsData = useAppSelector(getBookings);
   const bookingsDataStatus = useAppSelector(getBookingsStatus);
-  const [filteredData, setFilteredData] = useState<BookingsInterface[]>([]);
   const [filter, setFilter] = useState("All Bookings");
   const [orderBy, setOrderBy] = useState<keyof BookingsInterface>("guest");
   const filterAndOrder = (array: BookingsInterface[], filter: string, orderBy: keyof BookingsInterface) => {
-    const filteredArray = array.filter((booking: BookingsInterface) => {
-      if (filter === "All Bookings") {
-        return true;
-      } else {
-        return booking.status === filter;
-      }
-    });
+    const filteredArray = array.filter((booking: BookingsInterface) => filter === "All Bookings" || booking.status === filter);
     if (orderBy === "guest") {
       filteredArray.sort((a: BookingsInterface, b: BookingsInterface) =>
         a.guest.localeCompare(b.guest, undefined, { sensitivity: "base" })
@@ -138,9 +131,7 @@ export const Bookings = () => {
     dispatch(fetchBookings());
   }, [dispatch]);
 
-  useEffect(() => {
-    const filteredBookingsData = filterAndOrder(bookingsData, filter, orderBy);
-    setFilteredData(filteredBookingsData);
+    const filteredBookingsData = useMemo(() =>{return filterAndOrder(bookingsData, filter, orderBy);
   }, [bookingsData, filter, orderBy]);
 
   const columns = [
@@ -264,7 +255,7 @@ export const Bookings = () => {
       ) : bookingsDataStatus === "pending" ? (
         <Spinner />
       ) : (
-        <Table name="bookings" columns={columns} data={filteredData} />
+        <Table name="bookings" columns={columns} data={filteredBookingsData} />
         
       )}
     </>
