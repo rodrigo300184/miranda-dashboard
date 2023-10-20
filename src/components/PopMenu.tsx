@@ -6,10 +6,16 @@ import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
 import { NavLink } from "react-router-dom";
 
-export default function PopMenu(props) {
+
+type Props = {
+  path?: string,
+  id?: string
+}
+
+export default function PopMenu(props: Props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
+  const handleClick = (event: React.BaseSyntheticEvent<MouseEvent>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {

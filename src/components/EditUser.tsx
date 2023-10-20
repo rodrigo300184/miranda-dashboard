@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
@@ -7,7 +7,12 @@ import colors from "../styles/colors";
 import icons from "../styles/icons";
 import { GeneralContext } from "../App";
 
-const Button = styled.button.attrs({ type: "button" })`
+type Props = {
+  green: boolean,
+  
+}
+
+const Button = styled.button.attrs({ type: "button" })<Props>`
   font-family: Poppins;
   font-size: 14px;
   font-weight: 600;
@@ -85,8 +90,10 @@ const Icon = styled.i`
   color: ${colors.green}
 `;
 
-export default function TransitionsModal(props) {
-  const {loginState,loginActionType, dispatchLogin} = useContext(GeneralContext);
+export default function TransitionsModal() {
+  const Gcontext = useContext(GeneralContext);
+  const loginState = Gcontext.loginState;
+  const dispatchLogin = Gcontext.dispatchLogin;
   const [currentEmail, setCurrentEmail] = useState(loginState.email);
   const [currentUsername, setCurrentUsername] = useState(loginState.username);
   
@@ -94,15 +101,15 @@ export default function TransitionsModal(props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleSave = () => {
-    dispatchLogin({type: loginActionType.UPDATE, payload: {email: currentEmail, username: currentUsername}})
+    dispatchLogin({type: 'UPDATE', payload: {email: currentEmail, username: currentUsername}})
     setOpen(false);
   };
 
-  const handleEmailChange = (event) => {
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentEmail(event.target.value);
   };
 
-  const handleUsernameChange = (event) => {
+  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentUsername(event.target.value);
   };
 

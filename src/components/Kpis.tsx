@@ -14,7 +14,11 @@ const InnerContainer = styled.div`
   gap: 38px;
 `;
 
-const IconContainer = styled.div`
+type Props = {
+  red?: boolean
+}
+
+const IconContainer = styled.div<Props>`
   display: flex;
   justify-content: center;
   align-items: center;

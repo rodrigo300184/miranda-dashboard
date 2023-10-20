@@ -8,13 +8,13 @@ import {
   getBookingsStatus,
   fetchBooking,
 } from "../features/bookings/bookingsSlice";
-import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { Spinner } from "../components/Spinner";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { BookingsInterface } from "../features/interfaces/interfaces";
 
 const Container = styled.div`
   display: flex;
@@ -120,11 +120,11 @@ const DateContainer = styled.div`
 `;
 
 export const BookingDetails = () => {
-  const { bookingId } = useParams();
-  const selectBooking = useSelector(getBooking);
-  const bookingStatus = useSelector(getBookingsStatus);
-  const [booking, setBooking] = useState({});
-  const dispatch = useDispatch();
+  const  bookingId  = useParams().bookingId;
+  const selectBooking = useAppSelector(getBooking);
+  const bookingStatus = useAppSelector(getBookingsStatus);
+  const [booking, setBooking] = useState<BookingsInterface | null>();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchBooking(bookingId));
@@ -136,11 +136,11 @@ export const BookingDetails = () => {
     }
   }, [bookingStatus, selectBooking]);
 
-  function formatDateString(inputDateString) {
+  function formatDateString(inputDateString: string) {
     var date = new Date(inputDateString);
     var randomHour = Math.floor(Math.random() * 24);
     date.setHours(randomHour);
-    function getDayWithSuffix(day) {
+    function getDayWithSuffix(day:number) {
       if (day >= 11 && day <= 13) {
         return day + "th";
       }
@@ -156,7 +156,7 @@ export const BookingDetails = () => {
       }
     }
     var dayWithSuffix = getDayWithSuffix(date.getDate());
-    var options = {
+    var options: Intl.DateTimeFormatOptions = {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -165,7 +165,7 @@ export const BookingDetails = () => {
       hour12: true,
     };
     var formattedDate = date.toLocaleDateString("en-US", options);
-    formattedDate = formattedDate.replace(date.getDate(), dayWithSuffix);
+    formattedDate = formattedDate.replace(date.getDate().toString(), dayWithSuffix);
     formattedDate = formattedDate.replace("at", "|");
     return formattedDate;
   }
@@ -182,13 +182,12 @@ export const BookingDetails = () => {
             <CardContainer>
               <UserPhoto
                 style={{
-                  backgroundImage: `url('https://robohash.org/${booking.guest}.png')`,
+                  backgroundImage: `url('https://robohash.org/${booking?.guest}.png')`,
                 }}
               />
-              {console.log(booking)}
               <InnerCardContainer>
-                <Name>{booking.guest}</Name>
-                <P color={colors.green}>ID {booking.id}</P>
+                <Name>{booking?.guest}</Name>
+                <P color={colors.green}>ID {booking?.id}</P>
                 <ContactButtons>
                   <PhoneButton>
                     <FontAwesomeIcon icon={faPhone} size="xl" />
@@ -204,11 +203,11 @@ export const BookingDetails = () => {
             <DatesContainer>
               <DateContainer>
                 <P color={colors.gray}>Check In</P>
-                <span>{formatDateString(booking.check_in)}</span>
+                <span>{formatDateString(booking?.check_in || '')}</span>
               </DateContainer>
               <DateContainer>
                 <P color={colors.gray}>Check Out</P>
-                <span>{formatDateString(booking.check_out)}</span>
+                <span>{formatDateString(booking?.check_out || '')}</span>
               </DateContainer>
             </DatesContainer>
           </LeftContainer>

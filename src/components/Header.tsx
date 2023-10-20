@@ -41,14 +41,16 @@ const Title = styled.h1`
   font-weight: 600;
 `;
 
-export const Header = (props) => {
-  const {viewSidebar, setViewSidebar, dispatchLogin, loginActionType} = useContext(GeneralContext);
-
+export const Header = () => {
+  const GContext = useContext(GeneralContext);
+  const viewSidebar = GContext.viewSidebar;
+  const setViewSidebar = GContext.setViewSidebar;
+  const dispatchLogin = GContext.dispatchLogin;
   const [headerTitle, setHeaderTitle] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
   const handleLogout = () => {
-    dispatchLogin({type: loginActionType.LOGOUT});
+    dispatchLogin({type: 'LOGOUT', payload: null});
     navigate("/login");
   };
   useEffect(() => {
@@ -66,13 +68,13 @@ export const Header = (props) => {
       <HeaderContainer>
         <InnerContainer>
           <InnerLeft>
-            <HeaderButton color={viewSidebar? `${colors.hardGreen}`: `${colors.red}`} onClick={handleSideBarView} icon={icons.menu} /> 
+            <HeaderButton color={viewSidebar? `${colors.hardGreen}`: `${colors.red}`} onClick={handleSideBarView} >{icons.menu}</HeaderButton>
             <Title>{headerTitle === "" ? "Dashboard" : headerTitle}</Title>
           </InnerLeft>
           <InnerRight>
-            <HeaderButton icon={icons.message} />
-            <HeaderButton icon={icons.bell} />
-            <HeaderButton icon={icons.logout} onClick={handleLogout}/>
+            <HeaderButton>{icons.message}</HeaderButton>
+            <HeaderButton>{icons.bell}</HeaderButton>
+            <HeaderButton onClick={handleLogout}>{icons.logout}</HeaderButton>
           </InnerRight>
         </InnerContainer>
       </HeaderContainer>
