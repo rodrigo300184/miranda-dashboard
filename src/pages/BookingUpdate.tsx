@@ -6,9 +6,8 @@ import {
   getBookingsStatus,
   updateBooking,
 } from "../features/bookings/bookingsSlice";
-import { useParams } from "react-router-dom";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useState, useMemo, useEffect } from "react";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { Spinner } from "../components/Spinner";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
@@ -65,7 +64,7 @@ const TextArea = styled.textarea`
   //border: none;
   border-bottom: 2px solid ${colors.bottomBorderGray};
   width: 220px;
-  min-height:100px;
+  min-height: 100px;
   text-overflow: ellipsis;
 `;
 const Ul = styled.ul`
@@ -75,8 +74,8 @@ const Ul = styled.ul`
 `;
 
 const ButtonContainer = styled.div`
-  display:flex;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
 `;
 
 const Button = styled.button`
@@ -97,19 +96,19 @@ const Button = styled.button`
 `;
 
 export const BookingUpdate = () => {
-  const  bookingId  = useParams().bookingId;
+  const navigate = useNavigate();
+  const bookingId = useParams().bookingId || "";
   const selectBooking = useAppSelector(getBooking);
   const bookingStatus = useAppSelector(getBookingsStatus);
-  const [booking, setBooking] = useState<BookingsInterface | null>(null);
-  const [newGuestName, setNewGuestName] = useState<string>();
-  const [newPhoneNumber, setNewPhoneNumber] = useState<string>();
-  const [newOrderDate, setNewOrderDate] = useState<string>();
-  const [newCheckIn, setNewCheckIn] = useState<string>();
-  const [newCheckOut, setNewCheckOut] = useState<string>();
-  const [newRoomType,setNewRoomType] = useState<string>();
-  const [newRoomNumber, setNewRoomNumber] = useState<string>();
-  const [newStatus, setNewStatus] = useState<string>();
-  const [newSpecialRequest, setNewSpecialRequest] = useState<string>();
+  const [newGuestName, setNewGuestName] = useState<string>("");
+  const [newPhoneNumber, setNewPhoneNumber] = useState<string>("");
+  const [newOrderDate, setNewOrderDate] = useState<string>("");
+  const [newCheckIn, setNewCheckIn] = useState<string>("");
+  const [newCheckOut, setNewCheckOut] = useState<string>("");
+  const [newRoomType, setNewRoomType] = useState<string>("");
+  const [newRoomNumber, setNewRoomNumber] = useState<string>("");
+  const [newStatus, setNewStatus] = useState<string>("");
+  const [newSpecialRequest, setNewSpecialRequest] = useState<string>("");
 
   const dispatch = useAppDispatch();
 
@@ -117,32 +116,34 @@ export const BookingUpdate = () => {
     dispatch(fetchBooking(bookingId));
   }, [dispatch, bookingId]);
 
-  useEffect(() => {
-    if (bookingStatus === "fulfilled") {
-      setBooking(selectBooking);
-    }
-  }, [bookingStatus, selectBooking]);
+  const booking = useMemo(() => {
+    return selectBooking;
+  }, [selectBooking]);
 
   const handleSubmit = () => {
-    const newBooking = {
-		"guest": newGuestName,
-		"phone_number": newPhoneNumber,
-		"order_date": newOrderDate,
-		"check_in": newCheckIn,
-		"check_out": newCheckOut,
-		"special_request": newSpecialRequest,
-		"room_type": newRoomType,
-		"room_number": newRoomNumber,
-		"status": newStatus,
-	};
-  dispatch(updateBooking(bookingId));
-  //dispatch(updateBooking(bookingId,newBooking)); Corregir cuando usemos base de datos
-  }
+    const newBooking: BookingsInterface = {
+      id: bookingId,
+      guest: newGuestName || booking?.guest || '',
+      phone_number: newPhoneNumber || booking?.phone_number ||'',
+      order_date: newOrderDate || booking?.order_date ||'',
+      check_in: newCheckIn || booking?.check_in || '',
+      check_out: newCheckOut || booking?.check_out || '',
+      special_request: newSpecialRequest || booking?.special_request || '',
+      room_type: newRoomType || booking?.room_type || '',
+      room_number: newRoomNumber || booking?.room_number || '',
+      status: newStatus || booking?.status || '',
+      photos: booking?.photos || []
+    };
+    dispatch(updateBooking({ bookingId, newBooking }));
+    navigate("/bookings");
+  };
   return (
     <>
       {bookingStatus === "rejected" ? (
         <ErrorMessage />
-      ) : bookingStatus === "pending" || booking === null || booking.id !== bookingId ? (
+      ) : bookingStatus === "pending" ||
+        booking === null ||
+        booking.id !== bookingId ? (
         <Spinner />
       ) : (
         <Container>
@@ -160,59 +161,70 @@ export const BookingUpdate = () => {
                 </li>
                 <li>
                   <Label>Phone Number:</Label>
-                  <Input 
+                  <Input
                     onChange={(e) => setNewPhoneNumber(e.target.value)}
-                    defaultValue={booking.phone_number}>
-                  </Input>
+                    defaultValue={booking.phone_number}
+                  ></Input>
                 </li>
                 <li>
                   <Label>Order Date:</Label>
-                  <Input type="date" 
+                  <Input
+                    type="date"
                     onChange={(e) => setNewOrderDate(e.target.value)}
-                    defaultValue={booking.order_date}></Input>
+                    defaultValue={booking.order_date}
+                  ></Input>
                 </li>
                 <li>
                   <Label>Check In:</Label>
-                  <Input type="date" 
+                  <Input
+                    type="date"
                     onChange={(e) => setNewCheckIn(e.target.value)}
-                    defaultValue={booking.check_in}></Input>
+                    defaultValue={booking.check_in}
+                  ></Input>
                 </li>
                 <li>
                   <Label>Check Out:</Label>
-                  <Input type="date" 
+                  <Input
+                    type="date"
                     onChange={(e) => setNewCheckOut(e.target.value)}
-                    defaultValue={booking.check_out}></Input>
+                    defaultValue={booking.check_out}
+                  ></Input>
                 </li>
               </Ul>
             </LeftContainer>
             <RightContainer>
-            <Ul> 
+              <Ul>
                 <li>
                   <Label>Room Type:</Label>
-                  <Input 
+                  <Input
                     onChange={(e) => setNewRoomType(e.target.value)}
-                    defaultValue={booking.room_type}>
-                  </Input>
+                    defaultValue={booking.room_type}
+                  ></Input>
                 </li>
                 <li>
                   <Label>Room Number:</Label>
-                  <Input type="text" 
+                  <Input
+                    type="text"
                     onChange={(e) => setNewRoomNumber(e.target.value)}
-                    defaultValue={booking.room_number}></Input>
+                    defaultValue={booking.room_number}
+                  ></Input>
                 </li>
                 <li>
                   <Label>Status:</Label>
-                  <Input type="text" 
+                  <Input
+                    type="text"
                     onChange={(e) => setNewStatus(e.target.value)}
-                    defaultValue={booking.status}></Input>
+                    defaultValue={booking.status}
+                  ></Input>
                 </li>
                 <li>
                   <Label>Photo:</Label>
-                    <Input type="file">
-                    </Input>
+                  <Input type="file"></Input>
                 </li>
                 <li>
-                  <Label style={{verticalAlign: 'top'}}>Special Request:</Label>
+                  <Label style={{ verticalAlign: "top" }}>
+                    Special Request:
+                  </Label>
                   <TextArea
                     onChange={(e) => setNewSpecialRequest(e.target.value)}
                     defaultValue={booking.special_request}
@@ -220,15 +232,12 @@ export const BookingUpdate = () => {
                 </li>
               </Ul>
             </RightContainer>
-            
           </Form>
           <ButtonContainer>
-            <Button>Save</Button>
+            <Button onClick={handleSubmit}>Save</Button>
           </ButtonContainer>
         </Container>
       )}
     </>
   );
 };
-
-

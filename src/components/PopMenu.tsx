@@ -9,7 +9,8 @@ import { NavLink } from "react-router-dom";
 
 type Props = {
   path?: string,
-  id?: string
+  id?: string,
+  onClick?: () => void
 }
 
 export default function PopMenu(props: Props) {
@@ -53,7 +54,7 @@ export default function PopMenu(props: Props) {
          <NavLink to={`/${props.path}/update/${props.id}`}>
             <MenuItem >Edit</MenuItem>
         </NavLink>
-        <MenuItem onClick={() => console.log(props.id)} >Delete</MenuItem>
+        <MenuItem onClick={props.onClick} >Delete</MenuItem>
       </Menu>
     </>
   );

@@ -7,6 +7,7 @@ import {
   getBookings,
   fetchBookings,
   getBookingsStatus,
+  deleteBooking,
 } from "../features/bookings/bookingsSlice";
 import { useEffect, useMemo, useState } from "react";
 import { Spinner } from "../components/Spinner";
@@ -128,11 +129,15 @@ export const Bookings = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchBookings());
+    filteredBookingsData.length !==0 || dispatch(fetchBookings());
   }, [dispatch]);
 
     const filteredBookingsData = useMemo(() =>{return filterAndOrder(bookingsData, filter, orderBy);
   }, [bookingsData, filter, orderBy]);
+
+  const handleDelete = (id:string): void => {
+    dispatch(deleteBooking(id));
+  }
 
   const columns = [
     {
@@ -178,7 +183,7 @@ export const Bookings = () => {
       display: ({ status, id }: BookingsInterface) => 
         <StatusContainer>
           <Status status={status}>{status}</Status>
-            <PopMenu path={'bookings'} id={id} />
+            <PopMenu path={'bookings'} id={id} onClick={() => handleDelete(id)} />
         </StatusContainer>,
     },
   
