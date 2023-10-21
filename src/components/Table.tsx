@@ -5,7 +5,7 @@ import { BookingsInterface } from "../features/interfaces/interfaces";
 const TableContainer = styled.div`
   padding: 0px 50px;
   margin-bottom: 30px;
-  height: 690px;
+  height: 720px;
   overflow: hidden;
 `;
 
@@ -16,6 +16,7 @@ const TableHeaderContainer = styled.div`
   align-items: center;
   padding-right: 10px;
   height: 65px;
+  border-bottom: 1px solid ${colors.borderGray};
   border-radius: 20px 20px 0px 0px;
   font-size: 16px;
   color: black;
@@ -37,7 +38,7 @@ const TableContent = styled.div`
   text-align: center;
   width: 100%;
   max-height: 100%;
-  border: 1px solid ${colors.borderGray};
+  //border: 1px solid ${colors.borderGray};
   border-radius: 0 0 20px 20px;
   overflow-y: auto;
   &::-webkit-scrollbar {
@@ -87,6 +88,8 @@ const RowContainer = styled.div`
   }
   &:last-child {
     border: none;
+    margin-bottom: 65px;
+   
   }
   &:hover {
     box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 170px;

@@ -35,8 +35,6 @@ const TextFormatter = styled.span<Props>`
 
 const StatusContainer = styled.div`
   display:flex;
-    
-    
 `;
 
 const Status = styled.button<Props>`
@@ -79,7 +77,6 @@ const Container = styled.div`
   justify-content: space-between;
   margin-right: 50px;
 `;
-
 const Select = styled.select`
   margin-top: 50px;
   width: 129px;
@@ -94,6 +91,7 @@ const Select = styled.select`
 `;
 
 const Search = styled.input`
+  justify-item: end;
   font: 500 16px Poppins;
   color: ${colors.green};
   padding: 5px;
@@ -246,6 +244,7 @@ export const Bookings = () => {
             In Progress
           </TabButton>
         </TabsMenuContainer>
+
         <Search></Search>
         <Select onChange={(event) => setOrderBy(event.target.value as keyof BookingsInterface)}>
           <option value="guest">Guest</option>
@@ -253,6 +252,7 @@ export const Bookings = () => {
           <option value="check_in">Check In</option>
           <option value="check_out">Check Out</option>
         </Select>
+      
       </Container>
 
       {bookingsDataStatus === "rejected" ? (
