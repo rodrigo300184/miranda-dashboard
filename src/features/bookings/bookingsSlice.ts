@@ -18,9 +18,9 @@ export const createBooking = createAsyncThunk('bookings/createBooking', async (n
     const response = (await delay(newBooking)) as BookingsInterface;
     return response;
 })
-export const updateBooking = createAsyncThunk('bookings/updateBooking', async(newData: {bookingId: string, newBooking: BookingsInterface}) => {
-  const response = await delay(bookingsData.find((booking) => booking.id === newData.bookingId))
-  return {response,newData};
+export const updateBooking = createAsyncThunk('bookings/updateBooking', async(updatedBooking: BookingsInterface) => {
+  const response = await delay(bookingsData.find((booking) => booking.id === updatedBooking.id))
+  return {response,updatedBooking};
 })
 
 export const deleteBooking = createAsyncThunk('bookings/deleteBooking', async (id:string) => {
@@ -65,8 +65,8 @@ const bookingsSlice = createSlice({
         })
         .addCase(updateBooking.fulfilled, (state, action) => {
           state.status = 'fulfilled';
-          state.item = {...state.item, ...action.payload.newData.newBooking}
-          state.data = state.data.filter((item)=> item.id !== action.payload.newData.bookingId);
+          state.item = {...state.item, ...action.payload.updatedBooking}
+          state.data = state.data.filter((item)=> item.id !== action.payload.updatedBooking.id);
           state.item && state.data.push(state.item)
         })
         .addCase(deleteBooking.fulfilled, (state, action) => {

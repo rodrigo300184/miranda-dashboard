@@ -7,7 +7,7 @@ import {
   updateBooking,
 } from "../features/bookings/bookingsSlice";
 import { useNavigate, useParams } from "react-router-dom";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { Spinner } from "../components/Spinner";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
@@ -100,15 +100,7 @@ export const BookingUpdate = () => {
   const bookingId = useParams().bookingId || "";
   const selectBooking = useAppSelector(getBooking);
   const bookingStatus = useAppSelector(getBookingsStatus);
-  const [newGuestName, setNewGuestName] = useState<string>("");
-  const [newPhoneNumber, setNewPhoneNumber] = useState<string>("");
-  const [newOrderDate, setNewOrderDate] = useState<string>("");
-  const [newCheckIn, setNewCheckIn] = useState<string>("");
-  const [newCheckOut, setNewCheckOut] = useState<string>("");
-  const [newRoomType, setNewRoomType] = useState<string>("");
-  const [newRoomNumber, setNewRoomNumber] = useState<string>("");
-  const [newStatus, setNewStatus] = useState<string>("");
-  const [newSpecialRequest, setNewSpecialRequest] = useState<string>("");
+  const [newBooking, setNewBooking] = useState<BookingsInterface | null>(null);
 
   const dispatch = useAppDispatch();
 
@@ -116,25 +108,19 @@ export const BookingUpdate = () => {
     dispatch(fetchBooking(bookingId));
   }, [dispatch, bookingId]);
 
-  const booking = useMemo(() => {
-    return selectBooking;
-  }, [selectBooking]);
+  useEffect(() => {
+  
+      setNewBooking(selectBooking);
+    
+  }, [selectBooking, bookingStatus]);
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = event.target;
+    newBooking && setNewBooking({...newBooking, [name]: value});
+  };
 
   const handleSubmit = () => {
-    const newBooking: BookingsInterface = {
-      id: bookingId,
-      guest: newGuestName || booking?.guest || '',
-      phone_number: newPhoneNumber || booking?.phone_number ||'',
-      order_date: newOrderDate || booking?.order_date ||'',
-      check_in: newCheckIn || booking?.check_in || '',
-      check_out: newCheckOut || booking?.check_out || '',
-      special_request: newSpecialRequest || booking?.special_request || '',
-      room_type: newRoomType || booking?.room_type || '',
-      room_number: newRoomNumber || booking?.room_number || '',
-      status: newStatus || booking?.status || '',
-      photos: booking?.photos || []
-    };
-    dispatch(updateBooking({ bookingId, newBooking }));
+    newBooking && dispatch(updateBooking(newBooking));
     navigate("/bookings");
   };
   return (
@@ -142,8 +128,8 @@ export const BookingUpdate = () => {
       {bookingStatus === "rejected" ? (
         <ErrorMessage />
       ) : bookingStatus === "pending" ||
-        booking === null ||
-        booking.id !== bookingId ? (
+        newBooking === null ||
+        newBooking.id !== bookingId ? (
         <Spinner />
       ) : (
         <Container>
@@ -154,40 +140,45 @@ export const BookingUpdate = () => {
                 <li>
                   <Label>Guest Full Name:</Label>
                   <Input
-                    onChange={(e) => setNewGuestName(e.target.value)}
+                    name='guest'
+                    onChange={handleInputChange}
                     type="text"
-                    defaultValue={booking.guest}
+                    defaultValue={newBooking.guest}
                   ></Input>
                 </li>
                 <li>
                   <Label>Phone Number:</Label>
                   <Input
-                    onChange={(e) => setNewPhoneNumber(e.target.value)}
-                    defaultValue={booking.phone_number}
+                    name='phone_number'
+                    onChange={handleInputChange}
+                    defaultValue={newBooking.phone_number}
                   ></Input>
                 </li>
                 <li>
                   <Label>Order Date:</Label>
                   <Input
+                    name='order_date'
                     type="date"
-                    onChange={(e) => setNewOrderDate(e.target.value)}
-                    defaultValue={booking.order_date}
+                    onChange={handleInputChange}
+                    defaultValue={newBooking.order_date}
                   ></Input>
                 </li>
                 <li>
                   <Label>Check In:</Label>
                   <Input
+                    name='check_in'
                     type="date"
-                    onChange={(e) => setNewCheckIn(e.target.value)}
-                    defaultValue={booking.check_in}
+                    onChange={handleInputChange}
+                    defaultValue={newBooking.check_in}
                   ></Input>
                 </li>
                 <li>
                   <Label>Check Out:</Label>
                   <Input
+                    name='check_out'
                     type="date"
-                    onChange={(e) => setNewCheckOut(e.target.value)}
-                    defaultValue={booking.check_out}
+                    onChange={handleInputChange}
+                    defaultValue={newBooking.check_out}
                   ></Input>
                 </li>
               </Ul>
@@ -197,24 +188,27 @@ export const BookingUpdate = () => {
                 <li>
                   <Label>Room Type:</Label>
                   <Input
-                    onChange={(e) => setNewRoomType(e.target.value)}
-                    defaultValue={booking.room_type}
+                    name='room_type'
+                    onChange={handleInputChange}
+                    defaultValue={newBooking.room_type}
                   ></Input>
                 </li>
                 <li>
                   <Label>Room Number:</Label>
                   <Input
+                    name='room_number'
                     type="text"
-                    onChange={(e) => setNewRoomNumber(e.target.value)}
-                    defaultValue={booking.room_number}
+                    onChange={handleInputChange}
+                    defaultValue={newBooking.room_number}
                   ></Input>
                 </li>
                 <li>
                   <Label>Status:</Label>
                   <Input
+                    name='status'
                     type="text"
-                    onChange={(e) => setNewStatus(e.target.value)}
-                    defaultValue={booking.status}
+                    onChange={handleInputChange}
+                    defaultValue={newBooking.status}
                   ></Input>
                 </li>
                 <li>
@@ -225,10 +219,7 @@ export const BookingUpdate = () => {
                   <Label style={{ verticalAlign: "top" }}>
                     Special Request:
                   </Label>
-                  <TextArea
-                    onChange={(e) => setNewSpecialRequest(e.target.value)}
-                    defaultValue={booking.special_request}
-                  />
+                  <TextArea defaultValue={newBooking.special_request}  name='special_request' onChange={handleInputChange} />
                 </li>
               </Ul>
             </RightContainer>
