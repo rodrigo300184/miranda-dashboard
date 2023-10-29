@@ -23,7 +23,6 @@ type Props = {
   name?: string,
 }
 
-
 const TextFormatter = styled.span<Props>`
   display: block;
   text-align: left;

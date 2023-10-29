@@ -1,6 +1,6 @@
-import { BookingsInterface } from "../../features/interfaces/interfaces";
+import { BookingsInterface, RoomsInterface } from "../../features/interfaces/interfaces";
 
-type DelayType = string | BookingsInterface | BookingsInterface[] | undefined;
+type DelayType = string | BookingsInterface | BookingsInterface[] | RoomsInterface | RoomsInterface[] | undefined;
 
 function delay (data: DelayType) {
     const time = Math.round(Math.random () * 500);

@@ -114,7 +114,7 @@ export const Table = (props: TableProps) => {
   const displayRow = (row: BookingsInterface, index: number) => {
     const rowContent = (
       <>
-        {props.columns.map((col: any, i: number) => (
+        {props.columns.map((col: Column, i: number) => (
           <div key={i}>
             {typeof col.display === "function"
               ? col.display(row)
