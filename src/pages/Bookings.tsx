@@ -64,9 +64,9 @@ const Status = styled.button<Props>`
 `;
 
 const CustomerPhoto = styled.img`
-  margin: 10px 10px 18px 18px;
-  height: 40px;
-  width: 40px;
+  margin: 5px auto;
+  height: 50px;
+  width: 50px;
   background: ${(props) => (props.src ? "transparent" : `${colors.green}`)};
   border-radius: 8px;
 `;

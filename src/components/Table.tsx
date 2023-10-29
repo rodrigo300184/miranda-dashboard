@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import colors from "../styles/colors";
-import { BookingsInterface } from "../features/interfaces/interfaces";
+import { BookingsInterface, RoomsInterface } from "../features/interfaces/interfaces";
 
 const TableContainer = styled.div`
   padding: 0px 50px;
@@ -69,6 +69,7 @@ const TableContent = styled.div`
 const RowContainer = styled.div`
   display: flex;
   width: 100%;
+  height: fit-content;
   border-bottom: 1px solid ${colors.borderGray};
   & div {
     display: flex;
@@ -77,7 +78,6 @@ const RowContainer = styled.div`
     align-items: center;
     border-left: 1px solid ${colors.borderGray};
     width: 100%;
-    height: 135px;
     &:first-child {
       border: none;
       &:last-child {
@@ -104,21 +104,23 @@ type Column = {
 
 type TableProps = {
   columns: Column[];
-  data: BookingsInterface[];
+  data: BookingsInterface[] | RoomsInterface[] | any;
   name: string;
 };
+
+type Row = BookingsInterface | RoomsInterface;
 
 export const Table = (props: TableProps) => {
   const { columns, data } = props;
 
-  const displayRow = (row: BookingsInterface, index: number) => {
+  const displayRow = (row: Row, index: number) => {
     const rowContent = (
       <>
         {props.columns.map((col: Column, i: number) => (
           <div key={i}>
             {typeof col.display === "function"
               ? col.display(row)
-              : row[col.property as keyof BookingsInterface]}
+              : row[col.property as keyof Row]}
           </div>
         ))}
       </>
@@ -139,8 +141,8 @@ export const Table = (props: TableProps) => {
           ))}
         </TableHeaderContainer>
         <TableContent>
-          {data.map((bookingRowObject: BookingsInterface, index: number) =>
-            displayRow(bookingRowObject, index)
+          {data.map((RowObject: Row, index: number) =>
+            displayRow(RowObject, index)
           )}
         </TableContent>
       </TableContainer>

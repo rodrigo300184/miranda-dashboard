@@ -24,14 +24,17 @@ interface Iamenities {
 }
 
 export interface RoomsInterface {
+  "room_number": string,
   "id": string,
-		"room_photo": string,
-		"room_type": string,
-		"amenities": Iamenities[],
-		"price": number,
-		"offer_price": boolean,
-		"discount": number,
-		"status": string
+  "room_photo": string[],
+  "room_type": string,
+  "description": string,
+  "amenities_type": string,
+  "amenities": Iamenities[],
+  "price": number,
+  "offer_price": boolean,
+  "discount": number,
+  "status": string
 }
 
 export interface IRoomsInitialState {
