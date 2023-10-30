@@ -25,15 +25,16 @@ type Props = {
   small?: string,
   status?: string,
   name?: string,
+  decoration?: string,
 }
 
 const TextFormatter = styled.span<Props>`
   display: block;
   text-align: left;
-  color: ${(props) =>
-    props.small === "small" ? `${colors.green}` : `${colors.mattBlack}`};
+  color: ${(props) => props.color};
   font: ${(props) =>
     props.small === "small" ? "300 13px Poppins" : "500 16px Poppins"};
+  text-decoration: ${(props) => props.decoration};
 `;
 
 export const Rooms = () => {
@@ -60,7 +61,7 @@ export const Rooms = () => {
           <>
             <RoomPhoto src={room_photo[0]} />
             <TextFormatter>N° {room_number}</TextFormatter>
-            <TextFormatter small={'small'}>#{id}</TextFormatter>
+            <TextFormatter small={'small'} color={colors.green}>#{id}</TextFormatter>
           </>
         );
       },
@@ -76,10 +77,26 @@ export const Rooms = () => {
     {
       property: "price",
       label: "Price",
+      display: ({price, offer_price}: RoomsInterface) => {
+        return (
+          <>
+          {offer_price? <TextFormatter decoration={'line-through'} color={colors.red}>${price}</TextFormatter> : 
+                        <TextFormatter>${price}</TextFormatter>}
+          </>
+        )
+      }
     },
     {
       property: "offer_price",
       label: "Offer Price",
+      display: ({price, offer_price, discount}: RoomsInterface) => {
+        return (
+          <>
+          {offer_price? <TextFormatter color={colors.mattBlack}>${price-price*discount/100}</TextFormatter> : 
+                        <TextFormatter>-</TextFormatter>}
+          </>
+        )
+      }
     },
     {
       property: "status",
