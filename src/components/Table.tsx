@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import colors from "../styles/colors";
-import { BookingsInterface, RoomsInterface } from "../features/interfaces/interfaces";
+import {
+  BookingsInterface,
+  RoomsInterface,
+} from "../features/interfaces/interfaces";
 
 const TableContainer = styled.div`
   padding: 0px 50px;
@@ -89,7 +92,6 @@ const RowContainer = styled.div`
   &:last-child {
     border: none;
     margin-bottom: 65px;
-   
   }
   &:hover {
     box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 170px;
@@ -99,7 +101,7 @@ const RowContainer = styled.div`
 type Column = {
   property: string;
   label: string;
-  display?: (arg:any) => any;
+  display?: (arg: any) => any;
 };
 
 type TableProps = {
@@ -134,7 +136,7 @@ export const Table = (props: TableProps) => {
     <>
       <TableContainer>
         <TableHeaderContainer>
-          {columns.map((col: any, index:number) => (
+          {columns.map((col: any, index: number) => (
             <div key={index}>
               <p>{col.label}</p>
             </div>
