@@ -83,10 +83,10 @@ const RowContainer = styled.div`
     width: 100%;
     &:first-child {
       border: none;
-      &:last-child {
-        flex-direction: row;
-        justify-content: space-evenly;
-      }
+    }
+    &:last-child {
+      flex-direction: row;
+      justify-content: space-evenly;
     }
   }
   &:last-child {

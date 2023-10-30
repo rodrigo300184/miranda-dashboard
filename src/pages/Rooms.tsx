@@ -53,7 +53,7 @@ const Status = styled.button<Props>`
   }
 `;
 
-const AmenitiesContainer = styled.section`
+const AmenitiesContainer = styled.aside`
   padding: 5px;
   display: flex;
   flex-wrap: wrap;
