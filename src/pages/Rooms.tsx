@@ -14,6 +14,7 @@ import { Spinner } from "../components/Spinner";
 import styled from "styled-components";
 import colors from "../styles/colors";
 import PopMenu from "../components/PopMenu";
+import { NavLink } from "react-router-dom";
 
 const RoomPhoto = styled.img`
   margin: 10px;
@@ -60,12 +61,11 @@ const AmenitiesContainer = styled.aside`
   flex-wrap: wrap;
   gap: 5px;
   justify-content: center;
- 
 `;
 
 const Amenity = styled.button<Props>`
   padding: 7px;
- //margin-bottom: 5px;
+  //margin-bottom: 5px;
   font: 300 10px Poppins;
   width: fit-content;
   max-width: 120px;
@@ -73,7 +73,7 @@ const Amenity = styled.button<Props>`
   border: none;
   border-radius: 8px;
   color: white;
-  background-color: ${ () => `${colors.hardGreen}`};
+  background-color: ${() => `${colors.hardGreen}`};
   &:hover {
   }
 `;
@@ -93,9 +93,9 @@ export const Rooms = () => {
     return roomsData;
   }, [roomsData]);
 
-  const handleDelete = (id:string): void => {
+  const handleDelete = (id: string): void => {
     dispatch(deleteRoom(id));
-  }
+  };
 
   const columns = [
     {
@@ -106,9 +106,9 @@ export const Rooms = () => {
           <>
             <RoomPhoto src={room_photo[0]} />
             <TextFormatter>N° {room_number}</TextFormatter>
-            <TextFormatter small={"small"} color={colors.green}>
-              #{id}
-            </TextFormatter>
+            <NavLink to={`/rooms/${id}`}>
+              <TextFormatter small={"small"} color={colors.green}>#{id}</TextFormatter>
+            </NavLink>
           </>
         );
       },
@@ -124,7 +124,11 @@ export const Rooms = () => {
         const displayAmenities = amenities.map((amenity, key) => {
           return <Amenity key={key}>{amenity.name}</Amenity>;
         });
-        return <><AmenitiesContainer>{displayAmenities}</AmenitiesContainer></>
+        return (
+          <>
+            <AmenitiesContainer>{displayAmenities}</AmenitiesContainer>
+          </>
+        );
       },
     },
     {
@@ -165,8 +169,12 @@ export const Rooms = () => {
       property: "status",
       label: "Status",
       display: ({ id, status }: RoomsInterface) => {
-        return <><Status status={status}>{status}</Status>
-        <PopMenu path={'rooms'} id={id} onClick={() => handleDelete(id)} /></>;
+        return (
+          <>
+            <Status status={status}>{status}</Status>
+            <PopMenu path={"rooms"} id={id} onClick={() => handleDelete(id)} />
+          </>
+        );
       },
     },
   ];
@@ -176,44 +184,52 @@ export const Rooms = () => {
   return (
     <>
       <TabsMenuContainer>
-        <TabButton onClick={() => setFilter("All Rooms")}
-            style={
-              filter === "All Rooms"
-                ? {
-                    color: `${colors.hardGreen}`,
-                    borderBottom: `3px solid ${colors.hardGreen}`,
-                  }
-                : undefined
-            }>All Rooms</TabButton>
-        <TabButton onClick={() => setFilter("Available")}
-            style={
-              filter === "Available"
-                ? {
-                    color: `${colors.hardGreen}`,
-                    borderBottom: `3px solid ${colors.hardGreen}`,
-                  }
-                : undefined
-            }>Available</TabButton>
-        <TabButton onClick={() => setFilter("Booked")}
-            style={
-              filter === "Booked"
-                ? {
-                    color: `${colors.hardGreen}`,
-                    borderBottom: `3px solid ${colors.hardGreen}`,
-                  }
-                : undefined
-            }>Booked</TabButton>
+        <TabButton
+          onClick={() => setFilter("All Rooms")}
+          style={
+            filter === "All Rooms"
+              ? {
+                  color: `${colors.hardGreen}`,
+                  borderBottom: `3px solid ${colors.hardGreen}`,
+                }
+              : undefined
+          }
+        >
+          All Rooms
+        </TabButton>
+        <TabButton
+          onClick={() => setFilter("Available")}
+          style={
+            filter === "Available"
+              ? {
+                  color: `${colors.hardGreen}`,
+                  borderBottom: `3px solid ${colors.hardGreen}`,
+                }
+              : undefined
+          }
+        >
+          Available
+        </TabButton>
+        <TabButton
+          onClick={() => setFilter("Booked")}
+          style={
+            filter === "Booked"
+              ? {
+                  color: `${colors.hardGreen}`,
+                  borderBottom: `3px solid ${colors.hardGreen}`,
+                }
+              : undefined
+          }
+        >
+          Booked
+        </TabButton>
       </TabsMenuContainer>
       {roomsDataStatus === "rejected" ? (
         <ErrorMessage />
       ) : roomsDataStatus === "pending" ? (
         <Spinner />
       ) : (
-        <Table
-          name="rooms"
-          columns={columns}
-          data={filteredRoomsData}
-        />
+        <Table name="rooms" columns={columns} data={filteredRoomsData} />
       )}
     </>
   );

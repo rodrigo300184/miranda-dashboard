@@ -15,6 +15,7 @@ import { Provider } from "react-redux";
 import { store } from "./app/store";
 import { BookingDetails } from "./pages/BookingDetails";
 import { BookingUpdate } from "./pages/BookingUpdate";
+import { RoomDetails } from "./pages/RoomDetails";
 
 
 interface GeneralContextInterface {
@@ -108,6 +109,7 @@ return (
               <Route path="/login" element={<Login />} />
               <Route path="/bookings" element={<PrivateRoute><Bookings /></PrivateRoute>} />
               <Route path='/bookings/:bookingId' element={<BookingDetails />}	/>
+              <Route path='/rooms/:roomId' element={<RoomDetails />}	/>
               <Route path='/bookings/update/:bookingId' element={<BookingUpdate/>}	/>
               <Route path="/contact" element={ <PrivateRoute><Contact /></PrivateRoute>} />
               <Route path="/users" element={<PrivateRoute><Users /></PrivateRoute>} />
