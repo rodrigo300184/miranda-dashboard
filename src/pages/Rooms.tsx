@@ -13,6 +13,7 @@ import { ErrorMessage } from "../components/ErrorMessage";
 import { Spinner } from "../components/Spinner";
 import styled from "styled-components";
 import colors from "../styles/colors";
+import PopMenu from "../components/PopMenu";
 
 const RoomPhoto = styled.img`
   margin: 10px;
@@ -92,6 +93,10 @@ export const Rooms = () => {
     return roomsData;
   }, [roomsData]);
 
+  const handleDelete = (id:string): void => {
+    dispatch(deleteRoom(id));
+  }
+
   const columns = [
     {
       property: "room_info",
@@ -159,8 +164,9 @@ export const Rooms = () => {
     {
       property: "status",
       label: "Status",
-      display: ({ status }: RoomsInterface) => {
-        return <Status status={status}>{status}</Status>;
+      display: ({ id, status }: RoomsInterface) => {
+        return <><Status status={status}>{status}</Status>
+        <PopMenu path={'rooms'} id={id} onClick={() => handleDelete(id)} /></>;
       },
     },
   ];
@@ -170,9 +176,33 @@ export const Rooms = () => {
   return (
     <>
       <TabsMenuContainer>
-        <TabButton>All Rooms</TabButton>
-        <TabButton>Available</TabButton>
-        <TabButton>Booked</TabButton>
+        <TabButton onClick={() => setFilter("All Rooms")}
+            style={
+              filter === "All Rooms"
+                ? {
+                    color: `${colors.hardGreen}`,
+                    borderBottom: `3px solid ${colors.hardGreen}`,
+                  }
+                : undefined
+            }>All Rooms</TabButton>
+        <TabButton onClick={() => setFilter("Available")}
+            style={
+              filter === "Available"
+                ? {
+                    color: `${colors.hardGreen}`,
+                    borderBottom: `3px solid ${colors.hardGreen}`,
+                  }
+                : undefined
+            }>Available</TabButton>
+        <TabButton onClick={() => setFilter("Booked")}
+            style={
+              filter === "Booked"
+                ? {
+                    color: `${colors.hardGreen}`,
+                    borderBottom: `3px solid ${colors.hardGreen}`,
+                  }
+                : undefined
+            }>Booked</TabButton>
       </TabsMenuContainer>
       {roomsDataStatus === "rejected" ? (
         <ErrorMessage />
