@@ -56,7 +56,7 @@ const Status = styled.button<Props>`
 `;
 
 const AmenitiesContainer = styled.aside`
-  padding: 5px;
+  padding: 10px 5px;
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
@@ -64,7 +64,7 @@ const AmenitiesContainer = styled.aside`
 `;
 
 const Amenity = styled.button<Props>`
-  padding: 7px;
+  padding: 6px;
   //margin-bottom: 5px;
   font: 300 10px Poppins;
   width: fit-content;
@@ -113,7 +113,7 @@ export const Rooms = () => {
   const roomsData = useAppSelector(getRooms);
   const roomsDataStatus = useAppSelector(getRoomsStatus);
   const [filter, setFilter] = useState("All Rooms");
-  const [orderBy, setOrderBy] = useState<string>('');
+  const [orderBy, setOrderBy] = useState<string>('price_up');
   const filterAndOrder = (array: RoomsInterface[], filter: string, orderBy: string) => {
     const filteredArray = array.filter((room: RoomsInterface) => filter === "All Rooms" || room.status === filter);
     if (orderBy === "price_up") {
