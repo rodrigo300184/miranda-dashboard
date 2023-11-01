@@ -78,20 +78,61 @@ const Amenity = styled.button<Props>`
   }
 `;
 
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-right: 50px;
+`;
+const Select = styled.select`
+  margin-top: 50px;
+  width: 129px;
+  height: 40px;
+  font: 500 15px Poppins;
+  color: ${colors.green};
+  border: 2px solid rgb(19, 88, 70);
+  border-radius: 12px;
+  cursor: pointer;
+  outline: none;
+  padding-left: 15px;
+`;
+
+const Search = styled.input`
+  justify-item: end;
+  font: 500 16px Poppins;
+  color: ${colors.green};
+  padding: 5px;
+  width: 220px;
+  height: 40px;
+  margin-top: 50px;
+  border-radius: 12px;
+  border: 2px solid rgb(19, 88, 70);
+`;
+
 export const Rooms = () => {
   const dispatch = useAppDispatch();
   const roomsData = useAppSelector(getRooms);
   const roomsDataStatus = useAppSelector(getRoomsStatus);
   const [filter, setFilter] = useState("All Rooms");
-  const [orderBy, setOrderBy] = useState();
+  const [orderBy, setOrderBy] = useState<string>('');
+  const filterAndOrder = (array: RoomsInterface[], filter: string, orderBy: string) => {
+    const filteredArray = array.filter((room: RoomsInterface) => filter === "All Rooms" || room.status === filter);
+    if (orderBy === "price_up") {
+      filteredArray.sort((a: RoomsInterface, b: RoomsInterface) => 
+        (a.offer_price? a.price*a.discount : a.price) - (b.offer_price? b.price*b.discount : b.price))
+    } else {
+      filteredArray.sort((a: RoomsInterface, b: RoomsInterface) => 
+        (b.offer_price? b.price*b.discount : b.price) - (a.offer_price? a.price*a.discount : a.price))
+    }
+    return filteredArray;
+  };
 
   useEffect(() => {
     filteredRoomsData.length !== 0 || dispatch(fetchRooms());
   }, [dispatch]);
 
   const filteredRoomsData = useMemo(() => {
-    return roomsData;
-  }, [roomsData]);
+    return filterAndOrder(roomsData, filter, orderBy);;
+  }, [roomsData,filter,orderBy]);
 
   const handleDelete = (id: string): void => {
     dispatch(deleteRoom(id));
@@ -183,6 +224,7 @@ export const Rooms = () => {
 
   return (
     <>
+    <Container>
       <TabsMenuContainer>
         <TabButton
           onClick={() => setFilter("All Rooms")}
@@ -224,6 +266,12 @@ export const Rooms = () => {
           Booked
         </TabButton>
       </TabsMenuContainer>
+      <Search></Search>
+        <Select onChange={(event) => setOrderBy(event.target.value as string)}>
+          <option value="price_up">Price: Up</option>
+          <option value="price_down">Price: Down</option>
+        </Select>
+        </Container>
       {roomsDataStatus === "rejected" ? (
         <ErrorMessage />
       ) : roomsDataStatus === "pending" ? (

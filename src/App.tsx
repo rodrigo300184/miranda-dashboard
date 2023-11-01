@@ -16,6 +16,7 @@ import { store } from "./app/store";
 import { BookingDetails } from "./pages/BookingDetails";
 import { BookingUpdate } from "./pages/BookingUpdate";
 import { RoomDetails } from "./pages/RoomDetails";
+import { RoomUpdate } from "./pages/RoomUpdate";
 
 
 interface GeneralContextInterface {
