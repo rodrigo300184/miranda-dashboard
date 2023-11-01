@@ -111,6 +111,7 @@ return (
               <Route path='/bookings/:bookingId' element={<BookingDetails />}	/>
               <Route path='/rooms/:roomId' element={<RoomDetails />}	/>
               <Route path='/bookings/update/:bookingId' element={<BookingUpdate/>}	/>
+              <Route path='/rooms/update/:roomId' element={<RoomUpdate/>}	/>
               <Route path="/contact" element={ <PrivateRoute><Contact /></PrivateRoute>} />
               <Route path="/users" element={<PrivateRoute><Users /></PrivateRoute>} />
           
