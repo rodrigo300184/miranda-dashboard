@@ -18,7 +18,7 @@ export interface IBookingsInitialState {
   status: 'idle' | 'pending' | 'fulfilled' | 'rejected'
 }
 
-interface Iamenities {
+export interface Iamenities {
   name: string,
   description: string,
 }
