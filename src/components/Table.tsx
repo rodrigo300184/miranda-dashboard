@@ -127,7 +127,7 @@ export const Table = (props: TableProps) => {
         ))}
       </>
     );
-    const key = `${props.name}-${row.id}-${index}`;
+    const key = `${props.name}-${row._id}-${index}`;
 
     return <RowContainer key={key}>{rowContent}</RowContainer>;
   };

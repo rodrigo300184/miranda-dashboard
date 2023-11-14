@@ -22,7 +22,6 @@ import { faPhone } from "@fortawesome/free-solid-svg-icons";
 type Props = {
   small?: string,
   status?: string,
-  name?: string,
 }
 
 const TextFormatter = styled.span<Props>`
@@ -145,7 +144,7 @@ export const Bookings = () => {
       display: ({ guest, phone_number, _id }: BookingsInterface) => (
         <>
           <CustomerPhoto src={`https://robohash.org/${guest}.png?set=any`} />
-          <TextFormatter name="name">{guest}</TextFormatter>
+          <TextFormatter>{guest}</TextFormatter>
           <TextFormatter small="small"><FontAwesomeIcon icon={faPhone} style={{color: "#799283",}} /> {phone_number}</TextFormatter>
           <NavLink to={`/bookings/${_id}`}>
             <TextFormatter small="small">#{_id}</TextFormatter>
