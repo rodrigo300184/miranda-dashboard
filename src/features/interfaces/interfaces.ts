@@ -24,8 +24,8 @@ export interface Iamenities {
 }
 
 export interface RoomsInterface {
+  "_id": string,
   "room_number": string,
-  "id": string,
   "room_photo": string[],
   "room_type": string,
   "description": string,
@@ -53,3 +53,16 @@ export interface EmployeeInterface {
   "phone_number": string,
   "status": string
 }
+
+export interface LoginInterface {
+  email: string,
+  password: string,
+}
+
+export interface ILoginInitialState{
+  data: LoginInterface[],
+  status: 'idle' | 'pending' | 'fulfilled' | 'rejected'
+  error: null | string
+}
+
+export type bodyInterface = RoomsInterface | BookingsInterface | EmployeeInterface;

@@ -5,6 +5,8 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import colors from "../styles/colors";
 import { GeneralContext } from "../App";
+import { useAppDispatch } from "../app/hooks";
+import { userLogin } from "../features/login/loginSlice";
 
 const Container = styled.div`
   display: flex;
@@ -84,6 +86,7 @@ export const Login = () => {
   const loginState = Gcontext.loginState;
   const dispatchLogin = Gcontext.dispatchLogin;
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -98,7 +101,8 @@ export const Login = () => {
 
   const handleSubmit = (event:React.FormEvent<HTMLFormElement> ) => {
     event.preventDefault();
-    if (email === "email@email.com" && password === "1234") {
+    dispatch(userLogin({email: email, password: password}))
+    if (localStorage.getItem('token')) {
       dispatchLogin({
         type: 'LOGIN',
         payload: {

@@ -17,7 +17,7 @@ import PopMenu from "../components/PopMenu";
 import { NavLink } from "react-router-dom";
 
 const RoomPhoto = styled.img`
-  margin: 10px;
+  margin: 10px 8px 5px;
   height: auto;
   width: 80%;
   border-radius: 8px;
@@ -35,8 +35,10 @@ const TextFormatter = styled.span<Props>`
   text-align: left;
   color: ${(props) => props.color};
   font: ${(props) =>
-    props.small === "small" ? "300 13px Poppins" : "500 16px Poppins"};
+    props.small === "small" ? "300 14px Poppins" : "500 16px Poppins"};
   text-decoration: ${(props) => props.decoration};
+  margin-bottom:  ${(props) =>
+    props.small === "small" ? "5px" : ""};
 `;
 
 const Status = styled.button<Props>`
@@ -127,11 +129,11 @@ export const Rooms = () => {
   };
 
   useEffect(() => {
-    filteredRoomsData.length !== 0 || dispatch(fetchRooms());
+    dispatch(fetchRooms());
   }, [dispatch]);
 
   const filteredRoomsData = useMemo(() => {
-    return filterAndOrder(roomsData, filter, orderBy);;
+    return filterAndOrder(roomsData, filter, orderBy);
   }, [roomsData,filter,orderBy]);
 
   const handleDelete = (id: string): void => {
@@ -142,13 +144,13 @@ export const Rooms = () => {
     {
       property: "room_info",
       label: "Room Info",
-      display: ({ id, room_number, room_photo }: RoomsInterface) => {
+      display: ({ _id, room_number, room_photo }: RoomsInterface) => {
         return (
           <>
             <RoomPhoto src={room_photo[0]} />
             <TextFormatter>N° {room_number}</TextFormatter>
-            <NavLink to={`/rooms/${id}`}>
-              <TextFormatter small={"small"} color={colors.green}>#{id}</TextFormatter>
+            <NavLink to={`/rooms/${_id}`}>
+              <TextFormatter small={"small"} color={colors.green}>#{_id}</TextFormatter>
             </NavLink>
           </>
         );
@@ -209,18 +211,16 @@ export const Rooms = () => {
     {
       property: "status",
       label: "Status",
-      display: ({ id, status }: RoomsInterface) => {
+      display: ({ _id, status }: RoomsInterface) => {
         return (
           <>
             <Status status={status}>{status}</Status>
-            <PopMenu path={"rooms"} id={id} onClick={() => handleDelete(id)} />
+            <PopMenu path={"rooms"} id={_id} onClick={() => handleDelete(_id)} />
           </>
         );
       },
     },
   ];
-
-  console.log(filteredRoomsData);
 
   return (
     <>

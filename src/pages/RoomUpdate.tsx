@@ -68,9 +68,9 @@ const TextArea = styled.textarea`
   font-family: poppins;
   font-size: 13px;
   padding: 5px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   border-bottom: 2px solid ${colors.bottomBorderGray};
-  width: 220px;
+  width: 300px;
   height: 250px;
   resize: none;
   text-overflow: ellipsis;
@@ -163,7 +163,7 @@ const AmenitiesContainer = styled.aside`
 const PhotoContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 220px;
+  width: 300px;
   gap: 5px;
   margin-bottom: 30px;
 `;
@@ -236,7 +236,7 @@ export const RoomUpdate = () => {
   function handlePhotosQuantity(action: string) {
     if (newRoom) {
     const copyOfData = structuredClone(newRoom);
-    if (action === "add" && copyOfData.room_photo.length < 5) {
+    if (action === "add" && copyOfData.room_photo.length < 4) {
       copyOfData.room_photo.push("");
     } else if (action === "remove" && copyOfData.room_photo.length > 1) {
       copyOfData.room_photo.pop();
@@ -261,7 +261,7 @@ export const RoomUpdate = () => {
         <ErrorMessage />
       ) : roomsStatus === "pending" ||
         newRoom === null ||
-        newRoom.id !== roomId ? (
+        newRoom._id !== roomId ? (
         <Spinner />
       ) : (
         <Container>

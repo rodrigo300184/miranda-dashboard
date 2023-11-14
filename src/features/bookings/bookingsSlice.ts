@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit";
 import bookingsData from '../../data/bookingsData.json';
-import delay from "../../utils/delay/delay";
+import delay from "../../utils/delay/api_request";
 import {IBookingsInitialState, BookingsInterface } from '../../features/interfaces/interfaces' 
 import { RootState } from "../../app/store";
 
