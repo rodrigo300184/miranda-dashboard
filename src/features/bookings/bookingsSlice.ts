@@ -1,41 +1,33 @@
 import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit";
-import bookingsData from '../../data/bookingsData.json';
-import delay from "../../utils/delay/api_request";
 import {IBookingsInitialState, BookingsInterface } from '../../features/interfaces/interfaces' 
 import { RootState } from "../../app/store";
+import { api_request } from "../../utils/delay/api_request";
 
-export const fetchBookings = createAsyncThunk<BookingsInterface[]>('bookings/fetchBookings', async () => {
-    const response = (await delay(bookingsData)) as BookingsInterface[];
-    return response;
+export const fetchBookings = createAsyncThunk('bookings/fetchBookings', () => {
+    return api_request('bookings','GET');
 })
 
-export const fetchBooking = createAsyncThunk('bookings/fetchBooking', async (id:string | undefined) => {
-    const response = (await delay(bookingsData.find((booking) => booking.id === id))) as BookingsInterface;
-    return response;
+export const fetchBooking = createAsyncThunk('bookings/fetchBooking', (id:string | undefined) => {
+  return api_request(`bookings/${id}`,'GET');
 })
 
-export const createBooking = createAsyncThunk('bookings/createBooking', async (newBooking:BookingsInterface) => {
-    const response = (await delay(newBooking)) as BookingsInterface;
-    return response;
+export const createBooking = createAsyncThunk('bookings/createBooking', (newBooking:BookingsInterface) => {
+  return api_request(`bookings`,'POST',newBooking);
 })
-export const updateBooking = createAsyncThunk('bookings/updateBooking', async(updatedBooking: BookingsInterface) => {
-  const response = await delay(bookingsData.find((booking) => booking.id === updatedBooking.id))
-  return {response,updatedBooking};
+export const updateBooking = createAsyncThunk('bookings/updateBooking', (updatedBooking: BookingsInterface) => {
+  return api_request(`bookings/${updatedBooking._id}`,'PUT',updatedBooking);
 })
 
 export const deleteBooking = createAsyncThunk('bookings/deleteBooking', async (id:string) => {
-  const response = (await delay(id)) as string;
-  return response;
+  const result = await api_request(`bookings/${id}`,'DELETE');
+  if(result === 'The booking was correctly deleted.') {return id;}
 })
-
-
 
 const initialState: IBookingsInitialState = {
   data: [],
   item: null,
   status: 'idle'
 }
-
 
 const bookingsSlice = createSlice({
     name: "bookings",
@@ -66,12 +58,13 @@ const bookingsSlice = createSlice({
         .addCase(updateBooking.fulfilled, (state, action) => {
           state.status = 'fulfilled';
           state.item = {...state.item, ...action.payload.updatedBooking}
-          state.data = state.data.filter((item)=> item.id !== action.payload.updatedBooking.id);
+          console.log(state.item)
+          state.data = state.data.filter((item)=> item._id !== action.payload.updatedBooking.id);
           state.item && state.data.push(state.item)
         })
         .addCase(deleteBooking.fulfilled, (state, action) => {
           state.status = 'fulfilled';
-          state.data = state.data.filter((item)=> item.id !== action.payload);
+          state.data = state.data.filter((item)=> item._id !== action.payload);
         })
         .addMatcher(
           isAnyOf(

@@ -16,6 +16,8 @@ import ViewNotes from "../components/ViewNotes";
 import PopMenu from "../components/PopMenu";
 import { BookingsInterface } from "../features/interfaces/interfaces";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPhone } from "@fortawesome/free-solid-svg-icons";
 
 type Props = {
   small?: string,
@@ -126,7 +128,7 @@ export const Bookings = () => {
   };
 
   useEffect(() => {
-    filteredBookingsData.length !==0 || dispatch(fetchBookings());
+    dispatch(fetchBookings());
   }, [dispatch]);
 
     const filteredBookingsData = useMemo(() =>{return filterAndOrder(bookingsData, filter, orderBy);
@@ -140,13 +142,13 @@ export const Bookings = () => {
     {
       property: "guest",
       label: "Guest Details",
-      display: ({ guest, phone_number, id }: BookingsInterface) => (
+      display: ({ guest, phone_number, _id }: BookingsInterface) => (
         <>
           <CustomerPhoto src={`https://robohash.org/${guest}.png?set=any`} />
           <TextFormatter name="name">{guest}</TextFormatter>
-          <TextFormatter small="small">{phone_number}</TextFormatter>
-          <NavLink to={`/bookings/${id}`}>
-            <TextFormatter small="small">#{id}</TextFormatter>
+          <TextFormatter small="small"><FontAwesomeIcon icon={faPhone} style={{color: "#799283",}} /> {phone_number}</TextFormatter>
+          <NavLink to={`/bookings/${_id}`}>
+            <TextFormatter small="small">#{_id}</TextFormatter>
           </NavLink>
         </>
       ),
@@ -177,10 +179,10 @@ export const Bookings = () => {
     {
       property: "status",
       label: "Status",
-      display: ({ status, id }: BookingsInterface) => 
+      display: ({ status, _id }: BookingsInterface) => 
         <StatusContainer>
           <Status status={status}>{status}</Status>
-            <PopMenu path={'bookings'} id={id} onClick={() => handleDelete(id)} />
+            <PopMenu path={'bookings'} id={_id} onClick={() => handleDelete(_id)} />
         </StatusContainer>,
     },
   

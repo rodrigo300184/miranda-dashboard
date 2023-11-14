@@ -129,7 +129,7 @@ export const BookingUpdate = () => {
         <ErrorMessage />
       ) : bookingStatus === "pending" ||
         newBooking === null ||
-        newBooking.id !== bookingId ? (
+        newBooking._id !== bookingId ? (
         <Spinner />
       ) : (
         <Container>

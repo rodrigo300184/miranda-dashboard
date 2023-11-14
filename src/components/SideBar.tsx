@@ -21,7 +21,7 @@ const SideMenuContainer = styled.div<Props>`
   transition: margin-left ease 0.5s;
 `;
 
-const UserContainer = styled.div`
+const EmployeeContainer = styled.div`
   box-shadow: 0px 20px 30px #00000014;
   border-radius: 18px;
   text-align: center;
@@ -43,7 +43,7 @@ const UserContainer = styled.div`
   }
 `;
 
-const UserPhoto = styled.div`
+const EmployeePhoto = styled.div`
   width: 70px;
   height: 70px;
   border-radius: 8px;
@@ -154,17 +154,17 @@ export const SideBar = () => {
           <StyledLink to="/contact">{icons.contact}<span>Contact</span></StyledLink>
         </Li>
         <Li>
-          <StyledLink to="/users">{icons.users}<span>Users</span></StyledLink>
+          <StyledLink to="/employees">{icons.employee}<span>Employees</span></StyledLink>
         </Li>
       </ul>
-      <UserContainer>
-        <UserPhoto
+      <EmployeeContainer>
+        <EmployeePhoto
           style={{ backgroundImage: `url('https://robohash.org/${loginState.username}.png')` }}
         />
         <p>{loginState.username}</p>
         <span>{loginState.email}</span>
         <EditUser />
-      </UserContainer>
+      </EmployeeContainer>
       <SideMenuFooter>
         <AppName>Travl Hotel Admin Dashboard</AppName>
         <CopyRight>© 2023 All Rights Reserved</CopyRight>

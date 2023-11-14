@@ -33,6 +33,7 @@ const RightContainer = styled.div`
 
 const CardContainer = styled.div`
   display: flex;
+  justify-content: space-between;
 `;
 
 const InnerCardContainer = styled.div`
@@ -55,6 +56,8 @@ const Name = styled.h2`
   text-align: left;
   font: normal normal 600 30px Poppins;
   letter-spacing: 0px;
+  width: 100%;
+  text-overflow: ellipsis;
 `;
 
 const P = styled.p`
@@ -135,41 +138,7 @@ export const BookingDetails = () => {
       setBooking(selectBooking);
     }
   }, [bookingStatus, selectBooking]);
-
-  function formatDateString(inputDateString: string) {
-    var date = new Date(inputDateString);
-    var randomHour = Math.floor(Math.random() * 24);
-    date.setHours(randomHour);
-    function getDayWithSuffix(day:number) {
-      if (day >= 11 && day <= 13) {
-        return day + "th";
-      }
-      switch (day % 10) {
-        case 1:
-          return day + "st";
-        case 2:
-          return day + "nd";
-        case 3:
-          return day + "rd";
-        default:
-          return day + "th";
-      }
-    }
-    var dayWithSuffix = getDayWithSuffix(date.getDate());
-    var options: Intl.DateTimeFormatOptions = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
-    };
-    var formattedDate = date.toLocaleDateString("en-US", options);
-    formattedDate = formattedDate.replace(date.getDate().toString(), dayWithSuffix);
-    formattedDate = formattedDate.replace("at", "|");
-    return formattedDate;
-  }
-
+  
   return (
     <>
       {bookingStatus === "rejected" ? (
@@ -187,7 +156,7 @@ export const BookingDetails = () => {
               />
               <InnerCardContainer>
                 <Name>{booking?.guest}</Name>
-                <P color={colors.green}>ID {booking?.id}</P>
+                <P color={colors.green}>ID {booking?._id}</P>
                 <ContactButtons>
                   <PhoneButton>
                     <FontAwesomeIcon icon={faPhone} size="xl" />
@@ -203,11 +172,11 @@ export const BookingDetails = () => {
             <DatesContainer>
               <DateContainer>
                 <P color={colors.gray}>Check In</P>
-                <span>{formatDateString(booking?.check_in || '')}</span>
+                <span>{booking?.check_in}</span>
               </DateContainer>
               <DateContainer>
                 <P color={colors.gray}>Check Out</P>
-                <span>{formatDateString(booking?.check_out || '')}</span>
+                <span>{booking?.check_out}</span>
               </DateContainer>
             </DatesContainer>
           </LeftContainer>

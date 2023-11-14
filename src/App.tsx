@@ -3,7 +3,7 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { Dashboard } from "./pages/Dashboard";
 import { Bookings } from "./pages/Bookings";
 import { Rooms } from "./pages/Rooms";
-import { Users } from "./pages/Users";
+import { Employees } from "./pages/Employees";
 import { Contact } from "./pages/Contact";
 import { SideBar } from "./components/SideBar";
 import { useState, createContext, useReducer, useEffect} from "react";
@@ -114,7 +114,7 @@ return (
               <Route path='/bookings/update/:bookingId' element={<BookingUpdate/>}	/>
               <Route path='/rooms/update/:roomId' element={<RoomUpdate/>}	/>
               <Route path="/contact" element={ <PrivateRoute><Contact /></PrivateRoute>} />
-              <Route path="/users" element={<PrivateRoute><Users /></PrivateRoute>} />
+              <Route path="/employees" element={<PrivateRoute><Employees /></PrivateRoute>} />
           
             </Routes>
           </RightContainer>

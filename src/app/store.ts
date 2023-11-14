@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import bookingsSlice from "../features/bookings/bookingsSlice";
 import roomsSlice from "../features/rooms/roomsSlice";
 import loginSlice from "../features/login/loginSlice";
+import employeesSlice from "../features/employees/employeesSlice";
 
 
 export const store = configureStore(
@@ -9,6 +10,7 @@ export const store = configureStore(
         reducer: {
             bookings: bookingsSlice,
             rooms: roomsSlice,
+            employees: employeesSlice,
             login: loginSlice,
         }
     }

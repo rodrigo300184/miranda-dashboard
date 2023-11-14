@@ -1,5 +1,5 @@
 export interface BookingsInterface {
-  id: string;
+  _id: string;
   guest: string;
   phone_number: string;
   order_date: string;
@@ -43,15 +43,22 @@ export interface IRoomsInitialState {
   status: 'idle' | 'pending' | 'fulfilled' | 'rejected'
 }
 
-export interface EmployeeInterface {
-  "employee_id": string,
+export interface EmployeesInterface {
+  "_id": string,
   "full_name": string,
   "email": string,
+  "password": string,
   "photo": string,
   "start_date": string,
   "description": string,
   "phone_number": string,
   "status": string
+}
+
+export interface IEmployeesInitialState {
+  data: EmployeesInterface[],
+  item: EmployeesInterface | null,
+  status: 'idle' | 'pending' | 'fulfilled' | 'rejected'
 }
 
 export interface LoginInterface {
@@ -65,4 +72,4 @@ export interface ILoginInitialState{
   error: null | string
 }
 
-export type bodyInterface = RoomsInterface | BookingsInterface | EmployeeInterface;
+export type bodyInterface = RoomsInterface | BookingsInterface | EmployeesInterface;

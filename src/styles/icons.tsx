@@ -4,7 +4,7 @@ import { LuLayoutDashboard as DashboardIcon } from "react-icons/lu";
 import { LuCalendarCheck2 as BookingIcon } from "react-icons/lu";
 import { SlKey as RoomsIcon } from "react-icons/sl";
 import { MdOutlineRateReview as ContactIcon } from "react-icons/md";
-import { BsPerson as UsersIcon } from "react-icons/bs";
+import { BsPerson as EmployeeIcon } from "react-icons/bs";
 import { LuMail as EmailIcon } from "react-icons/lu";
 import { AiOutlineCloseCircle as CloseIcon } from "react-icons/ai";
 // Headers Icons
@@ -44,7 +44,7 @@ const icons = {
   bookings:  <SideBarIcons><BookingIcon /></SideBarIcons>,
   rooms: <SideBarIcons><RoomsIcon /></SideBarIcons>,
   contact: <SideBarIcons><ContactIcon /></SideBarIcons>,
-  users: <SideBarIcons><UsersIcon /></SideBarIcons>,
+  employee: <SideBarIcons><EmployeeIcon /></SideBarIcons>,
   menu: <MenuIcon />,
   message: <MessageIcon />,
   bell: <BellIcon />,

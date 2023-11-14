@@ -12,7 +12,7 @@ export const fetchRoom = createAsyncThunk('rooms/fetchRoom', async (id: string |
 })
 
 export const createRoom = createAsyncThunk('rooms/createRoom', async (newRoom: RoomsInterface) => {
-  return api_request(`rooms`,'POST',newRoom);;
+  return api_request(`rooms`,'POST',newRoom);
 })
 
 export const updateRoom = createAsyncThunk('rooms/updateRoom', async (updatedRoom: RoomsInterface) => {
