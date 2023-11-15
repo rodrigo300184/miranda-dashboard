@@ -22,7 +22,7 @@ const NameContainer = styled.aside`
   align-items: center;
   justify-content: space-around;
   gap: 15px;
-  padding:5px;
+  padding: 5px;
 `;
 
 const EmployeePhoto = styled.img`
@@ -66,8 +66,7 @@ const Status = styled.button<Props>`
     props.status === "Active"
       ? `${colors.checkInBtnText}`
       : `${colors.checkOutBtnText}`};
-   
-   
+
   background-color: ${(props) =>
     props.status === "Active"
       ? `${colors.checkInBtnBgr}`
@@ -76,32 +75,69 @@ const Status = styled.button<Props>`
   }
 `;
 
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-right: 50px;
+`;
+
+const Select = styled.select`
+  margin-top: 50px;
+  width: 129px;
+  height: 40px;
+  font: 500 15px Poppins;
+  color: ${colors.green};
+  border: 2px solid rgb(19, 88, 70);
+  border-radius: 12px;
+  cursor: pointer;
+  outline: none;
+  padding-left: 15px;
+`;
+
+const Search = styled.input`
+  justify-item: end;
+  font: 500 16px Poppins;
+  color: ${colors.green};
+  padding: 5px;
+  width: 220px;
+  height: 40px;
+  margin-top: 50px;
+  border-radius: 12px;
+  border: 2px solid rgb(19, 88, 70);
+`;
+
 export const Employees = () => {
   const dispatch = useAppDispatch();
   const employeesData = useAppSelector(getEmployees);
   const employeesDatastatus = useAppSelector(getEmployeesStatus);
   const [filter, setFilter] = useState("All Employees");
-  const [orderBy, setOrderBy] = useState<keyof EmployeesInterface>("full_name");
+  const [orderBy, setOrderBy] = useState("Asc");
   const filterAndOrder = (
     array: EmployeesInterface[],
     filter: string,
-    orderBy: keyof EmployeesInterface
+    orderBy: string
   ) => {
     const filteredArray = array.filter(
-      (booking: EmployeesInterface) =>
-        filter === "All Employees" || booking.status === filter
+      (employee: EmployeesInterface) =>
+        filter === "All Employees" || employee.status === filter
     );
-    if (orderBy === "full_name") {
+    if (orderBy === "Asc") {
       filteredArray.sort((a: EmployeesInterface, b: EmployeesInterface) =>
         a.full_name.localeCompare(b.full_name, undefined, {
+          sensitivity: "base",
+        })
+      );
+    } else if (orderBy === "Desc") {
+      filteredArray.sort((a: EmployeesInterface, b: EmployeesInterface) =>
+        b.full_name.localeCompare(a.full_name, undefined, {
           sensitivity: "base",
         })
       );
     } else {
       filteredArray.sort((a: EmployeesInterface, b: EmployeesInterface) => {
         const dateComparison =
-          new Date(a[orderBy] as string).getTime() -
-          new Date(b[orderBy] as string).getTime();
+          new Date(a.start_date).getTime() -
+          new Date(b.start_date).getTime();
         if (dateComparison === 0) {
           return a.full_name.localeCompare(b.full_name);
         }
@@ -178,35 +214,55 @@ export const Employees = () => {
   console.log(filteredEmployees);
   return (
     <>
-      <TabsMenuContainer>
-        <TabButton onClick={() => setFilter("All Employees")}
-          style={
-            filter === "All Employees"
-              ? {
-                  color: `${colors.hardGreen}`,
-                  borderBottom: `3px solid ${colors.hardGreen}`,
-                }
-              : undefined
-          }>All Employees</TabButton>
-        <TabButton onClick={() => setFilter("Active")}
-          style={
-            filter === "Active"
-              ? {
-                  color: `${colors.hardGreen}`,
-                  borderBottom: `3px solid ${colors.hardGreen}`,
-                }
-              : undefined
-          }>Active</TabButton>
-        <TabButton onClick={() => setFilter("Inactive")}
-          style={
-            filter === "Inactive"
-              ? {
-                  color: `${colors.hardGreen}`,
-                  borderBottom: `3px solid ${colors.hardGreen}`,
-                }
-              : undefined
-          }>Inactive</TabButton>
-      </TabsMenuContainer>
+      <Container>
+        <TabsMenuContainer>
+          <TabButton
+            onClick={() => setFilter("All Employees")}
+            style={
+              filter === "All Employees"
+                ? {
+                    color: `${colors.hardGreen}`,
+                    borderBottom: `3px solid ${colors.hardGreen}`,
+                  }
+                : undefined
+            }
+          >
+            All Employees
+          </TabButton>
+          <TabButton
+            onClick={() => setFilter("Active")}
+            style={
+              filter === "Active"
+                ? {
+                    color: `${colors.hardGreen}`,
+                    borderBottom: `3px solid ${colors.hardGreen}`,
+                  }
+                : undefined
+            }
+          >
+            Active
+          </TabButton>
+          <TabButton
+            onClick={() => setFilter("Inactive")}
+            style={
+              filter === "Inactive"
+                ? {
+                    color: `${colors.hardGreen}`,
+                    borderBottom: `3px solid ${colors.hardGreen}`,
+                  }
+                : undefined
+            }
+          >
+            Inactive
+          </TabButton>
+        </TabsMenuContainer>
+        <Search></Search>
+        <Select onChange={(event) => setOrderBy(event.target.value)}>
+          <option value="Asc">Name(A-Z)</option>
+          <option value="Desc">Name(Z-A)</option>
+          <option value="Start Date">Start Date</option>
+        </Select>
+      </Container>
       {employeesDatastatus === "rejected" ? (
         <ErrorMessage />
       ) : employeesDatastatus === "pending" ? (
