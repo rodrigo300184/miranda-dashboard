@@ -44,12 +44,10 @@ const roomsSlice = createSlice({
         state.data = action.payload;
       })
       .addCase(fetchRoom.pending, (state) => {
-        console.log('pending')
         state.status = 'pending';
         state.item = null;
       })
       .addCase(fetchRoom.fulfilled, (state, action) => {
-        console.log(action.payload)
         state.status = 'fulfilled';
         state.item = action.payload;
       })

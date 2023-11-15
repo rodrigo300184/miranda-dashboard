@@ -58,7 +58,6 @@ const bookingsSlice = createSlice({
         .addCase(updateBooking.fulfilled, (state, action) => {
           state.status = 'fulfilled';
           state.item = {...state.item, ...action.payload.updatedBooking}
-          console.log(state.item)
           state.data = state.data.filter((item)=> item._id !== action.payload.updatedBooking.id);
           state.item && state.data.push(state.item)
         })

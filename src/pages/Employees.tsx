@@ -210,7 +210,6 @@ export const Employees = () => {
       ),
     },
   ];
-  console.log(filteredEmployees);
   return (
     <>
       <Container>

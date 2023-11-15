@@ -4,7 +4,6 @@ import { RootState } from "../../app/store";
 import { api_request } from "../../utils/delay/api_request";
 
 export const fetchEmployees = createAsyncThunk('employees/fetchEmployees', () => {
-    console.log('entre')
   return api_request('employees','GET');
 })
 
@@ -38,7 +37,6 @@ const employeesSlice = createSlice({
       builder
         .addCase(fetchEmployees.fulfilled, (state, action) => {
           state.status = 'fulfilled';
-          console.log(action.payload)
           state.data = action.payload;
         })
         .addCase(fetchEmployee.pending, (state) => {
@@ -60,7 +58,6 @@ const employeesSlice = createSlice({
         .addCase(updateEmployee.fulfilled, (state, action) => {
           state.status = 'fulfilled';
           state.item = {...state.item, ...action.payload.updatedBooking}
-          console.log(state.item)
           state.data = state.data.filter((item)=> item._id !== action.payload.updatedBooking.id);
           state.item && state.data.push(state.item)
         })
