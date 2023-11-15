@@ -17,6 +17,7 @@ import { BookingDetails } from "./pages/BookingDetails";
 import { BookingUpdate } from "./pages/BookingUpdate";
 import { RoomDetails } from "./pages/RoomDetails";
 import { RoomUpdate } from "./pages/RoomUpdate";
+import { EmployeeUpdate } from "./pages/EmployeeUpdate";
 
 
 interface GeneralContextInterface {
@@ -115,6 +116,7 @@ return (
               <Route path='/rooms/update/:roomId' element={<RoomUpdate/>}	/>
               <Route path="/contact" element={ <PrivateRoute><Contact /></PrivateRoute>} />
               <Route path="/employees" element={<PrivateRoute><Employees /></PrivateRoute>} />
+              <Route path='/employees/update/:employeeId' element={<EmployeeUpdate/>}	/>
           
             </Routes>
           </RightContainer>

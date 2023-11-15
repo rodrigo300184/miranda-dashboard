@@ -4,7 +4,8 @@ import { RootState } from "../../app/store";
 import { api_request } from "../../utils/delay/api_request";
 
 export const fetchEmployees = createAsyncThunk('employees/fetchEmployees', () => {
-    return api_request('employees','GET');
+    console.log('entre')
+  return api_request('employees','GET');
 })
 
 export const fetchEmployee = createAsyncThunk('employees/fetchEmployee', (id:string | undefined) => {
@@ -20,7 +21,7 @@ export const updateEmployee = createAsyncThunk('employees/updateEmployee', (upda
 
 export const deleteEmployee = createAsyncThunk('employees/deleteEmployee', async (id:string) => {
   const result = await api_request(`employees/${id}`,'DELETE');
-  if(result === 'The booking was correctly deleted.') {return id;}
+  if(result === 'The employee was correctly deleted.') {return id;}
 })
 
 const initialState: IEmployeesInitialState = {
@@ -37,6 +38,7 @@ const employeesSlice = createSlice({
       builder
         .addCase(fetchEmployees.fulfilled, (state, action) => {
           state.status = 'fulfilled';
+          console.log(action.payload)
           state.data = action.payload;
         })
         .addCase(fetchEmployee.pending, (state) => {

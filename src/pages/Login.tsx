@@ -102,7 +102,7 @@ export const Login = () => {
   const handleSubmit = (event:React.FormEvent<HTMLFormElement> ) => {
     event.preventDefault();
     dispatch(userLogin({email: email, password: password}))
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem("token")) {
       dispatchLogin({
         type: 'LOGIN',
         payload: {

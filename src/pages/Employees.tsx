@@ -17,8 +17,10 @@ import { ErrorMessage } from "../components/ErrorMessage";
 import { Spinner } from "../components/Spinner";
 import { Table } from "../components/Table";
 
-const NameContainer = styled.div`
+const NameContainer = styled.aside`
   display: flex;
+  align-items: center;
+  justify-content: space-around;
   gap: 15px;
 `;
 
@@ -30,7 +32,10 @@ const EmployeePhoto = styled.img`
   border-radius: 8px;
 `;
 
-const DataContainer = styled.div``;
+const DataContainer = styled.aside`
+  display: flex;
+  flex-direction: column;
+`;
 
 type Props = {
   small?: string;
@@ -53,26 +58,19 @@ const StatusContainer = styled.div`
 const Status = styled.button<Props>`
   font: 600 16px Poppins;
   width: 70%;
-  max-width: 120px;
   height: 48px;
   border: none;
   border-radius: 8px;
   color: ${(props) =>
-    props.status === "Check In"
+    props.status === "Active"
       ? `${colors.checkInBtnText}`
-      : props.status === "Check Out"
-      ? `${colors.checkOutBtnText}`
-      : props.status === "In Progress"
-      ? `${colors.inProgressBtnText}`
-      : "transparent"};
+      : `${colors.checkOutBtnText}`};
+   
+   
   background-color: ${(props) =>
-    props.status === "Check In"
+    props.status === "Active"
       ? `${colors.checkInBtnBgr}`
-      : props.status === "Check Out"
-      ? `${colors.checkOutBtnBgr}`
-      : props.status === "In Progress"
-      ? `${colors.inProgressBtnBgr}`
-      : "transparent"};
+      : `${colors.checkOutBtnBgr}`};
   &:hover {
   }
 `;
@@ -90,7 +88,7 @@ export const Employees = () => {
   ) => {
     const filteredArray = array.filter(
       (booking: EmployeesInterface) =>
-        filter === "All Bookings" || booking.status === filter
+        filter === "All Employees" || booking.status === filter
     );
     if (orderBy === "full_name") {
       filteredArray.sort((a: EmployeesInterface, b: EmployeesInterface) =>
@@ -113,7 +111,7 @@ export const Employees = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchEmployees);
+    dispatch(fetchEmployees());
   }, [dispatch]);
 
   const filteredEmployees = useMemo(() => {
@@ -134,7 +132,7 @@ export const Employees = () => {
             <EmployeePhoto src={photo} />
             <DataContainer>
               <TextFormatter>{full_name}</TextFormatter>
-              <TextFormatter small="small">{_id}</TextFormatter>
+              <TextFormatter small="small">#{_id}</TextFormatter>
             </DataContainer>
           </NameContainer>
         </>
@@ -177,7 +175,7 @@ export const Employees = () => {
       ),
     },
   ];
-
+  console.log(filteredEmployees);
   return (
     <>
       <TabsMenuContainer>
