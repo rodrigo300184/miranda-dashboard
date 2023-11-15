@@ -149,7 +149,7 @@ export const Rooms = () => {
             <RoomPhoto src={room_photo[0]} />
             <TextFormatter>N° {room_number}</TextFormatter>
             <NavLink to={`/rooms/${_id}`}>
-              <TextFormatter small={"small"} color={colors.green}>#{_id}</TextFormatter>
+              <TextFormatter small={"small"} color={colors.green}>#{_id.slice(0,10)}...</TextFormatter>
             </NavLink>
           </>
         );

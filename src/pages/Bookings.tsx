@@ -147,7 +147,7 @@ export const Bookings = () => {
           <TextFormatter>{guest}</TextFormatter>
           <TextFormatter small="small"><FontAwesomeIcon icon={faPhone} style={{color: "#799283",}} /> {phone_number}</TextFormatter>
           <NavLink to={`/bookings/${_id}`}>
-            <TextFormatter small="small">#{_id}</TextFormatter>
+            <TextFormatter small="small">#{_id.slice(0,10)}...</TextFormatter>
           </NavLink>
         </>
       ),

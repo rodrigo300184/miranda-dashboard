@@ -136,8 +136,7 @@ export const Employees = () => {
     } else {
       filteredArray.sort((a: EmployeesInterface, b: EmployeesInterface) => {
         const dateComparison =
-          new Date(a.start_date).getTime() -
-          new Date(b.start_date).getTime();
+          new Date(a.start_date).getTime() - new Date(b.start_date).getTime();
         if (dateComparison === 0) {
           return a.full_name.localeCompare(b.full_name);
         }
@@ -169,7 +168,7 @@ export const Employees = () => {
             <EmployeePhoto src={photo} />
             <DataContainer>
               <TextFormatter>{full_name}</TextFormatter>
-              <TextFormatter small="small">#{_id}</TextFormatter>
+              <TextFormatter small="small">#{_id.slice(0,10)}...</TextFormatter>
             </DataContainer>
           </NameContainer>
         </>
