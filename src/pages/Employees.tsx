@@ -22,6 +22,7 @@ const NameContainer = styled.aside`
   align-items: center;
   justify-content: space-around;
   gap: 15px;
+  padding:5px;
 `;
 
 const EmployeePhoto = styled.img`
@@ -141,14 +142,13 @@ export const Employees = () => {
     {
       property: "contact_info",
       label: "Contact Information",
-      display: ({ _id, email, phone_number }: EmployeesInterface) => (
+      display: ({ email, phone_number }: EmployeesInterface) => (
         <>
           <TextFormatter small="small">
             <FontAwesomeIcon icon={faPhone} style={{ color: "#799283" }} />{" "}
             {phone_number}
           </TextFormatter>
           <TextFormatter small="small">{email}</TextFormatter>
-          <TextFormatter small="small">{_id}</TextFormatter>
         </>
       ),
     },
@@ -179,9 +179,33 @@ export const Employees = () => {
   return (
     <>
       <TabsMenuContainer>
-        <TabButton>All Employees</TabButton>
-        <TabButton>Archived</TabButton>
-        <TabButton>Non Archived</TabButton>
+        <TabButton onClick={() => setFilter("All Employees")}
+          style={
+            filter === "All Employees"
+              ? {
+                  color: `${colors.hardGreen}`,
+                  borderBottom: `3px solid ${colors.hardGreen}`,
+                }
+              : undefined
+          }>All Employees</TabButton>
+        <TabButton onClick={() => setFilter("Active")}
+          style={
+            filter === "Active"
+              ? {
+                  color: `${colors.hardGreen}`,
+                  borderBottom: `3px solid ${colors.hardGreen}`,
+                }
+              : undefined
+          }>Active</TabButton>
+        <TabButton onClick={() => setFilter("Inactive")}
+          style={
+            filter === "Inactive"
+              ? {
+                  color: `${colors.hardGreen}`,
+                  borderBottom: `3px solid ${colors.hardGreen}`,
+                }
+              : undefined
+          }>Inactive</TabButton>
       </TabsMenuContainer>
       {employeesDatastatus === "rejected" ? (
         <ErrorMessage />

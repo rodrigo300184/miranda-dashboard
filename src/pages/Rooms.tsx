@@ -19,7 +19,7 @@ import { NavLink } from "react-router-dom";
 const RoomPhoto = styled.img`
   margin: 10px 8px 5px;
   height: auto;
-  width: 80%;
+  width: 70%;
   border-radius: 8px;
 `;
 
@@ -44,7 +44,6 @@ const TextFormatter = styled.span<Props>`
 const Status = styled.button<Props>`
   font: 600 16px Poppins;
   width: 70%;
-  max-width: 120px;
   height: 48px;
   border: none;
   border-radius: 8px;
