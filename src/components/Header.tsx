@@ -51,6 +51,7 @@ export const Header = () => {
   const navigate = useNavigate();
   const handleLogout = () => {
     dispatchLogin({type: 'LOGOUT', payload: null});
+    localStorage.removeItem('token');
     navigate("/login");
   };
   useEffect(() => {

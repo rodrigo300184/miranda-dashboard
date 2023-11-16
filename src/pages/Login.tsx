@@ -5,8 +5,9 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import colors from "../styles/colors";
 import { GeneralContext } from "../App";
-import { useAppDispatch } from "../app/hooks";
-import { userLogin } from "../features/login/loginSlice";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { userLogin, resetStatus } from "../features/login/loginSlice";
+import { getLoginStatus } from "../features/login/loginSlice";
 
 const Container = styled.div`
   display: flex;
@@ -61,8 +62,8 @@ const Button = styled.button`
 `;
 
 type Props = {
-  bold?: boolean,
-}
+  bold?: boolean;
+};
 
 const P = styled.p<Props>`
   margin: 1px;
@@ -82,6 +83,7 @@ const H1 = styled.h1`
 `;
 
 export const Login = () => {
+  const loginStatus = useAppSelector(getLoginStatus);
   const Gcontext = useContext(GeneralContext);
   const loginState = Gcontext.loginState;
   const dispatchLogin = Gcontext.dispatchLogin;
@@ -99,35 +101,39 @@ export const Login = () => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event:React.FormEvent<HTMLFormElement> ) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch(userLogin({email: email, password: password}))
-    if (localStorage.getItem("token")) {
-      dispatchLogin({
-        type: 'LOGIN',
-        payload: {
-          username:
-            JSON.parse(localStorage.getItem("logged") || '').username ||
-            "Default Username",
-          email: JSON.parse(localStorage.getItem("logged")|| '').email || email,
-          photo: "",
-        },
-      }); 
+    dispatch(userLogin({ email: email, password: password }));
+  };
+
+  useEffect(() => {
+    if (loginState.authenticated === true) {
       navigate("/");
     } else {
+      navigate("/login");
+    }
+    if (loginStatus === "fulfilled") {
+      dispatchLogin({
+        type: "LOGIN",
+        payload: {
+          username:
+            JSON.parse(localStorage.getItem("logged") || "").username ||
+            "Default Username",
+          email:
+            JSON.parse(localStorage.getItem("logged") || "").email || email,
+          photo: "",
+        },
+      });
+      navigate("/");
+      dispatch(resetStatus());
+    } else if (loginStatus === "rejected") {
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: "Invalid login: Check Email or Password",
       });
     }
-  };
-
-  useEffect(() => {
-    if (loginState.authenticated === true) {
-      navigate("/");
-    }
-  });
+  }, [loginState, loginStatus]);
 
   return (
     <Container>
@@ -146,7 +152,7 @@ export const Login = () => {
           id="email"
           required
           autoComplete="on"
-          data-cy='email'
+          data-cy="email"
         />
         <Label htmlFor="password">Password:</Label>
         <Input
@@ -156,9 +162,11 @@ export const Login = () => {
           id="password"
           required
           autoComplete="current-password"
-          data-cy='password'
+          data-cy="password"
         />
-        <Button type="submit" data-cy='submit'>Login</Button>
+        <Button type="submit" data-cy="submit">
+          Login
+        </Button>
         <P bold>To see the demo:</P>
         <P>Mail: email@email.com</P>
         <P>Password: 1234</P>
