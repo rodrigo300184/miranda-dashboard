@@ -1,26 +1,26 @@
 import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit";
 import { IRoomsInitialState, RoomsInterface } from '../../features/interfaces/interfaces'
 import { RootState } from "../../app/store";
-import { api_request } from "../../utils/delay/api_request";
+import { apiRequest } from "../../utils/apiRequest";
 
 export const fetchRooms = createAsyncThunk('rooms/fetchRooms', () => {
-  return api_request('rooms','GET');
+  return apiRequest('rooms','GET');
 })
 
 export const fetchRoom = createAsyncThunk('rooms/fetchRoom', async (id: string | undefined) => {
-  return api_request(`rooms/${id}`,'GET');
+  return apiRequest(`rooms/${id}`,'GET');
 })
 
 export const createRoom = createAsyncThunk('rooms/createRoom', async (newRoom: RoomsInterface) => {
-  return api_request(`rooms`,'POST',newRoom);
+  return apiRequest(`rooms`,'POST',newRoom);
 })
 
 export const updateRoom = createAsyncThunk('rooms/updateRoom', async (updatedRoom: RoomsInterface) => {
-  return api_request(`rooms/${updatedRoom._id}`,'PUT',updatedRoom);
+  return apiRequest(`rooms/${updatedRoom._id}`,'PUT',updatedRoom);
 })
 
 export const deleteRoom = createAsyncThunk('rooms/deleteRoom', async (id: string) => {
-  const result = await api_request(`rooms/${id}`,'DELETE');
+  const result = await apiRequest(`rooms/${id}`,'DELETE');
   if(result === 'The room was correctly deleted.') { return id;}
  
 })

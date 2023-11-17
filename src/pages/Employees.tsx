@@ -19,10 +19,13 @@ import { Table } from "../components/Table";
 
 const NameContainer = styled.aside`
   display: flex;
+  align-self: start;
   align-items: center;
-  justify-content: space-around;
+  justify-content: start;
   gap: 15px;
-  padding: 5px;
+  margin-left: 10%;
+  margin-right: 5px;
+  padding: 5px 0px;
 `;
 
 const EmployeePhoto = styled.img`

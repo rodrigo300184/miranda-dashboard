@@ -2,10 +2,12 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ILoginInitialState, LoginInterface } from "../interfaces/interfaces";
 import { RootState } from "../../app/store";
 
+const urlBase = import.meta.env.VITE_API_URL+'/login';
+console.log(urlBase)
 
 export const userLogin = createAsyncThunk('login/userLogin', async (data: LoginInterface) => {
     try {
-        const response = (await fetch('http://127.0.0.1:3000/login', {
+        const response = (await fetch(urlBase, {
             method: 'POST',
             mode: 'cors',
             headers: {

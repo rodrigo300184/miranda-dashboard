@@ -1,25 +1,25 @@
 import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit";
 import { EmployeesInterface, IEmployeesInitialState } from '../../features/interfaces/interfaces' 
 import { RootState } from "../../app/store";
-import { api_request } from "../../utils/delay/api_request";
+import { apiRequest } from "../../utils/apiRequest";
 
 export const fetchEmployees = createAsyncThunk('employees/fetchEmployees', () => {
-  return api_request('employees','GET');
+  return apiRequest('employees','GET');
 })
 
 export const fetchEmployee = createAsyncThunk('employees/fetchEmployee', (id:string | undefined) => {
-  return api_request(`employees/${id}`,'GET');
+  return apiRequest(`employees/${id}`,'GET');
 })
 
 export const createEmployee = createAsyncThunk('employees/createEmployee', (newEmployee:EmployeesInterface) => {
-  return api_request(`employees`,'POST',newEmployee);
+  return apiRequest(`employees`,'POST',newEmployee);
 })
 export const updateEmployee = createAsyncThunk('employees/updateEmployee', (updatedEmployee: EmployeesInterface) => {
-  return api_request(`employees/${updatedEmployee._id}`,'PUT',updatedEmployee);
+  return apiRequest(`employees/${updatedEmployee._id}`,'PUT',updatedEmployee);
 })
 
 export const deleteEmployee = createAsyncThunk('employees/deleteEmployee', async (id:string) => {
-  const result = await api_request(`employees/${id}`,'DELETE');
+  const result = await apiRequest(`employees/${id}`,'DELETE');
   if(result === 'The employee was correctly deleted.') {return id;}
 })
 

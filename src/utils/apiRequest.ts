@@ -1,9 +1,9 @@
-import { bodyInterface } from "../../features/interfaces/interfaces";
+import { bodyInterface } from "../features/interfaces/interfaces";
 
 const urlBase = import.meta.env.VITE_API_URL;
 
-export const api_request = async (endpoint: string, method:string, body?:bodyInterface ) => {
-  const result = await fetch(`${urlBase}${endpoint}`, {
+export const apiRequest = async (endpoint: string, method:string, body?:bodyInterface ) => {
+  const result = await fetch(`${urlBase}/${endpoint}`, {
     method: `${method}`,
     mode: 'cors',
     headers: {

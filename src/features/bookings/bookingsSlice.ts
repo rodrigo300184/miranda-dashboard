@@ -1,25 +1,25 @@
 import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit";
 import {IBookingsInitialState, BookingsInterface } from '../../features/interfaces/interfaces' 
 import { RootState } from "../../app/store";
-import { api_request } from "../../utils/delay/api_request";
+import { apiRequest } from "../../utils/apiRequest";
 
 export const fetchBookings = createAsyncThunk('bookings/fetchBookings', () => {
-    return api_request('bookings','GET');
+    return apiRequest('bookings','GET');
 })
 
 export const fetchBooking = createAsyncThunk('bookings/fetchBooking', (id:string | undefined) => {
-  return api_request(`bookings/${id}`,'GET');
+  return apiRequest(`bookings/${id}`,'GET');
 })
 
 export const createBooking = createAsyncThunk('bookings/createBooking', (newBooking:BookingsInterface) => {
-  return api_request(`bookings`,'POST',newBooking);
+  return apiRequest(`bookings`,'POST',newBooking);
 })
 export const updateBooking = createAsyncThunk('bookings/updateBooking', (updatedBooking: BookingsInterface) => {
-  return api_request(`bookings/${updatedBooking._id}`,'PUT',updatedBooking);
+  return apiRequest(`bookings/${updatedBooking._id}`,'PUT',updatedBooking);
 })
 
 export const deleteBooking = createAsyncThunk('bookings/deleteBooking', async (id:string) => {
-  const result = await api_request(`bookings/${id}`,'DELETE');
+  const result = await apiRequest(`bookings/${id}`,'DELETE');
   if(result === 'The booking was correctly deleted.') {return id;}
 })
 

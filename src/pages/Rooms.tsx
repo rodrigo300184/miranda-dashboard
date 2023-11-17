@@ -35,10 +35,10 @@ const TextFormatter = styled.span<Props>`
   text-align: left;
   color: ${(props) => props.color};
   font: ${(props) =>
-    props.small === "small" ? "300 14px Poppins" : "500 16px Poppins"};
+    props.small === "small" ? "300 13px Poppins" : "500 16px Poppins"};
   text-decoration: ${(props) => props.decoration};
   margin-bottom:  ${(props) =>
-    props.small === "small" ? "5px" : ""};
+    props.small === "small" ? "3px" : ""};
 `;
 
 const Status = styled.button<Props>`
