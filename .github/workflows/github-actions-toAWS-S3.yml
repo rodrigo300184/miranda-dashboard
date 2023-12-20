@@ -17,11 +17,6 @@ jobs:
         env:
           CI: false
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
-      - name: Make envfile
-        uses: SpicyPizza/create-envfile@v2.0
-        with:
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}
-          file_name: .env.local
       - uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --delete
