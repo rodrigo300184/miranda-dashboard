@@ -33,7 +33,7 @@ const ItemContainer = styled.div`
 display:flex;
 align-items:center;
   height: 125px;
-  width: 340px;
+  width: 100%;
   background-color: white;
   box-shadow: 0px 4px 4px #00000005;
   border-radius: 12px;
@@ -50,6 +50,7 @@ const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-right: 30px;
 `;
 
 const H1 = styled.h1`
