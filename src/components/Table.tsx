@@ -7,7 +7,6 @@ import {
 
 const TableContainer = styled.div`
   padding: 0px 50px;
-  margin-bottom: 30px;
   height: 720px;
   overflow: hidden;
 `;
@@ -90,8 +89,7 @@ const RowContainer = styled.div`
     }
   }
   &:last-child {
-    border: none;
-    margin-bottom: 65px;
+    margin-bottom: 64px;
   }
   &:hover {
     box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 170px;
