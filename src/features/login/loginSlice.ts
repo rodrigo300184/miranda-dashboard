@@ -3,7 +3,6 @@ import { ILoginInitialState, LoginInterface } from "../interfaces/interfaces";
 import { RootState } from "../../app/store";
 
 const urlBase = import.meta.env.VITE_API_URL+'/login';
-console.log(urlBase)
 
 export const userLogin = createAsyncThunk('login/userLogin', async (data: LoginInterface) => {
     try {
