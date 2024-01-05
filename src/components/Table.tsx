@@ -7,7 +7,7 @@ import {
 
 const TableContainer = styled.div`
   padding: 0px 50px;
-  height: 720px;
+  height: 690px;
   overflow: hidden;
 `;
 

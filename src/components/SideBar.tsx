@@ -26,7 +26,7 @@ const EmployeeContainer = styled.div`
   border-radius: 18px;
   text-align: center;
   padding: 24px 35px;
-  margin: 41px auto 62px;
+  margin: 41px auto 52px;
   min-width: 230px;
   width: fit-content;
   & p {
@@ -168,7 +168,6 @@ export const SideBar = () => {
       <SideMenuFooter>
         <AppName>Travl Hotel Admin Dashboard</AppName>
         <CopyRight>© 2023 All Rights Reserved</CopyRight>
-        <br />
         <br />
         <AppMade>Made with ♥ by Rodrigo</AppMade>
       </SideMenuFooter>
