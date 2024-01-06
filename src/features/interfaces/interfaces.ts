@@ -72,4 +72,21 @@ export interface ILoginInitialState{
   error: null | string
 }
 
-export type bodyInterface = RoomsInterface | BookingsInterface | EmployeesInterface;
+export interface ContactsInterface {
+  "_id": string,
+  "full_name": string,
+  "email": string,
+  "phone_number": string,
+  "subject_og_review": string,
+  "review_body": string,
+  "dateTime": string,
+  "status": string
+}
+
+export interface IContactsInitialState {
+  data: ContactsInterface[],
+  item: ContactsInterface | null,
+  status: 'idle' | 'pending' | 'fulfilled' | 'rejected'
+}
+
+export type bodyInterface = RoomsInterface | BookingsInterface | EmployeesInterface | ContactsInterface;

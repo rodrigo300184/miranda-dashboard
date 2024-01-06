@@ -3,6 +3,7 @@ import bookingsSlice from "../features/bookings/bookingsSlice";
 import roomsSlice from "../features/rooms/roomsSlice";
 import loginSlice from "../features/login/loginSlice";
 import employeesSlice from "../features/employees/employeesSlice";
+import contactsSlice from "../features/contacts/contactsSlice";
 
 
 export const store = configureStore(
@@ -12,6 +13,7 @@ export const store = configureStore(
             rooms: roomsSlice,
             employees: employeesSlice,
             login: loginSlice,
+            contacts: contactsSlice,
         }
     }
 ) 

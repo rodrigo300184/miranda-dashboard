@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { fetchContacts, getContacts, getContactsStatus } from "../features/contacts/contactsSlice";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -19,6 +22,16 @@ const Title = styled.h1`
 `;
 
 export const Reviews = () => {
+    const dispatch = useAppDispatch();
+    const contactsData = useAppSelector(getContacts);
+    const contactsDataStatus = useAppSelector(getContactsStatus);
+  
+    useEffect(() => {
+      dispatch(fetchContacts())
+    },[dispatch])
+  
+    //   const filteredBookingsData = useMemo(() =>{return filterAndOrder(bookingsData, filter, orderBy);
+    // }, [bookingsData, filter, orderBy]);
   return (
     <>
       <ReviewsContainer>
