@@ -1,31 +1,27 @@
 import styled from "styled-components";
 import { ContactsInterface } from "../features/interfaces/interfaces";
+import colors from "../styles/colors";
 
 const CardContainer = styled.div`
-  margin: 30px 0 5px 5px;
+  margin: 30px 0 5px 6px;
   padding: 30px;
   width: 431px;
   height: 275px;
   background: #ffffff 0% 0% no-repeat padding-box;
   border: 1px solid #ebebeb;
   border-radius: 20px;
-  transition: all 250ms;
-  &:hover{
-    transform: scale(1.025);
-    transition: all 250ms;
-  }
 `;
 
 const InnerCardContainer = styled.div`
   display: flex;
   gap: 21px;
   width: 100%;
-  height: 275px;
+  height: 56px;
 `;
 
 const Name = styled.h2`
   text-align: left;
-  font: normal normal 600 16px/25px Poppins;
+  font: normal normal 600 14px/25px Poppins;
   letter-spacing: 0px;
   color: #262626;
 `;
@@ -49,6 +45,42 @@ const EmployeePhoto = styled.div`
   background-size: cover;
 `;
 
+type Props = {
+  green: boolean;
+};
+
+const Button = styled.button.attrs({ type: "button" })<Props>`
+  align-self: center;
+  height: 40px;
+  width: 85px;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  color: ${(props) => (props.green ? colors.lightGreen : colors.lightRed)};
+  background-color: ${(props) => (props.green ? colors.hardGreen : colors.red)};
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid;
+  &:hover {
+    color: ${colors.hardGreen};
+    background-color: ${(props) =>
+      props.green ? colors.lightGreen : colors.red};
+  }
+`;
+
+const TextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 185px;
+  & span {
+    font: normal normal normal 12px/10px Poppins;
+    letter-spacing: 0px;
+    color: #799283;
+  }
+`;
+
 type ReviewProps = {
   contact: ContactsInterface;
 };
@@ -59,10 +91,17 @@ export const ReviewCard = (props: ReviewProps) => {
       <CardContainer>
         <Review>{props.contact.review_body}</Review>
         <InnerCardContainer>
-        <EmployeePhoto
-          style={{ backgroundImage: `url('https://robohash.org/${props.contact.full_name}.png')` }}
-        />
-          <Name>{props.contact.full_name}</Name>
+          <EmployeePhoto
+            style={{
+              backgroundImage: `url('https://robohash.org/${props.contact.full_name}.png')`,
+            }}
+          />
+          <TextContainer>
+            <Name>{props.contact.full_name}</Name>
+            <span>{props.contact.email}</span>
+            <span>{props.contact.phone_number}</span>
+          </TextContainer>
+          <Button green>Archive</Button>
         </InnerCardContainer>
       </CardContainer>
     </>

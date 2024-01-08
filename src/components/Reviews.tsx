@@ -5,6 +5,7 @@ import {
   getContacts,
   getContactsStatus,
 } from "../features/contacts/contactsSlice";
+import '../styles/styles.css'
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -54,7 +55,6 @@ export const Reviews = () => {
             }}
             spaceBetween={40}
             navigation
-            pagination={true}
             modules={[Navigation]}
           >
             {contactsData.map((contact, index) => {
