@@ -6,7 +6,7 @@ import { IconContext } from "react-icons";
 const Container = styled.div`
   background-color: transparent;
   height: 125px;
-  margin: 50px 50px 40px 35px;
+  margin: 50px 50px 40px 50px;
 `;
 
 const InnerContainer = styled.div`
