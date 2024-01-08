@@ -77,7 +77,7 @@ export interface ContactsInterface {
   "full_name": string,
   "email": string,
   "phone_number": string,
-  "subject_og_review": string,
+  "subject_of_review": string,
   "review_body": string,
   "dateTime": string,
   "status": string
