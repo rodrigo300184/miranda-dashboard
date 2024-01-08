@@ -15,8 +15,8 @@ const InnerContainer = styled.div`
 `;
 
 type Props = {
-  red?: boolean
-}
+  red?: boolean;
+};
 
 const IconContainer = styled.div<Props>`
   display: flex;
@@ -27,24 +27,27 @@ const IconContainer = styled.div<Props>`
   width: 65px;
   border-radius: 8px;
   background-color: ${(props) => (props.red ? colors.red : colors.lightRed)};
+  transition: all 250ms;
 `;
 
 const ItemContainer = styled.div`
-display:flex;
-align-items:center;
+  display: flex;
+  align-items: center;
   height: 125px;
   width: 100%;
   background-color: white;
   box-shadow: 0px 4px 4px #00000005;
   border-radius: 12px;
-  &:hover{
+  transition: all 250ms;
+  &:hover {
+    transition: all 250ms;
     scale: 1.05;
-    ${IconContainer}{
-        scale: 1.1;
+    ${IconContainer} {
+      transition: all 250ms;
+      scale: 1.1;
     }
   }
 `;
-
 
 const TextContainer = styled.div`
   display: flex;
@@ -70,41 +73,57 @@ export const Kpis = () => {
         <InnerContainer>
           <ItemContainer>
             <IconContainer>
-              <IconContext.Provider value={{ color: colors.red,
-                                             size: '1.6em',
-                                           }}>
+              <IconContext.Provider
+                value={{ color: colors.red, size: "1.6em" }}
+              >
                 {icons.bed}
               </IconContext.Provider>
             </IconContainer>
-            <TextContainer> <H1>8,461</H1><H2>New Booking</H2> </TextContainer>
+            <TextContainer>
+              {" "}
+              <H1>8,461</H1>
+              <H2>New Booking</H2>{" "}
+            </TextContainer>
           </ItemContainer>
           <ItemContainer>
             <IconContainer red>
-              <IconContext.Provider value={{ color: "white",
-                                             size: '1.2em',
-            }}>
+              <IconContext.Provider value={{ color: "white", size: "1.2em" }}>
                 {icons.bookings2}
               </IconContext.Provider>
             </IconContainer>
-            <TextContainer> <H1>963</H1><H2>Scheduled Room</H2> </TextContainer>
+            <TextContainer>
+              {" "}
+              <H1>963</H1>
+              <H2>Scheduled Room</H2>{" "}
+            </TextContainer>
           </ItemContainer>
           <ItemContainer>
             <IconContainer>
-              <IconContext.Provider value={{ color: colors.red ,
-            size: '1.6em',}}>
+              <IconContext.Provider
+                value={{ color: colors.red, size: "1.6em" }}
+              >
                 {icons.checkIn}
               </IconContext.Provider>
             </IconContainer>
-            <TextContainer> <H1>753</H1><H2>Check In</H2> </TextContainer>
+            <TextContainer>
+              {" "}
+              <H1>753</H1>
+              <H2>Check In</H2>{" "}
+            </TextContainer>
           </ItemContainer>
           <ItemContainer>
             <IconContainer>
-              <IconContext.Provider value={{ color: colors.red ,
-            size: '1.6em'}}>
+              <IconContext.Provider
+                value={{ color: colors.red, size: "1.6em" }}
+              >
                 {icons.checkOut}
               </IconContext.Provider>
             </IconContainer>
-            <TextContainer> <H1>516</H1><H2>Check Out</H2> </TextContainer>
+            <TextContainer>
+              {" "}
+              <H1>516</H1>
+              <H2>Check Out</H2>{" "}
+            </TextContainer>
           </ItemContainer>
         </InnerContainer>
       </Container>
