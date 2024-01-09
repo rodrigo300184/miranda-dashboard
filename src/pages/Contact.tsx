@@ -31,11 +31,15 @@ const Status = styled.button<Props>`
   height: 48px;
   border: none;
   border-radius: 8px;
-  color: white;
-  background-color: ${(props) =>
+  color: ${(props) =>
     props.status === "Archived"
       ? `${colors.checkInBtnText}`
       : `${colors.checkOutBtnText}`};
+
+  background-color: ${(props) =>
+    props.status === "Archived"
+      ? `${colors.checkInBtnBgr}`
+      : `${colors.checkOutBtnBgr}`};
   &:hover {
   }
 `;
