@@ -112,7 +112,9 @@ export const Contact = () => {
         </>
       ),
     },
-    { property: "subject_of_review", label: "Subject" },
+    { property: "subject_of_review", label: "Subject",  display: ({ subject_of_review }: ContactsInterface) => (
+      <TextFormatter padding={true}>{subject_of_review}</TextFormatter>
+    ), },
     {
       property: "review_body",
       label: "Comment",
