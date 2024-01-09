@@ -98,8 +98,8 @@ export const ReviewCard = (props: ReviewProps) => {
           />
           <TextContainer>
             <Name>{props.contact.full_name}</Name>
-            <span>{props.contact.email}</span>
-            <span>{props.contact.phone_number}</span>
+            <span><a href="mailto:">{props.contact.email}</a></span>
+            <span><a href="tel:+">{props.contact.phone_number}</a></span>
           </TextContainer>
           <Button green>Archive</Button>
         </InnerCardContainer>
