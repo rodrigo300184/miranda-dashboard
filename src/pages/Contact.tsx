@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { TabsMenuContainer, TabButton } from "../components/Tabs";
 import {
@@ -47,7 +47,7 @@ const Status = styled.button<Props>`
 const TextFormatter = styled.span<Props>`
   display: block;
   text-align: center;
-  padding: ${(props) => props.padding ? "15px" : ""};
+  padding: ${(props) => (props.padding ? "15px" : "")};
   color: ${(props) => props.color};
   font: ${(props) =>
     props.small === "small" ? "300 13px Poppins" : "500 16px Poppins"};
@@ -58,10 +58,47 @@ export const Contact = () => {
   const dispatch = useAppDispatch();
   const contactsData = useAppSelector(getContacts);
   const contactsDataStatus = useAppSelector(getContactsStatus);
-
+  const [filter, setFilter] = useState("All Contact");
+  const [orderBy, setOrderBy] = useState("Newest");
+  const filterAndOrder = (
+    array: ContactsInterface[],
+    filter: string,
+    orderBy: string
+  ) => {
+    const filteredArray = array.filter(
+      (contact: ContactsInterface) =>
+        filter === "All Contact" || contact.status === filter
+    );
+    if (orderBy === "Newest") {
+      filteredArray.sort((a: ContactsInterface, b: ContactsInterface) => {
+        const dateComparison =
+          new Date(b.dateTime as string).getTime() -
+          new Date(a.dateTime as string).getTime();
+        if (dateComparison === 0) {
+          return a.full_name.localeCompare(b.full_name);
+        }
+        return dateComparison;
+      });
+    } else {
+      filteredArray.sort((a: ContactsInterface, b: ContactsInterface) => {
+        const dateComparison =
+          new Date(a.dateTime as string).getTime() -
+          new Date(b.dateTime as string).getTime();
+        if (dateComparison === 0) {
+          return a.full_name.localeCompare(b.full_name);
+        }
+        return dateComparison;
+      });
+    }
+    return filteredArray;
+  };
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
+
+  const filteredcontacts = useMemo(() => {
+    return filterAndOrder(contactsData, filter, orderBy);
+  }, [contactsData, filter, orderBy]);
 
   const formattedDate = (dateTime: string) => {
     const date = new Date(dateTime);
@@ -116,9 +153,13 @@ export const Contact = () => {
         </>
       ),
     },
-    { property: "subject_of_review", label: "Subject",  display: ({ subject_of_review }: ContactsInterface) => (
-      <TextFormatter padding={true}>{subject_of_review}</TextFormatter>
-    ), },
+    {
+      property: "subject_of_review",
+      label: "Subject",
+      display: ({ subject_of_review }: ContactsInterface) => (
+        <TextFormatter padding={true}>{subject_of_review}</TextFormatter>
+      ),
+    },
     {
       property: "review_body",
       label: "Comment",
@@ -140,16 +181,58 @@ export const Contact = () => {
   return (
     <>
       <TabsMenuContainer>
-        <TabButton>All Contact</TabButton>
-        <TabButton>Archived</TabButton>
-        <TabButton>Non Archived</TabButton>
+        <TabButton
+          onClick={() => {
+            setFilter("All Contact");
+          }}
+          style={
+            filter === "All Contact"
+              ? {
+                  color: `${colors.hardGreen}`,
+                  borderBottom: `3px solid ${colors.hardGreen}`,
+                }
+              : undefined
+          }
+        >
+          All Contact
+        </TabButton>
+        <TabButton
+          onClick={() => {
+            setFilter("Archived");
+          }}
+          style={
+            filter === "Archived"
+              ? {
+                  color: `${colors.hardGreen}`,
+                  borderBottom: `3px solid ${colors.hardGreen}`,
+                }
+              : undefined
+          }
+        >
+          Archived
+        </TabButton>
+        <TabButton
+          onClick={() => {
+            setFilter("Not Archived");
+          }}
+          style={
+            filter === "Not Archived"
+              ? {
+                  color: `${colors.hardGreen}`,
+                  borderBottom: `3px solid ${colors.hardGreen}`,
+                }
+              : undefined
+          }
+        >
+          Not Archived
+        </TabButton>
       </TabsMenuContainer>
       {contactsDataStatus === "rejected" ? (
         <ErrorMessage />
       ) : contactsDataStatus === "pending" ? (
         <Spinner />
       ) : (
-        <Table name="contacts" columns={columns} data={contactsData} />
+        <Table name="contacts" columns={columns} data={filteredcontacts} />
       )}
     </>
   );
