@@ -17,6 +17,37 @@ const StatusContainer = styled.div`
   display: flex;
 `;
 
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-right: 50px;
+`;
+
+const Select = styled.select`
+  margin-top: 50px;
+  width: 145px;
+  height: 40px;
+  font: 500 15px Poppins;
+  color: ${colors.green};
+  border: 2px solid rgb(19, 88, 70);
+  border-radius: 12px;
+  cursor: pointer;
+  outline: none;
+  padding-left: 15px;
+`;
+
+const Search = styled.input`
+  justify-item: end;
+  font: 500 16px Poppins;
+  color: ${colors.green};
+  padding: 5px;
+  width: 220px;
+  height: 40px;
+  margin-top: 50px;
+  border-radius: 12px;
+  border: 2px solid rgb(19, 88, 70);
+`;
+
 type Props = {
   color?: string;
   small?: string;
@@ -180,53 +211,60 @@ export const Contact = () => {
 
   return (
     <>
-      <TabsMenuContainer>
-        <TabButton
-          onClick={() => {
-            setFilter("All Contact");
-          }}
-          style={
-            filter === "All Contact"
-              ? {
-                  color: `${colors.hardGreen}`,
-                  borderBottom: `3px solid ${colors.hardGreen}`,
-                }
-              : undefined
-          }
-        >
-          All Contact
-        </TabButton>
-        <TabButton
-          onClick={() => {
-            setFilter("Archived");
-          }}
-          style={
-            filter === "Archived"
-              ? {
-                  color: `${colors.hardGreen}`,
-                  borderBottom: `3px solid ${colors.hardGreen}`,
-                }
-              : undefined
-          }
-        >
-          Archived
-        </TabButton>
-        <TabButton
-          onClick={() => {
-            setFilter("Not Archived");
-          }}
-          style={
-            filter === "Not Archived"
-              ? {
-                  color: `${colors.hardGreen}`,
-                  borderBottom: `3px solid ${colors.hardGreen}`,
-                }
-              : undefined
-          }
-        >
-          Not Archived
-        </TabButton>
-      </TabsMenuContainer>
+      <Container>
+        <TabsMenuContainer>
+          <TabButton
+            onClick={() => {
+              setFilter("All Contact");
+            }}
+            style={
+              filter === "All Contact"
+                ? {
+                    color: `${colors.hardGreen}`,
+                    borderBottom: `3px solid ${colors.hardGreen}`,
+                  }
+                : undefined
+            }
+          >
+            All Contact
+          </TabButton>
+          <TabButton
+            onClick={() => {
+              setFilter("Archived");
+            }}
+            style={
+              filter === "Archived"
+                ? {
+                    color: `${colors.hardGreen}`,
+                    borderBottom: `3px solid ${colors.hardGreen}`,
+                  }
+                : undefined
+            }
+          >
+            Archived
+          </TabButton>
+          <TabButton
+            onClick={() => {
+              setFilter("Not Archived");
+            }}
+            style={
+              filter === "Not Archived"
+                ? {
+                    color: `${colors.hardGreen}`,
+                    borderBottom: `3px solid ${colors.hardGreen}`,
+                  }
+                : undefined
+            }
+          >
+            Not Archived
+          </TabButton>
+        </TabsMenuContainer>
+        <Search></Search>
+        <Select onChange={(event) => setOrderBy(event.target.value)}>
+          <option value="Newest">Date(newest)</option>
+          <option value="Oldest">Date(oldest)</option>
+        </Select>
+      </Container>
       {contactsDataStatus === "rejected" ? (
         <ErrorMessage />
       ) : contactsDataStatus === "pending" ? (
