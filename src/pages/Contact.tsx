@@ -92,37 +92,25 @@ export const Contact = () => {
   const [filter, setFilter] = useState("All Contact");
   const [orderBy, setOrderBy] = useState("Newest");
   const [search, setSearch] = useState("");
-  const filterAndOrder = (
+  const filterOrderSearch = (
     array: ContactsInterface[],
     filter: string,
     orderBy: string,
     search: string
   ) => {
-    const filteredArray = array.filter(
-      (contact: ContactsInterface) =>
-        filter === "All Contact" || contact.status === filter
-    );
-    if (orderBy === "Newest") {
-      filteredArray.sort((a: ContactsInterface, b: ContactsInterface) => {
-        const dateComparison =
-          new Date(b.dateTime as string).getTime() -
-          new Date(a.dateTime as string).getTime();
-        if (dateComparison === 0) {
-          return a.full_name.localeCompare(b.full_name);
-        }
-        return dateComparison;
-      });
-    } else {
-      filteredArray.sort((a: ContactsInterface, b: ContactsInterface) => {
-        const dateComparison =
-          new Date(a.dateTime as string).getTime() -
-          new Date(b.dateTime as string).getTime();
-        if (dateComparison === 0) {
-          return a.full_name.localeCompare(b.full_name);
-        }
-        return dateComparison;
-      });
-    }
+    const filteredArray = array
+      .filter(
+        (contact: ContactsInterface) =>
+          filter === "All Contact" || contact.status === filter
+      )
+      .sort(
+        (a: ContactsInterface, b: ContactsInterface) =>
+          (orderBy === "Newest" ? 1 : -1) *
+            (new Date(b.dateTime!).getTime() -
+              new Date(a.dateTime!).getTime()) ||
+          a.full_name.localeCompare(b.full_name)
+      );
+
     return filteredArray.filter((item) =>
       Object.values(item).some(
         (value) =>
@@ -136,7 +124,7 @@ export const Contact = () => {
   }, [dispatch]);
 
   const filteredcontacts = useMemo(() => {
-    return filterAndOrder(contactsData, filter, orderBy, search);
+    return filterOrderSearch(contactsData, filter, orderBy, search);
   }, [contactsData, filter, orderBy, search]);
 
   const formattedDate = (dateTime: string) => {
