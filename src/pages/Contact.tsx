@@ -53,7 +53,7 @@ type Props = {
   small?: string;
   status?: string;
   decoration?: string;
-  padding?: boolean;
+  margin?: boolean;
 };
 
 const Status = styled.button<Props>`
@@ -75,10 +75,12 @@ const Status = styled.button<Props>`
   }
 `;
 
-const TextFormatter = styled.span<Props>`
+const TextFormatter = styled.span<Props>` 
+  max-height: 120px;
+  overflow: auto;
   display: block;
   text-align: center;
-  padding: ${(props) => (props.padding ? "15px" : "")};
+  margin: ${(props) => (props.margin ? "15px" : "")};
   color: ${(props) => props.color};
   font: ${(props) =>
     props.small === "small" ? "300 13px Poppins" : "500 16px Poppins"};
@@ -184,14 +186,14 @@ export const Contact = () => {
       property: "subject_of_review",
       label: "Subject",
       display: ({ subject_of_review }: ContactsInterface) => (
-        <TextFormatter padding={true}>{subject_of_review}</TextFormatter>
+        <TextFormatter margin={true}>{subject_of_review}</TextFormatter>
       ),
     },
     {
       property: "review_body",
       label: "Comment",
       display: ({ review_body }: ContactsInterface) => (
-        <TextFormatter padding={true}>{review_body}</TextFormatter>
+        <TextFormatter margin={true}>{review_body}</TextFormatter>
       ),
     },
     {
