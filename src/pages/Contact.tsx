@@ -91,10 +91,12 @@ export const Contact = () => {
   const contactsDataStatus = useAppSelector(getContactsStatus);
   const [filter, setFilter] = useState("All Contact");
   const [orderBy, setOrderBy] = useState("Newest");
+  const [search, setSearch] = useState("");
   const filterAndOrder = (
     array: ContactsInterface[],
     filter: string,
-    orderBy: string
+    orderBy: string,
+    search: string
   ) => {
     const filteredArray = array.filter(
       (contact: ContactsInterface) =>
@@ -121,15 +123,21 @@ export const Contact = () => {
         return dateComparison;
       });
     }
-    return filteredArray;
+    return filteredArray.filter((item) =>
+      Object.values(item).some(
+        (value) =>
+          typeof value === "string" &&
+          value.toLowerCase().includes(search.toLowerCase())
+      )
+    );
   };
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
   const filteredcontacts = useMemo(() => {
-    return filterAndOrder(contactsData, filter, orderBy);
-  }, [contactsData, filter, orderBy]);
+    return filterAndOrder(contactsData, filter, orderBy, search);
+  }, [contactsData, filter, orderBy, search]);
 
   const formattedDate = (dateTime: string) => {
     const date = new Date(dateTime);
@@ -259,7 +267,7 @@ export const Contact = () => {
             Not Archived
           </TabButton>
         </TabsMenuContainer>
-        <Search></Search>
+        <Search onChange={(event) => setSearch(event.target.value)}></Search>
         <Select onChange={(event) => setOrderBy(event.target.value)}>
           <option value="Newest">Date(newest)</option>
           <option value="Oldest">Date(oldest)</option>
