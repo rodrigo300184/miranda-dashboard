@@ -29,7 +29,6 @@ export interface RoomsInterface {
   "room_photo": string[],
   "room_type": string,
   "description": string,
-  "amenities_type": string,
   "amenities": Iamenities[],
   "price": number,
   "offer_price": boolean,
