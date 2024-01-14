@@ -142,8 +142,8 @@ export const Rooms = () => {
         return Object.values(item).some((value) => {
           if (Array.isArray(value)) {
             return deepSearch(value, search).length > 0;
-          } else if (typeof value === "string") {
-            return value.toLowerCase().includes(search.toLowerCase());
+          } else if (typeof value === "string" || typeof value === "number") {
+            return String(value).toLowerCase().includes(search.toLowerCase());
           }
           return false;
         });
