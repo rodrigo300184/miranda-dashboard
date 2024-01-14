@@ -37,8 +37,7 @@ const TextFormatter = styled.span<Props>`
   font: ${(props) =>
     props.small === "small" ? "300 13px Poppins" : "500 16px Poppins"};
   text-decoration: ${(props) => props.decoration};
-  margin-bottom:  ${(props) =>
-    props.small === "small" ? "3px" : ""};
+  margin-bottom: ${(props) => (props.small === "small" ? "3px" : "")};
 `;
 
 const Status = styled.button<Props>`
@@ -114,17 +113,43 @@ export const Rooms = () => {
   const roomsData = useAppSelector(getRooms);
   const roomsDataStatus = useAppSelector(getRoomsStatus);
   const [filter, setFilter] = useState("All Rooms");
-  const [orderBy, setOrderBy] = useState<string>('price_up');
-  const filterAndOrder = (array: RoomsInterface[], filter: string, orderBy: string) => {
-    const filteredArray = array.filter((room: RoomsInterface) => filter === "All Rooms" || room.status === filter);
+  const [orderBy, setOrderBy] = useState<string>("price_up");
+  const [search, setSearch] = useState("");
+  const filterOrderSearch = (
+    array: RoomsInterface[],
+    filter: string,
+    orderBy: string,
+    search: string
+  ) => {
+    const filteredArray = array.filter(
+      (room: RoomsInterface) => filter === "All Rooms" || room.status === filter
+    );
     if (orderBy === "price_up") {
-      filteredArray.sort((a: RoomsInterface, b: RoomsInterface) => 
-        (a.offer_price? a.price*a.discount : a.price) - (b.offer_price? b.price*b.discount : b.price))
+      filteredArray.sort(
+        (a: RoomsInterface, b: RoomsInterface) =>
+          (a.offer_price ? a.price - (a.price * a.discount) / 100 : a.price) -
+          (b.offer_price ? b.price - (b.price * b.discount) / 100 : b.price)
+      );
     } else {
-      filteredArray.sort((a: RoomsInterface, b: RoomsInterface) => 
-        (b.offer_price? b.price*b.discount : b.price) - (a.offer_price? a.price*a.discount : a.price))
+      filteredArray.sort(
+        (a: RoomsInterface, b: RoomsInterface) =>
+          (b.offer_price ? b.price - (b.price * b.discount) / 100 : b.price) -
+          (a.offer_price ? a.price - (a.price * a.discount) / 100 : a.price)
+      );
     }
-    return filteredArray;
+    function deepSearch(array: any, search: string) {
+      return array.filter((item: RoomsInterface) => {
+        return Object.values(item).some((value) => {
+          if (Array.isArray(value)) {
+            return deepSearch(value, search).length > 0;
+          } else if (typeof value === "string") {
+            return value.toLowerCase().includes(search.toLowerCase());
+          }
+          return false;
+        });
+      });
+    }
+    return deepSearch(filteredArray, search);
   };
 
   useEffect(() => {
@@ -132,8 +157,8 @@ export const Rooms = () => {
   }, [dispatch]);
 
   const filteredRoomsData = useMemo(() => {
-    return filterAndOrder(roomsData, filter, orderBy);
-  }, [roomsData,filter,orderBy]);
+    return filterOrderSearch(roomsData, filter, orderBy, search);
+  }, [roomsData, filter, orderBy, search]);
 
   const handleDelete = (id: string): void => {
     dispatch(deleteRoom(id));
@@ -149,7 +174,9 @@ export const Rooms = () => {
             <RoomPhoto src={room_photo[0]} />
             <TextFormatter>N° {room_number}</TextFormatter>
             <NavLink to={`/rooms/${_id}`}>
-              <TextFormatter small={"small"} color={colors.green}>#{_id.slice(0,10)}...</TextFormatter>
+              <TextFormatter small={"small"} color={colors.green}>
+                #{_id.slice(0, 10)}...
+              </TextFormatter>
             </NavLink>
           </>
         );
@@ -214,7 +241,11 @@ export const Rooms = () => {
         return (
           <>
             <Status status={status}>{status}</Status>
-            <PopMenu path={"rooms"} id={_id} onClick={() => handleDelete(_id)} />
+            <PopMenu
+              path={"rooms"}
+              id={_id}
+              onClick={() => handleDelete(_id)}
+            />
           </>
         );
       },
@@ -223,54 +254,54 @@ export const Rooms = () => {
 
   return (
     <>
-    <Container>
-      <TabsMenuContainer>
-        <TabButton
-          onClick={() => setFilter("All Rooms")}
-          style={
-            filter === "All Rooms"
-              ? {
-                  color: `${colors.hardGreen}`,
-                  borderBottom: `3px solid ${colors.hardGreen}`,
-                }
-              : undefined
-          }
-        >
-          All Rooms
-        </TabButton>
-        <TabButton
-          onClick={() => setFilter("Available")}
-          style={
-            filter === "Available"
-              ? {
-                  color: `${colors.hardGreen}`,
-                  borderBottom: `3px solid ${colors.hardGreen}`,
-                }
-              : undefined
-          }
-        >
-          Available
-        </TabButton>
-        <TabButton
-          onClick={() => setFilter("Booked")}
-          style={
-            filter === "Booked"
-              ? {
-                  color: `${colors.hardGreen}`,
-                  borderBottom: `3px solid ${colors.hardGreen}`,
-                }
-              : undefined
-          }
-        >
-          Booked
-        </TabButton>
-      </TabsMenuContainer>
-      <Search></Search>
+      <Container>
+        <TabsMenuContainer>
+          <TabButton
+            onClick={() => setFilter("All Rooms")}
+            style={
+              filter === "All Rooms"
+                ? {
+                    color: `${colors.hardGreen}`,
+                    borderBottom: `3px solid ${colors.hardGreen}`,
+                  }
+                : undefined
+            }
+          >
+            All Rooms
+          </TabButton>
+          <TabButton
+            onClick={() => setFilter("Available")}
+            style={
+              filter === "Available"
+                ? {
+                    color: `${colors.hardGreen}`,
+                    borderBottom: `3px solid ${colors.hardGreen}`,
+                  }
+                : undefined
+            }
+          >
+            Available
+          </TabButton>
+          <TabButton
+            onClick={() => setFilter("Booked")}
+            style={
+              filter === "Booked"
+                ? {
+                    color: `${colors.hardGreen}`,
+                    borderBottom: `3px solid ${colors.hardGreen}`,
+                  }
+                : undefined
+            }
+          >
+            Booked
+          </TabButton>
+        </TabsMenuContainer>
+        <Search onChange={(event) => setSearch(event.target.value)}></Search>
         <Select onChange={(event) => setOrderBy(event.target.value as string)}>
           <option value="price_up">Price: Up</option>
           <option value="price_down">Price: Down</option>
         </Select>
-        </Container>
+      </Container>
       {roomsDataStatus === "rejected" ? (
         <ErrorMessage />
       ) : roomsDataStatus === "pending" ? (
