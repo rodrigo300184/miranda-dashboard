@@ -16,6 +16,7 @@ import PopMenu from "../components/PopMenu";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { Spinner } from "../components/Spinner";
 import { Table } from "../components/Table";
+import { Search } from "../components/Search";
 
 const NameContainer = styled.aside`
   display: flex;
@@ -95,18 +96,6 @@ const Select = styled.select`
   cursor: pointer;
   outline: none;
   padding-left: 15px;
-`;
-
-const Search = styled.input`
-  justify-item: end;
-  font: 500 16px Poppins;
-  color: ${colors.green};
-  padding: 5px;
-  width: 220px;
-  height: 40px;
-  margin-top: 50px;
-  border-radius: 12px;
-  border: 2px solid rgb(19, 88, 70);
 `;
 
 export const Employees = () => {
@@ -265,7 +254,7 @@ export const Employees = () => {
             Inactive
           </TabButton>
         </TabsMenuContainer>
-        <Search onChange={(event) => setSearch(event.target.value)}></Search>
+        <Search onChange={(event) => setSearch(event.target.value)}/>
         <Select onChange={(event) => setOrderBy(event.target.value)}>
           <option value="Asc">Name(A-Z)</option>
           <option value="Desc">Name(Z-A)</option>

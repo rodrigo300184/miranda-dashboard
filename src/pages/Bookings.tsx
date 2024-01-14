@@ -18,6 +18,7 @@ import { BookingsInterface } from "../features/interfaces/interfaces";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
+import { Search } from "../components/Search";
 
 type Props = {
   small?: string,
@@ -88,18 +89,6 @@ const Select = styled.select`
   cursor: pointer;
   outline: none;
   padding-left: 15px;
-`;
-
-const Search = styled.input`
-  justify-item: end;
-  font: 500 16px Poppins;
-  color: ${colors.green};
-  padding: 5px;
-  width: 220px;
-  height: 40px;
-  margin-top: 50px;
-  border-radius: 12px;
-  border: 2px solid rgb(19, 88, 70);
 `;
 
 export const Bookings = () => {

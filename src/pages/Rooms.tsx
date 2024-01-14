@@ -15,6 +15,7 @@ import styled from "styled-components";
 import colors from "../styles/colors";
 import PopMenu from "../components/PopMenu";
 import { NavLink } from "react-router-dom";
+import { Search } from "../components/Search";
 
 const RoomPhoto = styled.img`
   margin: 10px 8px 5px;
@@ -94,18 +95,6 @@ const Select = styled.select`
   cursor: pointer;
   outline: none;
   padding-left: 15px;
-`;
-
-const Search = styled.input`
-  justify-item: end;
-  font: 500 16px Poppins;
-  color: ${colors.green};
-  padding: 5px;
-  width: 220px;
-  height: 40px;
-  margin-top: 50px;
-  border-radius: 12px;
-  border: 2px solid rgb(19, 88, 70);
 `;
 
 export const Rooms = () => {
