@@ -22,7 +22,10 @@ const SearchInput = styled.input`
   margin-top: 50px;
   border-radius: 12px;
   border: 2px solid rgb(19, 88, 70);
-  padding-right: 35px; /* Ajusta el padding para dejar espacio para el ícono */
+  padding-right: 35px; 
+  &:focus {
+    outline: none; 
+  }
 `;
 
 const SearchIcon = styled(FontAwesomeIcon)`
