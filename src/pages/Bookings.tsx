@@ -130,7 +130,7 @@ export const Bookings = () => {
         typeof value === "string" &&
         value.toLowerCase().includes(search.toLowerCase())
     )
-  );;
+  );
   };
 
   useEffect(() => {
