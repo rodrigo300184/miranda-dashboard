@@ -109,7 +109,7 @@ export const Bookings = () => {
   const [filter, setFilter] = useState("All Bookings");
   const [orderBy, setOrderBy] = useState<keyof BookingsInterface>("guest");
   const [search, setSearch] = useState("");
-  const filterAndOrder = (array: BookingsInterface[], filter: string, orderBy: keyof BookingsInterface, search: string) => {
+  const filterOrderSearch = (array: BookingsInterface[], filter: string, orderBy: keyof BookingsInterface, search: string) => {
     const filteredArray = array.filter((booking: BookingsInterface) => filter === "All Bookings" || booking.status === filter);
     if (orderBy === "guest") {
       filteredArray.sort((a: BookingsInterface, b: BookingsInterface) =>
@@ -137,7 +137,7 @@ export const Bookings = () => {
     dispatch(fetchBookings());
   }, [dispatch]);
 
-    const filteredBookingsData = useMemo(() =>{return filterAndOrder(bookingsData, filter, orderBy,search);
+    const filteredBookingsData = useMemo(() =>{return filterOrderSearch(bookingsData, filter, orderBy,search);
   }, [bookingsData, filter, orderBy,search]);
 
   const handleDelete = (id:string): void => {
