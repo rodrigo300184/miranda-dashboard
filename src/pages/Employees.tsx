@@ -115,10 +115,12 @@ export const Employees = () => {
   const employeesDatastatus = useAppSelector(getEmployeesStatus);
   const [filter, setFilter] = useState("All Employees");
   const [orderBy, setOrderBy] = useState("Asc");
-  const filterAndOrder = (
+  const [search, setSearch] = useState("");
+  const filterOrderSearch = (
     array: EmployeesInterface[],
     filter: string,
-    orderBy: string
+    orderBy: string,
+    search: string
   ) => {
     const filteredArray = array.filter(
       (employee: EmployeesInterface) =>
@@ -146,7 +148,13 @@ export const Employees = () => {
         return dateComparison;
       });
     }
-    return filteredArray;
+    return filteredArray.filter((item) =>
+    Object.values(item).some(
+      (value) =>
+        typeof value === "string" &&
+        value.toLowerCase().includes(search.toLowerCase())
+    )
+  );
   };
 
   useEffect(() => {
@@ -154,8 +162,8 @@ export const Employees = () => {
   }, [dispatch]);
 
   const filteredEmployees = useMemo(() => {
-    return filterAndOrder(employeesData, filter, orderBy);
-  }, [employeesData, filter, orderBy]);
+    return filterOrderSearch(employeesData, filter, orderBy, search);
+  }, [employeesData, filter, orderBy,search]);
 
   const handleDelete = (id: string): void => {
     dispatch(deleteEmployee(id));
@@ -257,7 +265,7 @@ export const Employees = () => {
             Inactive
           </TabButton>
         </TabsMenuContainer>
-        <Search></Search>
+        <Search onChange={(event) => setSearch(event.target.value)}></Search>
         <Select onChange={(event) => setOrderBy(event.target.value)}>
           <option value="Asc">Name(A-Z)</option>
           <option value="Desc">Name(Z-A)</option>
