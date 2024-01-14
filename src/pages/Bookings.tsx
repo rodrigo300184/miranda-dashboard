@@ -108,7 +108,8 @@ export const Bookings = () => {
   const bookingsDataStatus = useAppSelector(getBookingsStatus);
   const [filter, setFilter] = useState("All Bookings");
   const [orderBy, setOrderBy] = useState<keyof BookingsInterface>("guest");
-  const filterAndOrder = (array: BookingsInterface[], filter: string, orderBy: keyof BookingsInterface) => {
+  const [search, setSearch] = useState("");
+  const filterAndOrder = (array: BookingsInterface[], filter: string, orderBy: keyof BookingsInterface, search: string) => {
     const filteredArray = array.filter((booking: BookingsInterface) => filter === "All Bookings" || booking.status === filter);
     if (orderBy === "guest") {
       filteredArray.sort((a: BookingsInterface, b: BookingsInterface) =>
@@ -123,15 +124,21 @@ export const Bookings = () => {
         return dateComparison;
       });
     }
-    return filteredArray;
+    return filteredArray.filter((item) =>
+    Object.values(item).some(
+      (value) =>
+        typeof value === "string" &&
+        value.toLowerCase().includes(search.toLowerCase())
+    )
+  );;
   };
 
   useEffect(() => {
     dispatch(fetchBookings());
   }, [dispatch]);
 
-    const filteredBookingsData = useMemo(() =>{return filterAndOrder(bookingsData, filter, orderBy);
-  }, [bookingsData, filter, orderBy]);
+    const filteredBookingsData = useMemo(() =>{return filterAndOrder(bookingsData, filter, orderBy,search);
+  }, [bookingsData, filter, orderBy,search]);
 
   const handleDelete = (id:string): void => {
     dispatch(deleteBooking(id));
@@ -245,7 +252,7 @@ export const Bookings = () => {
           </TabButton>
         </TabsMenuContainer>
 
-        <Search></Search>
+        <Search onChange={(event) => setSearch(event.target.value)}></Search>
         <Select onChange={(event) => setOrderBy(event.target.value as keyof BookingsInterface)}>
           <option value="guest">Guest</option>
           <option value="order_date">Order Date</option>
