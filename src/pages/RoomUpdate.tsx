@@ -108,9 +108,9 @@ const Button = styled.button`
 `;
 
 const Select = styled.select`
-border: none;
-outline: none;
-border-bottom: 2px solid ${colors.bottomBorderGray};
+  border: none;
+  outline: none;
+  border-bottom: 2px solid ${colors.bottomBorderGray};
   width: 220px;
   font-family: poppins;
   font-size: 16px;
@@ -235,19 +235,31 @@ export const RoomUpdate = () => {
 
   function handlePhotosQuantity(action: string) {
     if (newRoom) {
-    const copyOfData = structuredClone(newRoom);
-    if (action === "add" && copyOfData.room_photo.length < 4) {
-      copyOfData.room_photo.push("");
-    } else if (action === "remove" && copyOfData.room_photo.length > 1) {
-      copyOfData.room_photo.pop();
+      const copyOfData = structuredClone(newRoom);
+      if (action === "add" && copyOfData.room_photo.length < 4) {
+        copyOfData.room_photo.push("");
+      } else if (action === "remove" && copyOfData.room_photo.length > 1) {
+        copyOfData.room_photo.pop();
+      }
+      setNewRoom(copyOfData);
     }
-    setNewRoom(copyOfData);
   }
-}
 
-  const handleInputChange = (event: React.BaseSyntheticEvent) => {
+  const handleInputChange = (event: React.BaseSyntheticEvent, key?: number) => {
     const { name, value } = event.target;
-    newRoom && setNewRoom({ ...newRoom, [name]: value });
+    if (name === "room_photo" && key !== undefined) {
+      newRoom &&
+        setNewRoom({
+          ...newRoom,
+          [name]: [
+            ...newRoom.room_photo.slice(0, key),
+            value,
+            ...newRoom.room_photo.slice(key + 1),
+          ],
+        });
+    } else {
+      newRoom && setNewRoom({ ...newRoom, [name]: value });
+    }
   };
 
   const handleSubmit = () => {
@@ -380,12 +392,31 @@ export const RoomUpdate = () => {
                   <Label>Photo:</Label>
                   <PhotoContainer>
                     {newRoom.room_photo.map((photo, key) => {
-                      return <PhotoInput key={key} defaultValue={photo} />;
+                      return (
+                        <PhotoInput
+                          name="room_photo"
+                          onChange={(event) => handleInputChange(event, key)}
+                          key={key}
+                          defaultValue={photo}
+                        />
+                      );
                     })}
-                    <Button onClick={(e) => {e.preventDefault();
-                                            handlePhotosQuantity('add');}}>+</Button> 
-                    <Button onClick={(e) => {e.preventDefault();
-                                            handlePhotosQuantity('remove');}}>-</Button>
+                    <Button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePhotosQuantity("add");
+                      }}
+                    >
+                      +
+                    </Button>
+                    <Button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePhotosQuantity("remove");
+                      }}
+                    >
+                      -
+                    </Button>
                   </PhotoContainer>
                 </li>
                 <li>
