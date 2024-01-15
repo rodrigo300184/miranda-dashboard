@@ -15,7 +15,7 @@ export const createRoom = createAsyncThunk('rooms/createRoom', async (newRoom: R
   return apiRequest(`rooms`, 'POST', newRoom);
 })
 
-export const updateRoom = createAsyncThunk('rooms/updateRoom', async (updatedRoom: RoomsInterface) => {
+export const updateRoom = createAsyncThunk('rooms/updateRoom', (updatedRoom: RoomsInterface) => {
   return apiRequest(`rooms/${updatedRoom._id}`, 'PUT', updatedRoom);
 })
 

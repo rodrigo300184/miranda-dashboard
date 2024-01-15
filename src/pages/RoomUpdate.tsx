@@ -1,10 +1,7 @@
 import styled from "styled-components";
 import colors from "../styles/colors";
 import {
-  getRooms,
-  fetchRooms,
   getRoomsStatus,
-  deleteRoom,
   getRoom,
   updateRoom,
   fetchRoom,
