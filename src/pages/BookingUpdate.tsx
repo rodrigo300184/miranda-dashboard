@@ -163,7 +163,6 @@ export const BookingUpdate = () => {
     key?: number
   ) => {
     const { name, value } = event.target;
-    console.log(name, key);
     if (name === "photos" && key !== undefined) {
       newBooking &&
         setNewBooking({
@@ -174,7 +173,6 @@ export const BookingUpdate = () => {
             ...newBooking.photos.slice(key + 1),
           ],
         });
-        console.log(newBooking)
     } else {
       newBooking && setNewBooking({ ...newBooking, [name]: value });
     }
