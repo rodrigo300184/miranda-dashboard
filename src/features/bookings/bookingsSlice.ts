@@ -57,9 +57,9 @@ const bookingsSlice = createSlice({
         })
         .addCase(updateBooking.fulfilled, (state, action) => {
           state.status = 'fulfilled';
-          state.item = {...state.item, ...action.payload.updatedBooking}
-          state.data = state.data.filter((item)=> item._id !== action.payload.updatedBooking.id);
-          state.item && state.data.push(state.item)
+          state.item = {...state.item, ...action.payload};
+          state.data = state.data.filter((item)=> item._id !== action.payload._id);
+          state.item && state.data.push(state.item);
         })
         .addCase(deleteBooking.fulfilled, (state, action) => {
           state.status = 'fulfilled';

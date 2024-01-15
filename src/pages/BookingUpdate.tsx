@@ -53,7 +53,7 @@ const Input = styled.input`
   border: none;
   outline: none;
   border-bottom: 2px solid ${colors.bottomBorderGray};
-  width: 220px;
+  width: 300px;
   text-overflow: ellipsis;
 `;
 const TextArea = styled.textarea`
@@ -63,7 +63,7 @@ const TextArea = styled.textarea`
   margin-bottom: 30px;
   //border: none;
   border-bottom: 2px solid ${colors.bottomBorderGray};
-  width: 220px;
+  width: 300px;
   min-height: 100px;
   text-overflow: ellipsis;
 `;
@@ -94,6 +94,34 @@ const Button = styled.button`
     background-color: ${colors.lightGreen};
   }
 `;
+const Select = styled.select`
+  border: none;
+  outline: none;
+  border-bottom: 2px solid ${colors.bottomBorderGray};
+  width: 300px;
+  font-family: poppins;
+  font-size: 16px;
+  margin-bottom: 30px;
+`;
+
+const PhotoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  gap: 5px;
+  margin-bottom: 30px;
+`;
+
+const PhotoInput = styled.input`
+  text-overflow: ellipsis;
+  font-family: poppins;
+  font-size: 16px;
+  padding: 5px;
+  gap: 5px;
+  border: none;
+  outline: none;
+  border-bottom: 2px solid ${colors.bottomBorderGray};
+`;
 
 export const BookingUpdate = () => {
   const navigate = useNavigate();
@@ -102,6 +130,21 @@ export const BookingUpdate = () => {
   const bookingStatus = useAppSelector(getBookingsStatus);
   const [newBooking, setNewBooking] = useState<BookingsInterface | null>(null);
 
+  const availableTypeRoom = [
+    "(Select from the list)",
+    "Single Bed",
+    "Double Bed",
+    "Double Superior",
+    "Suite",
+  ];
+
+  const roomStatus = [
+    "(Select from the list)",
+    "Check In",
+    "Check Out",
+    "In Progress",
+  ];
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -109,15 +152,45 @@ export const BookingUpdate = () => {
   }, [dispatch, bookingId]);
 
   useEffect(() => {
-  
-      setNewBooking(selectBooking);
-    
+    setNewBooking(selectBooking);
   }, [selectBooking, bookingStatus]);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    event:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLSelectElement>,
+    key?: number
+  ) => {
     const { name, value } = event.target;
-    newBooking && setNewBooking({...newBooking, [name]: value});
+    console.log(name, key);
+    if (name === "photos" && key !== undefined) {
+      newBooking &&
+        setNewBooking({
+          ...newBooking,
+          photos: [
+            ...newBooking.photos.slice(0, key),
+            value,
+            ...newBooking.photos.slice(key + 1),
+          ],
+        });
+        console.log(newBooking)
+    } else {
+      newBooking && setNewBooking({ ...newBooking, [name]: value });
+    }
   };
+
+  function handlePhotosQuantity(action: string) {
+    if (newBooking) {
+      const copyOfData = structuredClone(newBooking);
+      if (action === "add" && copyOfData.photos.length < 4) {
+        copyOfData.photos.push("");
+      } else if (action === "remove" && copyOfData.photos.length > 1) {
+        copyOfData.photos.pop();
+      }
+      setNewBooking(copyOfData);
+    }
+  }
 
   const handleSubmit = () => {
     newBooking && dispatch(updateBooking(newBooking));
@@ -140,7 +213,7 @@ export const BookingUpdate = () => {
                 <li>
                   <Label>Guest Full Name:</Label>
                   <Input
-                    name='guest'
+                    name="guest"
                     onChange={handleInputChange}
                     type="text"
                     defaultValue={newBooking.guest}
@@ -149,7 +222,7 @@ export const BookingUpdate = () => {
                 <li>
                   <Label>Phone Number:</Label>
                   <Input
-                    name='phone_number'
+                    name="phone_number"
                     onChange={handleInputChange}
                     defaultValue={newBooking.phone_number}
                   ></Input>
@@ -157,7 +230,7 @@ export const BookingUpdate = () => {
                 <li>
                   <Label>Order Date:</Label>
                   <Input
-                    name='order_date'
+                    name="order_date"
                     type="date"
                     onChange={handleInputChange}
                     defaultValue={newBooking.order_date}
@@ -166,7 +239,7 @@ export const BookingUpdate = () => {
                 <li>
                   <Label>Check In:</Label>
                   <Input
-                    name='check_in'
+                    name="check_in"
                     type="date"
                     onChange={handleInputChange}
                     defaultValue={newBooking.check_in}
@@ -175,7 +248,7 @@ export const BookingUpdate = () => {
                 <li>
                   <Label>Check Out:</Label>
                   <Input
-                    name='check_out'
+                    name="check_out"
                     type="date"
                     onChange={handleInputChange}
                     defaultValue={newBooking.check_out}
@@ -187,16 +260,28 @@ export const BookingUpdate = () => {
               <Ul>
                 <li>
                   <Label>Room Type:</Label>
-                  <Input
-                    name='room_type'
+                  <Select
+                    name="room_type"
                     onChange={handleInputChange}
                     defaultValue={newBooking.room_type}
-                  ></Input>
+                  >
+                    {availableTypeRoom.map((item, index) => {
+                      return (
+                        <option
+                          key={index}
+                          value={index === 0 ? "" : availableTypeRoom[index]}
+                          hidden={index === 0}
+                        >
+                          {item}
+                        </option>
+                      );
+                    })}
+                  </Select>
                 </li>
                 <li>
                   <Label>Room Number:</Label>
                   <Input
-                    name='room_number'
+                    name="room_number"
                     type="text"
                     onChange={handleInputChange}
                     defaultValue={newBooking.room_number}
@@ -204,22 +289,70 @@ export const BookingUpdate = () => {
                 </li>
                 <li>
                   <Label>Status:</Label>
-                  <Input
-                    name='status'
-                    type="text"
+                  <Select
+                    name="status"
                     onChange={handleInputChange}
                     defaultValue={newBooking.status}
-                  ></Input>
+                  >
+                    {roomStatus.map((item, index) => {
+                      return (
+                        <option
+                          key={index}
+                          value={index === 0 ? "" : roomStatus[index]}
+                          hidden={index === 0}
+                        >
+                          {item}
+                        </option>
+                      );
+                    })}
+                  </Select>
                 </li>
-                <li>
+                <li
+                  style={{
+                    display: "flex",
+                    margin: 0,
+                    justifyContent: "flex-end",
+                  }}
+                >
                   <Label>Photo:</Label>
-                  <Input type="file"></Input>
+                  <PhotoContainer>
+                    {newBooking.photos.map((photo, key) => {
+                      return (
+                        <PhotoInput
+                          name="photos"
+                          onChange={(event) => handleInputChange(event, key)}
+                          key={key}
+                          defaultValue={photo}
+                        />
+                      );
+                    })}
+                    <Button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePhotosQuantity("add");
+                      }}
+                    >
+                      +
+                    </Button>
+                    <Button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePhotosQuantity("remove");
+                      }}
+                    >
+                      -
+                    </Button>
+                  </PhotoContainer>
                 </li>
                 <li>
                   <Label style={{ verticalAlign: "top" }}>
                     Special Request:
                   </Label>
-                  <TextArea defaultValue={newBooking.special_request}  name='special_request' onChange={handleInputChange} />
+                  <TextArea
+                    defaultValue={newBooking.special_request}
+                    name="special_request"
+                    onChange={handleInputChange}
+                  />
                 </li>
               </Ul>
             </RightContainer>

@@ -4,25 +4,25 @@ import { RootState } from "../../app/store";
 import { apiRequest } from "../../utils/apiRequest";
 
 export const fetchRooms = createAsyncThunk('rooms/fetchRooms', () => {
-  return apiRequest('rooms','GET');
+  return apiRequest('rooms', 'GET');
 })
 
 export const fetchRoom = createAsyncThunk('rooms/fetchRoom', async (id: string | undefined) => {
-  return apiRequest(`rooms/${id}`,'GET');
+  return apiRequest(`rooms/${id}`, 'GET');
 })
 
 export const createRoom = createAsyncThunk('rooms/createRoom', async (newRoom: RoomsInterface) => {
-  return apiRequest(`rooms`,'POST',newRoom);
+  return apiRequest(`rooms`, 'POST', newRoom);
 })
 
 export const updateRoom = createAsyncThunk('rooms/updateRoom', async (updatedRoom: RoomsInterface) => {
-  return apiRequest(`rooms/${updatedRoom._id}`,'PUT',updatedRoom);
+  return apiRequest(`rooms/${updatedRoom._id}`, 'PUT', updatedRoom);
 })
 
 export const deleteRoom = createAsyncThunk('rooms/deleteRoom', async (id: string) => {
-  const result = await apiRequest(`rooms/${id}`,'DELETE');
-  if(result === 'The room was correctly deleted.') { return id;}
- 
+  const result = await apiRequest(`rooms/${id}`, 'DELETE');
+  if (result === 'The room was correctly deleted.') { return id; }
+
 })
 
 
@@ -59,12 +59,15 @@ const roomsSlice = createSlice({
         state.status = 'fulfilled';
         state.data = [...state.data, action.payload]
       })
-      .addCase(updateRoom.fulfilled, (state) => {
+      .addCase(updateRoom.fulfilled, (state, action) => {
         state.status = 'fulfilled';
+        state.item = { ...state.item, ...action.payload };
+        state.data = state.data.filter((item) => item._id !== action.payload._id);
+        state.item && state.data.push(state.item);
       })
       .addCase(deleteRoom.fulfilled, (state, action) => {
         state.status = 'fulfilled';
-        state.data = state.data.filter((item)=> item._id !== action.payload);
+        state.data = state.data.filter((item) => item._id !== action.payload);
       })
       .addMatcher(
         isAnyOf(

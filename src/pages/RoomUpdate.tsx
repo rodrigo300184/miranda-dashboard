@@ -380,7 +380,7 @@ export const RoomUpdate = () => {
                   <Label>Photo:</Label>
                   <PhotoContainer>
                     {newRoom.room_photo.map((photo, key) => {
-                      return <PhotoInput key={key} value={photo} />;
+                      return <PhotoInput key={key} defaultValue={photo} />;
                     })}
                     <Button onClick={(e) => {e.preventDefault();
                                             handlePhotosQuantity('add');}}>+</Button> 
