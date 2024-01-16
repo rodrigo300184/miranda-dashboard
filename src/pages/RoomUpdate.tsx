@@ -272,7 +272,7 @@ export const RoomUpdate = () => {
   const handleSubmit = async () => {
     newRoom && await dispatch(updateRoom(newRoom));
     Toastify({
-      text: "Booking updated correctly! ",
+      text: "Room updated correctly! ",
       duration: 3000,
       destination: "https://github.com/apvarun/toastify-js",
       newWindow: true,
