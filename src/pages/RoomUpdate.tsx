@@ -330,9 +330,9 @@ export const RoomUpdate = () => {
                     <Label>Discount:</Label>
                     <div>
                       <input
-                         onChange={() => {
-                          handleInputChange;
-                          setSliderOnOff(false);
+                         onChange={(e) => {
+                          handleInputChange(e);
+                          setSliderOnOff(true);
                         }}
                         defaultChecked={newRoom.offer_price}
                         type="radio"
@@ -342,9 +342,9 @@ export const RoomUpdate = () => {
                       />
                       <label htmlFor="yes">Yes</label>
                       <input
-                        onChange={() => {
-                          handleInputChange;
-                          setSliderOnOff(true);
+                        onChange={(e) => {
+                          handleInputChange(e);
+                          setSliderOnOff(false);
                         }}
                         defaultChecked={!newRoom.offer_price}
                         type="radio"
@@ -370,7 +370,7 @@ export const RoomUpdate = () => {
                         min="1"
                         max="100"
                         defaultValue={newRoom?.discount || 0}
-                        disabled={sliderOnOff}
+                        disabled={!sliderOnOff}
                         id="slider"
                       />
                       <label htmlFor="slider">
