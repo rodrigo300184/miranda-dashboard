@@ -184,9 +184,7 @@ export const RoomUpdate = () => {
   const [newRoom, setNewRoom] = useState<RoomsInterface | null>(null);
   const dispatch = useAppDispatch();
   const [sliderValue, setSliderValue] = useState<number>();
-  const [sliderOnOff, setSliderOnOff] = useState<boolean | undefined>(
-    newRoom?.offer_price
-  );
+  const [sliderOnOff, setSliderOnOff] = useState<boolean>();
   const availableTypeRoom = [
     "(Select from the list)",
     "Single Bed",
@@ -216,6 +214,7 @@ export const RoomUpdate = () => {
 
   useEffect(() => {
     setNewRoom(selectRoom);
+    setSliderOnOff(selectRoom?.offer_price);
   }, [selectRoom, roomsStatus]);
 
   const toggleAmenity = (amenity: Iamenities) => {
@@ -247,7 +246,6 @@ export const RoomUpdate = () => {
 
   const handleInputChange = (event: React.BaseSyntheticEvent, key?: number) => {
     const { name, value } = event.target;
-
     setNewRoom((prevRoom) => {
       if (!prevRoom) {
         return prevRoom; //No previous state, do nothing
@@ -273,7 +271,6 @@ export const RoomUpdate = () => {
     newRoom && dispatch(updateRoom(newRoom));
     navigate("/rooms");
   };
-
   return (
     <>
       {roomsStatus === "rejected" ? (
