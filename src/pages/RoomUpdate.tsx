@@ -5,6 +5,7 @@ import {
   getRoom,
   updateRoom,
   fetchRoom,
+  fetchRooms,
 } from "../features/rooms/roomsSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
@@ -269,7 +270,9 @@ export const RoomUpdate = () => {
 
   const handleSubmit = () => {
     newRoom && dispatch(updateRoom(newRoom));
+    dispatch(fetchRooms);
     navigate("/rooms");
+    
   };
   return (
     <>

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import colors from "../styles/colors";
 import {
   fetchBooking,
+  fetchBookings,
   getBooking,
   getBookingsStatus,
   updateBooking,
@@ -192,6 +193,7 @@ export const BookingUpdate = () => {
 
   const handleSubmit = () => {
     newBooking && dispatch(updateBooking(newBooking));
+    dispatch(fetchBookings);
     navigate("/bookings");
   };
   return (
