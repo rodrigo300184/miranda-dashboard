@@ -164,7 +164,7 @@ export const Rooms = () => {
             <TextFormatter>N° {room_number}</TextFormatter>
             <NavLink to={`/rooms/${_id}`}>
               <TextFormatter small={"small"} color={colors.green}>
-                #{_id.slice(0, 10)}...
+                #{_id.slice(0, 15)}...
               </TextFormatter>
             </NavLink>
           </>
