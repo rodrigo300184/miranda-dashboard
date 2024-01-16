@@ -7,11 +7,11 @@ export const fetchRooms = createAsyncThunk('rooms/fetchRooms', () => {
   return apiRequest('rooms', 'GET');
 })
 
-export const fetchRoom = createAsyncThunk('rooms/fetchRoom', async (id: string | undefined) => {
+export const fetchRoom = createAsyncThunk('rooms/fetchRoom', (id: string | undefined) => {
   return apiRequest(`rooms/${id}`, 'GET');
 })
 
-export const createRoom = createAsyncThunk('rooms/createRoom', async (newRoom: RoomsInterface) => {
+export const createRoom = createAsyncThunk('rooms/createRoom', (newRoom: RoomsInterface) => {
   return apiRequest(`rooms`, 'POST', newRoom);
 })
 

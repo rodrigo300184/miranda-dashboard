@@ -184,6 +184,9 @@ export const RoomUpdate = () => {
   const [newRoom, setNewRoom] = useState<RoomsInterface | null>(null);
   const dispatch = useAppDispatch();
   const [sliderValue, setSliderValue] = useState<number>();
+  const [sliderOnOff, setSliderOnOff] = useState<boolean | undefined>(
+    newRoom?.offer_price
+  );
   const availableTypeRoom = [
     "(Select from the list)",
     "Single Bed",
@@ -244,19 +247,26 @@ export const RoomUpdate = () => {
 
   const handleInputChange = (event: React.BaseSyntheticEvent, key?: number) => {
     const { name, value } = event.target;
-    if (name === "room_photo" && key !== undefined) {
-      newRoom &&
-        setNewRoom({
-          ...newRoom,
-          [name]: [
-            ...newRoom.room_photo.slice(0, key),
-            value,
-            ...newRoom.room_photo.slice(key + 1),
-          ],
-        });
-    } else {
-      newRoom && setNewRoom({ ...newRoom, [name]: value });
-    }
+
+    setNewRoom((prevRoom) => {
+      if (!prevRoom) {
+        return prevRoom; //No previous state, do nothing
+      }
+
+      const updatedRoom = {
+        ...prevRoom,
+        [name]:
+          key !== undefined
+            ? [
+                ...prevRoom.room_photo.slice(0, key),
+                value,
+                ...prevRoom.room_photo.slice(key + 1),
+              ]
+            : value,
+      };
+
+      return updatedRoom;
+    });
   };
 
   const handleSubmit = () => {
@@ -320,19 +330,27 @@ export const RoomUpdate = () => {
                     <Label>Discount:</Label>
                     <div>
                       <input
-                        onChange={handleInputChange}
-                        checked={newRoom.offer_price}
+                         onChange={() => {
+                          handleInputChange;
+                          setSliderOnOff(false);
+                        }}
+                        defaultChecked={newRoom.offer_price}
                         type="radio"
-                        name="yes"
-                        value="Yes"
+                        name="offer_price"
+                        value={1}
+                        id="yes"
                       />
                       <label htmlFor="yes">Yes</label>
                       <input
-                        onChange={handleInputChange}
-                        checked={!newRoom.offer_price}
+                        onChange={() => {
+                          handleInputChange;
+                          setSliderOnOff(true);
+                        }}
+                        defaultChecked={!newRoom.offer_price}
                         type="radio"
-                        name="no"
-                        value="No"
+                        name="offer_price"
+                        value={0}
+                        id="no"
                       />
                       <label htmlFor="no">No</label>
                     </div>
@@ -343,15 +361,17 @@ export const RoomUpdate = () => {
                     <Label>Discount percentage:</Label>
                     <div>
                       <input
-                        onChange={(e) =>
-                          setSliderValue(parseInt(e.target.value))
-                        }
-                        name="slider"
+                        onChange={(e) => {
+                          setSliderValue(parseInt(e.target.value));
+                          handleInputChange(e);
+                        }}
+                        name="discount"
                         type="range"
                         min="1"
-                        max="50"
+                        max="100"
                         defaultValue={newRoom?.discount || 0}
-                        disabled={!newRoom.offer_price}
+                        disabled={sliderOnOff}
+                        id="slider"
                       />
                       <label htmlFor="slider">
                         {sliderValue || newRoom?.discount}%
