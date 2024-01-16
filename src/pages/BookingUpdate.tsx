@@ -191,9 +191,8 @@ export const BookingUpdate = () => {
     }
   }
 
-  const handleSubmit = () => {
-    newBooking && dispatch(updateBooking(newBooking));
-    dispatch(fetchBookings);
+  const handleSubmit = async () => {
+    newBooking && await dispatch(updateBooking(newBooking));
     navigate("/bookings");
   };
   return (
