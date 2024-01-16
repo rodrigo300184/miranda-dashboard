@@ -90,8 +90,8 @@ export const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("email@email.com");
+  const [password, setPassword] = useState("1234");
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -146,6 +146,7 @@ export const Login = () => {
 
         <Label htmlFor="email">Email:</Label>
         <Input
+        defaultValue={"email@email.com"}
           onChange={handleEmailChange}
           type="email"
           name="email"
@@ -156,6 +157,7 @@ export const Login = () => {
         />
         <Label htmlFor="password">Password:</Label>
         <Input
+        defaultValue={"1234"}
           onChange={handlePasswordChange}
           type="password"
           name="password"
