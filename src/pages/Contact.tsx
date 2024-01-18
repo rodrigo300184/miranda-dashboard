@@ -1,3 +1,5 @@
+import Toastify from 'toastify-js';
+import "toastify-js/src/toastify.css";
 import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { TabsMenuContainer, TabButton } from "../components/Tabs";
@@ -5,6 +7,7 @@ import {
   fetchContacts,
   getContacts,
   getContactsStatus,
+  updateContact,
 } from "../features/contacts/contactsSlice";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { Spinner } from "../components/Spinner";
@@ -47,10 +50,12 @@ type Props = {
 
 const Status = styled.button<Props>`
   font: 600 16px Poppins;
+  cursor: pointer;
   width: 70%;
   height: 48px;
   border: none;
   border-radius: 8px;
+  transition: all 250ms;
   color: ${(props) =>
     props.status === "Archived"
       ? `${colors.checkInBtnText}`
@@ -61,6 +66,8 @@ const Status = styled.button<Props>`
       ? `${colors.checkInBtnBgr}`
       : `${colors.checkOutBtnBgr}`};
   &:hover {
+    transition: all 250ms;
+    transform: scale(1.05);
   }
 `;
 
@@ -117,6 +124,38 @@ export const Contact = () => {
   const filteredcontacts = useMemo(() => {
     return filterOrderSearch(contactsData, filter, orderBy, search);
   }, [contactsData, filter, orderBy, search]);
+
+  const handleArchiveToggle = async (contact: ContactsInterface) => {
+    const updatedContact = contact.status === "Archived"
+      ? { ...contact, status: "Not Archived" }
+      : { ...contact, status: "Archived" };
+    await dispatch(updateContact(updatedContact));
+    dispatch(fetchContacts());
+    
+    const toastText = updatedContact.status === "Archived"
+    ? "Contact archived correctly!"
+    : "Contact restored successfully!";
+
+  const toastStyle = {
+    background: updatedContact.status === "Archived"
+      ? "linear-gradient(to right, #135846 ,#4cb974)"
+      : "linear-gradient(to right, #4cb974 ,#135846)"
+  };
+
+  Toastify({
+    text: toastText,
+    duration: 3000,
+    destination: "https://github.com/apvarun/toastify-js",
+    newWindow: true,
+    close: true,
+    gravity: "top",
+    position: "center",
+    stopOnFocus: true,
+    style: toastStyle,
+    onClick: function(){} 
+  }).showToast();
+  };
+  
 
   const formattedDate = (dateTime: string) => {
     const date = new Date(dateTime);
@@ -188,9 +227,9 @@ export const Contact = () => {
     {
       property: "status",
       label: "Status",
-      display: ({ status }: ContactsInterface) => (
+      display: (contact: ContactsInterface) => (
         <StatusContainer>
-          <Status status={status}>{status}</Status>
+          <Status onClick={() => handleArchiveToggle(contact)} status={contact.status}>{contact.status}</Status>
         </StatusContainer>
       ),
     },

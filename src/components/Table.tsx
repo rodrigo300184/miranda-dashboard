@@ -2,6 +2,7 @@ import styled from "styled-components";
 import colors from "../styles/colors";
 import {
   BookingsInterface,
+  ContactsInterface,
   RoomsInterface,
 } from "../features/interfaces/interfaces";
 
@@ -104,11 +105,11 @@ type Column = {
 
 type TableProps = {
   columns: Column[];
-  data: BookingsInterface[] | RoomsInterface[] | any;
+  data: BookingsInterface[] | RoomsInterface[] | ContactsInterface[] | any;
   name: string;
 };
 
-type Row = BookingsInterface | RoomsInterface;
+type Row = BookingsInterface | RoomsInterface | ContactsInterface;
 
 export const Table = (props: TableProps) => {
   const { columns, data } = props;
