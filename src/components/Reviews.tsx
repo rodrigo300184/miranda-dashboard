@@ -5,7 +5,7 @@ import {
   getContacts,
   getContactsStatus,
 } from "../features/contacts/contactsSlice";
-import '../styles/styles.css'
+import "../styles/styles.css";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -57,13 +57,15 @@ export const Reviews = () => {
             navigation
             modules={[Navigation]}
           >
-            {contactsData.map((contact, index) => {
-              return (
-                <SwiperSlide key={index}>
-                  <ReviewCard contact={contact} />
-                </SwiperSlide>
-              );
-            })}
+            {contactsData
+              .filter((contact) => contact.status !== "Archived")
+              .map((contact, index) => {
+                return (
+                  <SwiperSlide key={index}>
+                    <ReviewCard contact={contact} />
+                  </SwiperSlide>
+                );
+              })}
           </Swiper>
         )}
       </ReviewsContainer>
