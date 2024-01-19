@@ -1,10 +1,9 @@
-import Toastify from 'toastify-js';
-import "toastify-js/src/toastify.css";
 import styled from "styled-components";
 import { ContactsInterface } from "../features/interfaces/interfaces";
 import colors from "../styles/colors";
 import { useAppDispatch } from "../app/hooks";
 import { updateContact } from "../features/contacts/contactsSlice";
+import showToast from "../utils/toastMessages";
 
 const CardContainer = styled.div`
   margin: 30px 0 5px 6px;
@@ -92,23 +91,10 @@ type ReviewProps = {
 export const ReviewCard = (props: ReviewProps) => {
   const dispatch = useAppDispatch();
   const handleClick = (contact: ContactsInterface) => {
-    const archiveContact = {...contact, status: "Archived"} 
+    const archiveContact = { ...contact, status: "Archived" };
     dispatch(updateContact(archiveContact));
-    Toastify({
-      text: "Contact archived correctly! ",
-      duration: 3000,
-      destination: "https://github.com/apvarun/toastify-js",
-      newWindow: true,
-      close: true,
-      gravity: "top", // `top` or `bottom`
-      position: "center", // `left`, `center` or `right`
-      stopOnFocus: true, // Prevents dismissing of toast on hover
-      style: {
-        background: "linear-gradient(to right, #135846 ,#4cb974)",
-      },
-      onClick: function(){} // Callback after click
-    }).showToast();
-  }
+    showToast({ text: "Contact archived correctly! " });
+  };
   return (
     <>
       <CardContainer>
@@ -121,10 +107,16 @@ export const ReviewCard = (props: ReviewProps) => {
           />
           <TextContainer>
             <Name>{props.contact.full_name}</Name>
-            <span><a href="mailto:">{props.contact.email}</a></span>
-            <span><a href="tel:+">{props.contact.phone_number}</a></span>
+            <span>
+              <a href="mailto:">{props.contact.email}</a>
+            </span>
+            <span>
+              <a href="tel:+">{props.contact.phone_number}</a>
+            </span>
           </TextContainer>
-          <Button green onClick={() => handleClick(props.contact)}>Archive</Button>
+          <Button green onClick={() => handleClick(props.contact)}>
+            Archive
+          </Button>
         </InnerCardContainer>
       </CardContainer>
     </>
