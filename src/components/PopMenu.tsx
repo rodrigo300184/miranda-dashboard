@@ -6,12 +6,11 @@ import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
 import { NavLink } from "react-router-dom";
 
-
 type Props = {
-  path?: string,
-  id?: string,
-  onClick?: () => void
-}
+  path?: string;
+  id?: string;
+  onClick?: () => void;
+};
 
 export default function PopMenu(props: Props) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -29,8 +28,7 @@ export default function PopMenu(props: Props) {
         onClick={handleClick}
         icon={faEllipsisVertical}
         size="xl"
-        style={{ color: "#6e6e6e", cursor:'pointer' }}
-       
+        style={{ color: "#6e6e6e", cursor: "pointer" }}
       />
       <Menu
         id="fade-menu"
@@ -42,19 +40,26 @@ export default function PopMenu(props: Props) {
         onClose={handleClose}
         TransitionComponent={Fade}
         anchorOrigin={{
-          vertical: 'center',
-          horizontal: 'left',
+          vertical: "center",
+          horizontal: "left",
         }}
         transformOrigin={{
-          vertical: 'center',
-          horizontal: 'right',
+          vertical: "center",
+          horizontal: "right",
         }}
-        sx={{fontFamily:'Poppins'}}
+        sx={{ fontFamily: "Poppins" }}
       >
-         <NavLink to={`/${props.path}/update/${props.id}`}>
-            <MenuItem >Edit</MenuItem>
+        <NavLink to={`/${props.path}/update/${props.id}`}>
+          <MenuItem>Edit</MenuItem>
         </NavLink>
-        <MenuItem onClick={props.onClick} >Delete</MenuItem>
+        <MenuItem
+          onClick={() => {
+            props.onClick && props.onClick();
+            handleClose();
+          }}
+        >
+          Delete
+        </MenuItem>
       </Menu>
     </>
   );
