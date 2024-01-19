@@ -19,7 +19,7 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { Search } from "../components/Search";
-import deleteAlert from "../utils/DeleteAlert";
+import deleteAlert from "../utils/deleteAlert";
 
 type Props = {
   small?: string;
