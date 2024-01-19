@@ -1,5 +1,3 @@
-import Toastify from 'toastify-js';
-import "toastify-js/src/toastify.css";
 import styled from "styled-components";
 import colors from "../styles/colors";
 import {
@@ -14,6 +12,7 @@ import { ErrorMessage } from "../components/ErrorMessage";
 import { Spinner } from "../components/Spinner";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { BookingsInterface } from "../features/interfaces/interfaces";
+import showToast from "../utils/toastMessages";
 
 const Container = styled.div`
   margin: 50px;
@@ -194,20 +193,7 @@ export const BookingUpdate = () => {
 
   const handleSubmit = async () => {
     newBooking && await dispatch(updateBooking(newBooking));
-    Toastify({
-      text: "Booking updated correctly! ",
-      duration: 3000,
-      destination: "https://github.com/apvarun/toastify-js",
-      newWindow: true,
-      close: true,
-      gravity: "top", // `top` or `bottom`
-      position: "center", // `left`, `center` or `right`
-      stopOnFocus: true, // Prevents dismissing of toast on hover
-      style: {
-        background: "linear-gradient(to right, #135846 ,#4cb974)",
-      },
-      onClick: function(){} // Callback after click
-    }).showToast();
+    showToast({text: "Booking updated correctly! "});
     navigate("/bookings");
   };
   return (
