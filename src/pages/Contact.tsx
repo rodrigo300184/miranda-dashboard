@@ -1,5 +1,3 @@
-import Toastify from 'toastify-js';
-import "toastify-js/src/toastify.css";
 import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { TabsMenuContainer, TabButton } from "../components/Tabs";
@@ -16,6 +14,7 @@ import { Table } from "../components/Table";
 import styled from "styled-components";
 import colors from "../styles/colors";
 import { Search } from "../components/Search";
+import showToast from "../utils/toastMessages";
 
 const StatusContainer = styled.div`
   display: flex;
@@ -71,7 +70,7 @@ const Status = styled.button<Props>`
   }
 `;
 
-const TextFormatter = styled.span<Props>` 
+const TextFormatter = styled.span<Props>`
   max-height: 120px;
   overflow: auto;
   display: block;
@@ -126,36 +125,30 @@ export const Contact = () => {
   }, [contactsData, filter, orderBy, search]);
 
   const handleArchiveToggle = async (contact: ContactsInterface) => {
-    const updatedContact = contact.status === "Archived"
-      ? { ...contact, status: "Not Archived" }
-      : { ...contact, status: "Archived" };
+    const updatedContact =
+      contact.status === "Archived"
+        ? { ...contact, status: "Not Archived" }
+        : { ...contact, status: "Archived" };
     await dispatch(updateContact(updatedContact));
     dispatch(fetchContacts());
-    
-    const toastText = updatedContact.status === "Archived"
-    ? "Contact archived correctly!"
-    : "Contact restored successfully!";
 
-  const toastStyle = {
-    background: updatedContact.status === "Archived"
-      ? "linear-gradient(to right, #135846 ,#4cb974)"
-      : "linear-gradient(to right, #4cb974 ,#135846)"
-  };
+    const toastText =
+      updatedContact.status === "Archived"
+        ? "Contact archived correctly!"
+        : "Contact restored successfully!";
 
-  Toastify({
-    text: toastText,
-    duration: 3000,
-    destination: "https://github.com/apvarun/toastify-js",
-    newWindow: true,
-    close: true,
-    gravity: "top",
-    position: "center",
-    stopOnFocus: true,
-    style: toastStyle,
-    onClick: function(){} 
-  }).showToast();
+    const toastStyle = {
+      background:
+        updatedContact.status === "Archived"
+          ? "linear-gradient(to right, #135846 ,#4cb974)"
+          : "linear-gradient(to right, #4cb974 ,#135846)",
+    };
+
+    showToast({
+      text: toastText,
+      style: toastStyle,
+    });
   };
-  
 
   const formattedDate = (dateTime: string) => {
     const date = new Date(dateTime);
@@ -229,7 +222,12 @@ export const Contact = () => {
       label: "Status",
       display: (contact: ContactsInterface) => (
         <StatusContainer>
-          <Status onClick={() => handleArchiveToggle(contact)} status={contact.status}>{contact.status}</Status>
+          <Status
+            onClick={() => handleArchiveToggle(contact)}
+            status={contact.status}
+          >
+            {contact.status}
+          </Status>
         </StatusContainer>
       ),
     },
