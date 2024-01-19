@@ -1,4 +1,4 @@
-import Toastify from 'toastify-js';
+import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 import styled from "styled-components";
 import colors from "../styles/colors";
@@ -14,6 +14,7 @@ import { Iamenities, RoomsInterface } from "../features/interfaces/interfaces";
 import { useState, useEffect } from "react";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { Spinner } from "../components/Spinner";
+import showToast from "../utils/toastMessages";
 
 const Container = styled.div`
   margin: 50px;
@@ -270,23 +271,9 @@ export const RoomUpdate = () => {
   };
 
   const handleSubmit = async () => {
-    newRoom && await dispatch(updateRoom(newRoom));
-    Toastify({
-      text: "Room updated correctly! ",
-      duration: 3000,
-      destination: "https://github.com/apvarun/toastify-js",
-      newWindow: true,
-      close: true,
-      gravity: "top", // `top` or `bottom`
-      position: "center", // `left`, `center` or `right`
-      stopOnFocus: true, // Prevents dismissing of toast on hover
-      style: {
-        background: "linear-gradient(to right, #135846 ,#4cb974)",
-      },
-      onClick: function(){} // Callback after click
-    }).showToast();
+    newRoom && (await dispatch(updateRoom(newRoom)));
+    showToast({ text: "Room updated correctly! " });
     navigate("/rooms");
-    
   };
   return (
     <>
@@ -344,7 +331,7 @@ export const RoomUpdate = () => {
                     <Label>Discount:</Label>
                     <div>
                       <input
-                         onChange={(e) => {
+                        onChange={(e) => {
                           handleInputChange(e);
                           setSliderOnOff(true);
                         }}
