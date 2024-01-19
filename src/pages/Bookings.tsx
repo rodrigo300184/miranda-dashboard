@@ -19,11 +19,12 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { Search } from "../components/Search";
+import deleteAlert from "../utils/DeleteAlert";
 
 type Props = {
-  small?: string,
-  status?: string,
-}
+  small?: string;
+  status?: string;
+};
 
 const TextFormatter = styled.span<Props>`
   display: block;
@@ -35,7 +36,7 @@ const TextFormatter = styled.span<Props>`
 `;
 
 const StatusContainer = styled.div`
-  display:flex;
+  display: flex;
 `;
 
 const Status = styled.button<Props>`
@@ -98,15 +99,25 @@ export const Bookings = () => {
   const [filter, setFilter] = useState("All Bookings");
   const [orderBy, setOrderBy] = useState<keyof BookingsInterface>("guest");
   const [search, setSearch] = useState("");
-  const filterOrderSearch = (array: BookingsInterface[], filter: string, orderBy: keyof BookingsInterface, search: string) => {
-    const filteredArray = array.filter((booking: BookingsInterface) => filter === "All Bookings" || booking.status === filter);
+  const filterOrderSearch = (
+    array: BookingsInterface[],
+    filter: string,
+    orderBy: keyof BookingsInterface,
+    search: string
+  ) => {
+    const filteredArray = array.filter(
+      (booking: BookingsInterface) =>
+        filter === "All Bookings" || booking.status === filter
+    );
     if (orderBy === "guest") {
       filteredArray.sort((a: BookingsInterface, b: BookingsInterface) =>
         a.guest.localeCompare(b.guest, undefined, { sensitivity: "base" })
       );
     } else {
       filteredArray.sort((a: BookingsInterface, b: BookingsInterface) => {
-        const dateComparison = new Date(a[orderBy] as string).getTime() - new Date(b[orderBy] as string).getTime();
+        const dateComparison =
+          new Date(a[orderBy] as string).getTime() -
+          new Date(b[orderBy] as string).getTime();
         if (dateComparison === 0) {
           return a.guest.localeCompare(b.guest);
         }
@@ -114,24 +125,29 @@ export const Bookings = () => {
       });
     }
     return filteredArray.filter((item) =>
-    Object.values(item).some(
-      (value) =>
-        typeof value === "string" &&
-        value.toLowerCase().includes(search.toLowerCase())
-    )
-  );
+      Object.values(item).some(
+        (value) =>
+          typeof value === "string" &&
+          value.toLowerCase().includes(search.toLowerCase())
+      )
+    );
   };
 
   useEffect(() => {
     dispatch(fetchBookings());
   }, [dispatch]);
 
-    const filteredBookingsData = useMemo(() =>{return filterOrderSearch(bookingsData, filter, orderBy,search);
-  }, [bookingsData, filter, orderBy,search]);
+  const filteredBookingsData = useMemo(() => {
+    return filterOrderSearch(bookingsData, filter, orderBy, search);
+  }, [bookingsData, filter, orderBy, search]);
 
-  const handleDelete = (id:string): void => {
-    dispatch(deleteBooking(id));
-  }
+  const handleDelete = (id: string): void => {
+    deleteAlert().then((deleteConfirmed) => {
+      if (deleteConfirmed) {
+        dispatch(deleteBooking(id));
+      }
+    });
+  };
 
   const columns = [
     {
@@ -141,9 +157,12 @@ export const Bookings = () => {
         <>
           <CustomerPhoto src={`https://robohash.org/${guest}.png?set=any`} />
           <TextFormatter>{guest}</TextFormatter>
-          <TextFormatter small="small"><FontAwesomeIcon icon={faPhone} style={{color: "#799283",}} /> {phone_number}</TextFormatter>
+          <TextFormatter small="small">
+            <FontAwesomeIcon icon={faPhone} style={{ color: "#799283" }} />{" "}
+            {phone_number}
+          </TextFormatter>
           <NavLink to={`/bookings/${_id}`}>
-            <TextFormatter small="small">#{_id.slice(0,10)}...</TextFormatter>
+            <TextFormatter small="small">#{_id.slice(0, 10)}...</TextFormatter>
           </NavLink>
         </>
       ),
@@ -164,7 +183,10 @@ export const Bookings = () => {
       property: "special_request",
       label: "Special Request",
       display: ({ special_request }: BookingsInterface) => (
-        <ViewNotes specialrequest={special_request.length} message={special_request} />
+        <ViewNotes
+          specialrequest={special_request.length}
+          message={special_request}
+        />
       ),
     },
     {
@@ -174,13 +196,17 @@ export const Bookings = () => {
     {
       property: "status",
       label: "Status",
-      display: ({ status, _id }: BookingsInterface) => 
+      display: ({ status, _id }: BookingsInterface) => (
         <StatusContainer>
           <Status status={status}>{status}</Status>
-            <PopMenu path={'bookings'} id={_id} onClick={() => handleDelete(_id)} />
-        </StatusContainer>,
+          <PopMenu
+            path={"bookings"}
+            id={_id}
+            onClick={() => handleDelete(_id)}
+          />
+        </StatusContainer>
+      ),
     },
-  
   ];
 
   return (
@@ -242,13 +268,16 @@ export const Bookings = () => {
         </TabsMenuContainer>
 
         <Search onChange={(event) => setSearch(event.target.value)}></Search>
-        <Select onChange={(event) => setOrderBy(event.target.value as keyof BookingsInterface)}>
+        <Select
+          onChange={(event) =>
+            setOrderBy(event.target.value as keyof BookingsInterface)
+          }
+        >
           <option value="guest">Guest</option>
           <option value="order_date">Order Date</option>
           <option value="check_in">Check In</option>
           <option value="check_out">Check Out</option>
         </Select>
-      
       </Container>
 
       {bookingsDataStatus === "rejected" ? (
@@ -257,7 +286,6 @@ export const Bookings = () => {
         <Spinner />
       ) : (
         <Table name="bookings" columns={columns} data={filteredBookingsData} />
-        
       )}
     </>
   );
