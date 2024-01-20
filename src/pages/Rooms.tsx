@@ -16,6 +16,7 @@ import colors from "../styles/colors";
 import PopMenu from "../components/PopMenu";
 import { NavLink } from "react-router-dom";
 import { Search } from "../components/Search";
+import deleteAlert from "../utils/deleteAlert";
 
 const RoomPhoto = styled.img`
   margin: 10px 8px 5px;
@@ -150,7 +151,9 @@ export const Rooms = () => {
   }, [roomsData, filter, orderBy, search]);
 
   const handleDelete = (id: string): void => {
-    dispatch(deleteRoom(id));
+    deleteAlert().then((deleteConfirmed) => {
+      if (deleteConfirmed) dispatch(deleteRoom(id));
+    });
   };
 
   const columns = [
