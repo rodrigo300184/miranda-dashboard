@@ -143,9 +143,7 @@ export const Bookings = () => {
 
   const handleDelete = (id: string): void => {
     deleteAlert().then((deleteConfirmed) => {
-      if (deleteConfirmed) {
-        dispatch(deleteBooking(id));
-      }
+      if (deleteConfirmed) dispatch(deleteBooking(id));
     });
   };
 
