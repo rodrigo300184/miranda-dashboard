@@ -17,6 +17,7 @@ import { ErrorMessage } from "../components/ErrorMessage";
 import { Spinner } from "../components/Spinner";
 import { Table } from "../components/Table";
 import { Search } from "../components/Search";
+import deleteAlert from "../utils/deleteAlert";
 
 const NameContainer = styled.aside`
   display: flex;
@@ -155,7 +156,9 @@ export const Employees = () => {
   }, [employeesData, filter, orderBy,search]);
 
   const handleDelete = (id: string): void => {
-    dispatch(deleteEmployee(id));
+    deleteAlert().then((deleteConfirmed) => {
+      if(deleteConfirmed) dispatch(deleteEmployee(id));
+    })
   };
 
   const columns = [
