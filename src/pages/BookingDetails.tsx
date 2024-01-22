@@ -123,7 +123,7 @@ const DateContainer = styled.div`
 `;
 
 export const BookingDetails = () => {
-  const  bookingId  = useParams().bookingId;
+  const bookingId = useParams().bookingId;
   const selectBooking = useAppSelector(getBooking);
   const bookingStatus = useAppSelector(getBookingsStatus);
   const [booking, setBooking] = useState<BookingsInterface | null>();
@@ -138,12 +138,12 @@ export const BookingDetails = () => {
       setBooking(selectBooking);
     }
   }, [bookingStatus, selectBooking]);
-  
+
   return (
     <>
       {bookingStatus === "rejected" ? (
         <ErrorMessage />
-      ) : bookingStatus === "pending" || booking===null ? (
+      ) : bookingStatus === "pending" || booking === null ? (
         <Spinner />
       ) : (
         <Container>
@@ -158,13 +158,15 @@ export const BookingDetails = () => {
                 <Name>{booking?.guest}</Name>
                 <P color={colors.green}>ID {booking?._id}</P>
                 <ContactButtons>
-                  <PhoneButton>
+                  <a href={`tel: ${booking?.phone_number}`}><PhoneButton>
                     <FontAwesomeIcon icon={faPhone} size="xl" />
-                  </PhoneButton>
-                  <MessageButton>
-                    <FontAwesomeIcon icon={faCommentDots} size="lg" />
-                    <span>Send Message</span>
-                  </MessageButton>
+                  </PhoneButton></a>
+                  <a href="mailto:">
+                    <MessageButton>
+                      <FontAwesomeIcon icon={faCommentDots} size="lg" />
+                      <span>Send Message</span>
+                    </MessageButton>{" "}
+                  </a>
                 </ContactButtons>
               </InnerCardContainer>
               <PopMenu />
