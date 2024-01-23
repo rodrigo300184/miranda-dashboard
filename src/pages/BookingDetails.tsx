@@ -15,6 +15,14 @@ import { ErrorMessage } from "../components/ErrorMessage";
 import { Spinner } from "../components/Spinner";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { BookingsInterface } from "../features/interfaces/interfaces";
+import {
+  fetchRoom,
+  getRoom,
+  getRoomsStatus,
+} from "../features/rooms/roomsSlice";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css/bundle";
 
 const Container = styled.div`
   display: flex;
@@ -29,6 +37,7 @@ const LeftContainer = styled.div`
 `;
 const RightContainer = styled.div`
   width: 50%;
+  padding-left: 50px;
 `;
 
 const CardContainer = styled.div`
@@ -66,10 +75,6 @@ const P = styled.p`
   letter-spacing: 0px;
   color: ${(props) => props.color};
   margin-bottom: 15px;
-  &span {
-    font: normal 18px Poppins;
-    color: black;
-  }
 `;
 const ContactButtons = styled.div`
   display: flex;
@@ -112,9 +117,10 @@ const MessageButton = styled.div`
 
 const DatesContainer = styled.div`
   display: flex;
+  width: 100%;
   border-bottom: 3px solid rgb(235, 235, 235);
   padding: 30px 0px 25px;
-  gap: 15px;
+  gap: 25px;
 `;
 const DateContainer = styled.div`
   display: flex;
@@ -122,12 +128,54 @@ const DateContainer = styled.div`
   flex-direction: column;
 `;
 
+const RoomPhoto = styled.img`
+
+width: 100%;
+height: 100%; 
+object-fit: cover;
+`;
+
+const RoomContainer = styled.div`
+  display: flex;
+  width: 100%;
+  padding: 30px 0px 25px;
+  gap: 55px;
+`;
+
+const RoomInfoContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  & span {
+    display: flex;
+    font: normal 24px/35px Poppins;
+    color: black;
+    & p {
+      text-align: left;
+      font: normal 14px Poppins;
+      letter-spacing: 0px;
+      color: ${colors.green};
+      margin-top: 12px;
+    }
+  }
+`;
+
+const PersonalSwiper = styled(Swiper)`
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  margin: 0;
+  transition: all 250ms ease-in-out;
+`;
+
 export const BookingDetails = () => {
+  const dispatch = useAppDispatch();
   const bookingId = useParams().bookingId;
   const selectBooking = useAppSelector(getBooking);
   const bookingStatus = useAppSelector(getBookingsStatus);
   const [booking, setBooking] = useState<BookingsInterface | null>();
-  const dispatch = useAppDispatch();
+  const selectRoom = useAppSelector(getRoom);
+  const roomStatus = useAppSelector(getRoomsStatus);
 
   useEffect(() => {
     dispatch(fetchBooking(bookingId));
@@ -136,6 +184,7 @@ export const BookingDetails = () => {
   useEffect(() => {
     if (bookingStatus === "fulfilled") {
       setBooking(selectBooking);
+      dispatch(fetchRoom(selectBooking?.room_id));
     }
   }, [bookingStatus, selectBooking]);
 
@@ -158,9 +207,11 @@ export const BookingDetails = () => {
                 <Name>{booking?.guest}</Name>
                 <P color={colors.green}>ID {booking?._id}</P>
                 <ContactButtons>
-                  <a href={`tel: ${booking?.phone_number}`}><PhoneButton>
-                    <FontAwesomeIcon icon={faPhone} size="xl" />
-                  </PhoneButton></a>
+                  <a href={`tel: ${booking?.phone_number}`}>
+                    <PhoneButton>
+                      <FontAwesomeIcon icon={faPhone} size="xl" />
+                    </PhoneButton>
+                  </a>
                   <a href="mailto:">
                     <MessageButton>
                       <FontAwesomeIcon icon={faCommentDots} size="lg" />
@@ -181,8 +232,39 @@ export const BookingDetails = () => {
                 <span>{booking?.check_out}</span>
               </DateContainer>
             </DatesContainer>
+            <RoomContainer>
+              <RoomInfoContainer>
+              <P color={colors.gray}>Room Info</P>
+                <span>{`${selectRoom?.room_type} - ${selectRoom?.room_number}`}</span>
+              </RoomInfoContainer>
+              <RoomInfoContainer>
+              <P color={colors.gray}>Price</P>
+                <span>{`$${selectRoom?.price}`}<p>/night</p></span>
+              </RoomInfoContainer>
+            </RoomContainer>
+              <P>{booking?.special_request}</P>
           </LeftContainer>
-          <RightContainer></RightContainer>
+          <RightContainer>
+          {roomStatus === "rejected" ? (
+          <ErrorMessage />
+        ) : roomStatus === "pending" ? (
+          <Spinner />
+        ) : (
+          <PersonalSwiper
+            spaceBetween={40}
+            navigation
+            modules={[Navigation]}
+          >
+            {selectBooking?.photos.map((photo, index) => {
+                return (
+                  <SwiperSlide key={index}>
+                    <RoomPhoto src={photo} />
+                  </SwiperSlide>
+                );
+              })}
+          </PersonalSwiper>
+        )}
+          </RightContainer>
         </Container>
       )}
     </>
