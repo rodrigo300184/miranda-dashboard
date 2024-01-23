@@ -7,6 +7,7 @@ import {
   getBooking,
   getBookingsStatus,
   fetchBooking,
+  deleteBooking,
 } from "../features/bookings/bookingsSlice";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
@@ -23,6 +24,7 @@ import {
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css/bundle";
+import deleteAlert from "../utils/deleteAlert";
 
 const Container = styled.div`
   display: flex;
@@ -129,10 +131,9 @@ const DateContainer = styled.div`
 `;
 
 const RoomPhoto = styled.img`
-
-width: 100%;
-height: 100%; 
-object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 const RoomContainer = styled.div`
@@ -188,6 +189,12 @@ export const BookingDetails = () => {
     }
   }, [bookingStatus, selectBooking]);
 
+  const handleDelete = (id: string): void => {
+    deleteAlert().then((deleteConfirmed) => {
+      if (deleteConfirmed) dispatch(deleteBooking(id));
+    });
+  };
+
   return (
     <>
       {bookingStatus === "rejected" ? (
@@ -220,7 +227,11 @@ export const BookingDetails = () => {
                   </a>
                 </ContactButtons>
               </InnerCardContainer>
-              <PopMenu />
+              <PopMenu
+                path={"bookings"}
+                id={booking?._id}
+                onClick={() => handleDelete(booking?._id as string)}
+              />
             </CardContainer>
             <DatesContainer>
               <DateContainer>
@@ -234,36 +245,39 @@ export const BookingDetails = () => {
             </DatesContainer>
             <RoomContainer>
               <RoomInfoContainer>
-              <P color={colors.gray}>Room Info</P>
+                <P color={colors.gray}>Room Info</P>
                 <span>{`${selectRoom?.room_type} - ${selectRoom?.room_number}`}</span>
               </RoomInfoContainer>
               <RoomInfoContainer>
-              <P color={colors.gray}>Price</P>
-                <span>{`$${selectRoom?.price}`}<p>/night</p></span>
+                <P color={colors.gray}>Price</P>
+                <span>
+                  {`$${selectRoom?.price}`}
+                  <p>/night</p>
+                </span>
               </RoomInfoContainer>
             </RoomContainer>
-              <P>{booking?.special_request}</P>
+            <P>{booking?.special_request}</P>
           </LeftContainer>
           <RightContainer>
-          {roomStatus === "rejected" ? (
-          <ErrorMessage />
-        ) : roomStatus === "pending" ? (
-          <Spinner />
-        ) : (
-          <PersonalSwiper
-            spaceBetween={40}
-            navigation
-            modules={[Navigation]}
-          >
-            {selectBooking?.photos.map((photo, index) => {
-                return (
-                  <SwiperSlide key={index}>
-                    <RoomPhoto src={photo} />
-                  </SwiperSlide>
-                );
-              })}
-          </PersonalSwiper>
-        )}
+            {roomStatus === "rejected" ? (
+              <ErrorMessage />
+            ) : roomStatus === "pending" ? (
+              <Spinner />
+            ) : (
+              <PersonalSwiper
+                spaceBetween={40}
+                navigation
+                modules={[Navigation]}
+              >
+                {selectBooking?.photos.map((photo, index) => {
+                  return (
+                    <SwiperSlide key={index}>
+                      <RoomPhoto src={photo} />
+                    </SwiperSlide>
+                  );
+                })}
+              </PersonalSwiper>
+            )}
           </RightContainer>
         </Container>
       )}
