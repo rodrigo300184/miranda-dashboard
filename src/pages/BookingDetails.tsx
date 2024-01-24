@@ -169,6 +169,26 @@ const PersonalSwiper = styled(Swiper)`
   transition: all 250ms ease-in-out;
 `;
 
+const AmenitiesContainer = styled.div`
+  padding: 10px 5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+`;
+const Amenity = styled.button`
+  padding: 15px;
+  font: 500 14px/21px Poppins;
+  width: fit-content;
+  height: fit-content;
+  border: none;
+  border-radius: 8px;
+  color: ${colors.hardGreen};
+  background-color: ${colors.phoneBtnBgr};
+  &:hover {
+  }
+`;
+
 export const BookingDetails = () => {
   const dispatch = useAppDispatch();
   const bookingId = useParams().bookingId;
@@ -257,6 +277,12 @@ export const BookingDetails = () => {
               </RoomInfoContainer>
             </RoomContainer>
             <P>{booking?.special_request}</P>
+            <P color={colors.gray}>Amenities</P>
+            <AmenitiesContainer>
+              {selectRoom?.amenities.map((amenity, key) => {
+                return <Amenity key={key}>{amenity.name}</Amenity>;
+              })}
+            </AmenitiesContainer>
           </LeftContainer>
           <RightContainer>
             {roomStatus === "rejected" ? (
