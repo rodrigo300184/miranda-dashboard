@@ -219,7 +219,7 @@ export const BookingDetails = () => {
     <>
       {bookingStatus === "rejected" ? (
         <ErrorMessage />
-      ) : bookingStatus === "pending" || booking === null ? (
+      ) : bookingStatus === "pending" || booking === null || selectRoom === null ? (
         <Spinner />
       ) : (
         <Container>
