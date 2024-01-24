@@ -12,6 +12,7 @@ type Props = {
 }
 
 const SideMenuContainer = styled.div<Props>`
+  min-height: 100vh;
   width: 345px;
   background-color: white;
   padding: 32px 0px;
