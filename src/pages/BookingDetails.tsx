@@ -22,7 +22,7 @@ import {
   getRoomsStatus,
 } from "../features/rooms/roomsSlice";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import { Autoplay, Navigation } from "swiper/modules";
 import "swiper/css/bundle";
 import deleteAlert from "../utils/deleteAlert";
 
@@ -293,7 +293,8 @@ export const BookingDetails = () => {
               <PersonalSwiper
                 spaceBetween={40}
                 navigation
-                modules={[Navigation]}
+                modules={[Navigation,Autoplay]}
+                autoplay
               >
                 {selectBooking?.photos.map((photo, index) => {
                   return (
