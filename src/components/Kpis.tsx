@@ -82,7 +82,7 @@ export const Kpis = () => {
             <TextContainer>
               {" "}
               <H1>8,461</H1>
-              <H2>New Booking</H2>{" "}
+              <H2>New Bookings</H2>{" "}
             </TextContainer>
           </ItemContainer>
           <ItemContainer>
@@ -94,7 +94,7 @@ export const Kpis = () => {
             <TextContainer>
               {" "}
               <H1>963</H1>
-              <H2>Scheduled Room</H2>{" "}
+              <H2>Scheduled Rooms</H2>{" "}
             </TextContainer>
           </ItemContainer>
           <ItemContainer>
@@ -108,7 +108,7 @@ export const Kpis = () => {
             <TextContainer>
               {" "}
               <H1>753</H1>
-              <H2>Check In</H2>{" "}
+              <H2>Check-Ins</H2>{" "}
             </TextContainer>
           </ItemContainer>
           <ItemContainer>
@@ -122,7 +122,7 @@ export const Kpis = () => {
             <TextContainer>
               {" "}
               <H1>516</H1>
-              <H2>Check Out</H2>{" "}
+              <H2>Check-Outs</H2>{" "}
             </TextContainer>
           </ItemContainer>
         </InnerContainer>
