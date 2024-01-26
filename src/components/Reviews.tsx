@@ -42,7 +42,7 @@ export const Reviews = () => {
   return (
     <>
       <ReviewsContainer>
-        <Title>Latest Review by Customers</Title>
+        <Title>Latest Reviews by Customers</Title>
         {contactsDataStatus === "rejected" ? (
           <ErrorMessage />
         ) : contactsDataStatus === "pending" ? (
