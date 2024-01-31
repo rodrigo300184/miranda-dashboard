@@ -7,6 +7,7 @@ import {
   getRoom,
   updateRoom,
   fetchRoom,
+  createRoom,
 } from "../features/rooms/roomsSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
@@ -181,10 +182,19 @@ const PhotoInput = styled.input`
 
 export const RoomCreate = () => {
   const navigate = useNavigate();
-  const roomId = useParams().roomId || "";
   const selectRoom = useAppSelector(getRoom);
   const roomsStatus = useAppSelector(getRoomsStatus);
-  const [newRoom, setNewRoom] = useState<RoomsInterface | null>(null);
+  const [newRoom, setNewRoom] = useState<RoomsInterface>({
+    room_number: "",
+    room_photo: [""],
+    room_type: "",
+    amenities: [],
+    price: 0,
+    offer_price: false,
+    discount: 0,
+    status: "Available",
+    description: "",
+  });
   const dispatch = useAppDispatch();
   const [sliderValue, setSliderValue] = useState<number>();
   const [sliderOnOff, setSliderOnOff] = useState<boolean>();
@@ -211,14 +221,10 @@ export const RoomCreate = () => {
     { name: "1/2 Bathroom", description: "Private half bathroom" },
   ];
 
-  useEffect(() => {
-    dispatch(fetchRoom(roomId));
-  }, [dispatch, roomId]);
-
-  useEffect(() => {
-    setNewRoom(selectRoom);
-    setSliderOnOff(selectRoom?.offer_price);
-  }, [selectRoom, roomsStatus]);
+  // useEffect(() => {
+  //   setNewRoom(selectRoom);
+  //   setSliderOnOff(selectRoom?.offer_price);
+  // }, [selectRoom, roomsStatus]);
 
   const toggleAmenity = (amenity: Iamenities) => {
     if (newRoom) {
@@ -271,188 +277,180 @@ export const RoomCreate = () => {
   };
 
   const handleSubmit = async () => {
-    newRoom && (await dispatch(updateRoom(newRoom)));
-    showToast({ text: "Room updated correctly! " });
+    newRoom && (await dispatch(createRoom(newRoom)));
+    showToast({ text: "Room created correctly! " });
     navigate("/rooms");
   };
   return (
     <>
-      {roomsStatus === "rejected" ? (
-        <ErrorMessage />
-      ) : roomsStatus === "pending" ||
-        newRoom === null ||
-        newRoom._id !== roomId ? (
-        <Spinner />
-      ) : (
-        <Container>
-          <H1>Room Update</H1>
-          <Form onSubmit={handleSubmit}>
-            <LeftContainer>
-              <Ul>
-                <li>
-                  <Label>Room Type:</Label>
-                  <Select
-                    name="room_type"
-                    onChange={handleInputChange}
-                    defaultValue={newRoom.room_type}
+      <Container>
+        <H1>Room Update</H1>
+        <Form onSubmit={handleSubmit}>
+          <LeftContainer>
+            <Ul>
+              <li>
+                <Label>Room Type:</Label>
+                <Select
+                  name="room_type"
+                  onChange={handleInputChange}
+                  defaultValue={newRoom.room_type}
+                >
+                  {availableTypeRoom.map((item, index) => {
+                    return (
+                      <option
+                        key={index}
+                        value={index === 0 ? "" : availableTypeRoom[index]}
+                        hidden={index === 0}
+                      >
+                        {item}
+                      </option>
+                    );
+                  })}
+                </Select>
+              </li>
+              <li>
+                <Label>Room Number:</Label>
+                <Input
+                  name="room_number"
+                  onChange={handleInputChange}
+                  defaultValue={newRoom.room_number}
+                ></Input>
+              </li>
+              <li>
+                <Label>Price:</Label>
+                <Input
+                  name="price"
+                  type="text"
+                  onChange={handleInputChange}
+                  defaultValue={newRoom.price}
+                ></Input>
+              </li>
+              <li>
+                <ChoicesContainer>
+                  <Label>Discount:</Label>
+                  <div>
+                    <input
+                      onChange={(e) => {
+                        handleInputChange(e);
+                        setSliderOnOff(true);
+                      }}
+                      defaultChecked={newRoom.offer_price}
+                      type="radio"
+                      name="offer_price"
+                      value={1}
+                      id="yes"
+                    />
+                    <label htmlFor="yes">Yes</label>
+                    <input
+                      onChange={(e) => {
+                        handleInputChange(e);
+                        setSliderOnOff(false);
+                      }}
+                      defaultChecked={!newRoom.offer_price}
+                      type="radio"
+                      name="offer_price"
+                      value={0}
+                      id="no"
+                    />
+                    <label htmlFor="no">No</label>
+                  </div>
+                </ChoicesContainer>
+              </li>
+              <li>
+                <ChoicesContainer>
+                  <Label>Discount percentage:</Label>
+                  <div>
+                    <input
+                      onChange={(e) => {
+                        setSliderValue(parseInt(e.target.value));
+                        handleInputChange(e);
+                      }}
+                      name="discount"
+                      type="range"
+                      min="1"
+                      max="100"
+                      defaultValue={newRoom?.discount || 0}
+                      disabled={!sliderOnOff}
+                      id="slider"
+                    />
+                    <label htmlFor="slider">
+                      {sliderValue || newRoom?.discount}%
+                    </label>
+                  </div>
+                </ChoicesContainer>
+              </li>
+              <li>
+                <Label>Amenities:</Label>
+                <AmenitiesContainer>
+                  {availableAmenities.map((amenity, key) => {
+                    return (
+                      <Amenity
+                        active={
+                          newRoom.amenities.find(
+                            (item) => item.name === amenity.name
+                          )
+                            ? true
+                            : false
+                        }
+                        key={key}
+                        onClick={() => toggleAmenity(amenity)}
+                      >
+                        {amenity.name}
+                      </Amenity>
+                    );
+                  })}
+                </AmenitiesContainer>
+              </li>
+            </Ul>
+          </LeftContainer>
+          <RightContainer>
+            <Ul>
+              <li>
+                <Label>Photo:</Label>
+                <PhotoContainer>
+                  {newRoom.room_photo.map((photo, key) => {
+                    return (
+                      <PhotoInput
+                        name="room_photo"
+                        onChange={(event) => handleInputChange(event, key)}
+                        key={key}
+                        defaultValue={photo}
+                      />
+                    );
+                  })}
+                  <Button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePhotosQuantity("add");
+                    }}
                   >
-                    {availableTypeRoom.map((item, index) => {
-                      return (
-                        <option
-                          key={index}
-                          value={index === 0 ? "" : availableTypeRoom[index]}
-                          hidden={index === 0}
-                        >
-                          {item}
-                        </option>
-                      );
-                    })}
-                  </Select>
-                </li>
-                <li>
-                  <Label>Room Number:</Label>
-                  <Input
-                    name="room_number"
-                    onChange={handleInputChange}
-                    defaultValue={newRoom.room_number}
-                  ></Input>
-                </li>
-                <li>
-                  <Label>Price:</Label>
-                  <Input
-                    name="price"
-                    type="text"
-                    onChange={handleInputChange}
-                    defaultValue={newRoom.price}
-                  ></Input>
-                </li>
-                <li>
-                  <ChoicesContainer>
-                    <Label>Discount:</Label>
-                    <div>
-                      <input
-                        onChange={(e) => {
-                          handleInputChange(e);
-                          setSliderOnOff(true);
-                        }}
-                        defaultChecked={newRoom.offer_price}
-                        type="radio"
-                        name="offer_price"
-                        value={1}
-                        id="yes"
-                      />
-                      <label htmlFor="yes">Yes</label>
-                      <input
-                        onChange={(e) => {
-                          handleInputChange(e);
-                          setSliderOnOff(false);
-                        }}
-                        defaultChecked={!newRoom.offer_price}
-                        type="radio"
-                        name="offer_price"
-                        value={0}
-                        id="no"
-                      />
-                      <label htmlFor="no">No</label>
-                    </div>
-                  </ChoicesContainer>
-                </li>
-                <li>
-                  <ChoicesContainer>
-                    <Label>Discount percentage:</Label>
-                    <div>
-                      <input
-                        onChange={(e) => {
-                          setSliderValue(parseInt(e.target.value));
-                          handleInputChange(e);
-                        }}
-                        name="discount"
-                        type="range"
-                        min="1"
-                        max="100"
-                        defaultValue={newRoom?.discount || 0}
-                        disabled={!sliderOnOff}
-                        id="slider"
-                      />
-                      <label htmlFor="slider">
-                        {sliderValue || newRoom?.discount}%
-                      </label>
-                    </div>
-                  </ChoicesContainer>
-                </li>
-                <li>
-                  <Label>Amenities:</Label>
-                  <AmenitiesContainer>
-                    {availableAmenities.map((amenity, key) => {
-                      return (
-                        <Amenity
-                          active={
-                            newRoom.amenities.find(
-                              (item) => item.name === amenity.name
-                            )
-                              ? true
-                              : false
-                          }
-                          key={key}
-                          onClick={() => toggleAmenity(amenity)}
-                        >
-                          {amenity.name}
-                        </Amenity>
-                      );
-                    })}
-                  </AmenitiesContainer>
-                </li>
-              </Ul>
-            </LeftContainer>
-            <RightContainer>
-              <Ul>
-                <li>
-                  <Label>Photo:</Label>
-                  <PhotoContainer>
-                    {newRoom.room_photo.map((photo, key) => {
-                      return (
-                        <PhotoInput
-                          name="room_photo"
-                          onChange={(event) => handleInputChange(event, key)}
-                          key={key}
-                          defaultValue={photo}
-                        />
-                      );
-                    })}
-                    <Button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handlePhotosQuantity("add");
-                      }}
-                    >
-                      +
-                    </Button>
-                    <Button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handlePhotosQuantity("remove");
-                      }}
-                    >
-                      -
-                    </Button>
-                  </PhotoContainer>
-                </li>
-                <li>
-                  <Label style={{ verticalAlign: "top" }}>Description:</Label>
-                  <TextArea
-                    defaultValue={newRoom.description}
-                    name="description"
-                    onChange={handleInputChange}
-                  />
-                </li>
-              </Ul>
-            </RightContainer>
-          </Form>
-          <ButtonContainer>
-            <Button onClick={handleSubmit}>Save</Button>
-          </ButtonContainer>
-        </Container>
-      )}
+                    +
+                  </Button>
+                  <Button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePhotosQuantity("remove");
+                    }}
+                  >
+                    -
+                  </Button>
+                </PhotoContainer>
+              </li>
+              <li>
+                <Label style={{ verticalAlign: "top" }}>Description:</Label>
+                <TextArea
+                  defaultValue={newRoom.description}
+                  name="description"
+                  onChange={handleInputChange}
+                />
+              </li>
+            </Ul>
+          </RightContainer>
+        </Form>
+        <ButtonContainer>
+          <Button onClick={handleSubmit}>Save</Button>
+        </ButtonContainer>
+      </Container>
     </>
   );
 };
