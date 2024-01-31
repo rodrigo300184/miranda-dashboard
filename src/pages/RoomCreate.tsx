@@ -182,8 +182,6 @@ const PhotoInput = styled.input`
 
 export const RoomCreate = () => {
   const navigate = useNavigate();
-  const selectRoom = useAppSelector(getRoom);
-  const roomsStatus = useAppSelector(getRoomsStatus);
   const [newRoom, setNewRoom] = useState<RoomsInterface>({
     room_number: "",
     room_photo: [""],

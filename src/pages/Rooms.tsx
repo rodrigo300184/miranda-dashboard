@@ -189,7 +189,7 @@ export const Rooms = () => {
             <TextFormatter>N° {room_number}</TextFormatter>
             <NavLink to={`/rooms/${_id}`}>
               <TextFormatter small={"small"} color={colors.green}>
-                #{_id.slice(0, 15)}...
+                #{_id &&_id.slice(0, 15)}...
               </TextFormatter>
             </NavLink>
           </>
@@ -258,7 +258,7 @@ export const Rooms = () => {
             <PopMenu
               path={"rooms"}
               id={_id}
-              onClick={() => handleDelete(_id)}
+              onClick={() => _id && handleDelete(_id)}
             />
           </>
         );
