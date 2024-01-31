@@ -14,7 +14,7 @@ import { Spinner } from "../components/Spinner";
 import styled from "styled-components";
 import colors from "../styles/colors";
 import PopMenu from "../components/PopMenu";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Search } from "../components/Search";
 import deleteAlert from "../utils/deleteAlert";
 
@@ -30,6 +30,7 @@ type Props = {
   status?: string;
   name?: string;
   decoration?: string;
+  green?: boolean;
 };
 
 const TextFormatter = styled.span<Props>`
@@ -98,7 +99,28 @@ const Select = styled.select`
   padding-left: 15px;
 `;
 
+const Button = styled.button.attrs({ type: "button" })<Props>`
+  width: 200px;
+  height: 40px;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  color: ${(props) => (props.green ? colors.lightGreen : colors.lightRed)};
+  background-color: ${(props) => (props.green ? colors.hardGreen : colors.red)};
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 50px 0 0 0;
+  border: 1px solid;
+  &:hover {
+    color: ${colors.hardGreen};
+    background-color: ${(props) =>
+      props.green ? colors.lightGreen : colors.red};
+  }
+`;
+
 export const Rooms = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const roomsData = useAppSelector(getRooms);
   const roomsDataStatus = useAppSelector(getRoomsStatus);
@@ -289,6 +311,7 @@ export const Rooms = () => {
           </TabButton>
         </TabsMenuContainer>
         <Search onChange={(event) => setSearch(event.target.value)}></Search>
+        <Button green onClick={() => navigate("./create")}>Create New Room</Button>
         <Select onChange={(event) => setOrderBy(event.target.value as string)}>
           <option value="price_up">Price: Up</option>
           <option value="price_down">Price: Down</option>
