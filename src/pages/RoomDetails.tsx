@@ -133,8 +133,10 @@ export const RoomDetails = () => {
 
   const handleDelete = (id: string): void => {
     deleteAlert().then((deleteConfirmed) => {
-      if (deleteConfirmed) dispatch(deleteRoom(id));
-      navigate("/rooms")
+      if (deleteConfirmed) {
+        dispatch(deleteRoom(id));
+        navigate("/rooms");
+      }
     });
   };
 
@@ -177,9 +179,9 @@ export const RoomDetails = () => {
             </RoomInfoContainer>
             <RoomInfoContainer>
               <Text color={colors.gray}>Description</Text>
-             <Text>{room?.description}</Text>
+              <Text>{room?.description}</Text>
             </RoomInfoContainer>
-            
+
             <Text color={colors.gray}>Amenities</Text>
             <AmenitiesContainer>
               {selectRoom?.amenities.map((amenity, key) => {
