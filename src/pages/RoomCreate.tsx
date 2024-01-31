@@ -219,6 +219,24 @@ export const RoomCreate = () => {
     { name: "1/2 Bathroom", description: "Private half bathroom" },
   ];
 
+  const availableDescriptions = 
+    {
+      "Single Bed":
+        "Immerse yourself in comfort with our Single Bed rooms. Thoughtfully designed for solo travelers, these cozy spaces offer a perfect blend of relaxation and functionality, ensuring a delightful stay for individuals seeking a comfortable retreat",
+    
+    
+      "Double Bed":
+        "Indulge in the warmth and charm of our Double Bed rooms. Perfect for pairs, these inviting spaces provide a harmonious blend of comfort and style. Enjoy a restful night's sleep in a well-appointed room designed to cater to the needs of both leisure and business travelers",
+    
+    
+      "Double Superior":
+        "Elevate your stay with our Double Superior rooms, where luxury meets convenience. Experience refined comfort in these spacious accommodations, featuring enhanced amenities and a stylish ambiance. Perfect for those seeking an extra touch of sophistication during their visit",
+    
+    
+      "Suite":
+        "Discover the epitome of luxury in our Suites. These expansive and elegantly furnished spaces offer a premium experience for discerning travelers. Immerse yourself in opulence with exclusive amenities, a spacious layout, and personalized service, ensuring an unforgettable stay for those seeking the pinnacle of hospitality",
+    };
+
   // useEffect(() => {
   //   setNewRoom(selectRoom);
   //   setSliderOnOff(selectRoom?.offer_price);
@@ -258,7 +276,7 @@ export const RoomCreate = () => {
         return prevRoom; //No previous state, do nothing
       }
 
-      const updatedRoom = {
+      let updatedRoom = {
         ...prevRoom,
         [name]:
           key !== undefined
@@ -269,7 +287,7 @@ export const RoomCreate = () => {
               ]
             : value,
       };
-
+      if (name === "room_type") updatedRoom = {...updatedRoom, description: availableDescriptions[value as keyof typeof availableDescriptions] || ""}
       return updatedRoom;
     });
   };
