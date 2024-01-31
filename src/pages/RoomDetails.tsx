@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import colors from "../styles/colors";
 import PopMenu from "../components/PopMenu";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import { ErrorMessage } from "../components/ErrorMessage";
@@ -114,6 +114,7 @@ const Amenity = styled.button`
 `;
 
 export const RoomDetails = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const roomId = useParams().roomId;
   const roomStatus = useAppSelector(getRoomsStatus);
@@ -133,6 +134,7 @@ export const RoomDetails = () => {
   const handleDelete = (id: string): void => {
     deleteAlert().then((deleteConfirmed) => {
       if (deleteConfirmed) dispatch(deleteRoom(id));
+      navigate("/rooms")
     });
   };
 
