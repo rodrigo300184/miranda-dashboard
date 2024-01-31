@@ -25,7 +25,7 @@ export interface Iamenities {
 }
 
 export interface RoomsInterface {
-  "_id": string,
+  "_id"?: string,
   "room_number": string,
   "room_photo": string[],
   "room_type": string,
