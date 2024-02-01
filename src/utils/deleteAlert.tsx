@@ -16,6 +16,7 @@ const deleteAlert = () => {
           title: "Deleted!",
           text: "Your file has been deleted.",
           icon: "success",
+          confirmButtonColor: "#135846",
         });
         resolve(true);
       } else {
