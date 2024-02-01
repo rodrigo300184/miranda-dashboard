@@ -118,6 +118,18 @@ const Button = styled.button.attrs({ type: "button" })<Props>`
       props.green ? colors.lightGreen : colors.red};
   }
 `;
+const H4 = styled.h4`
+  margin: 10px 8px 5px;
+  padding: 16% 0;
+  width: 70%;
+  border-radius: 20px;
+  text-align: center;
+  color: ${colors.green};
+  border: solid 2px ${colors.green};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 export const Rooms = () => {
   const navigate = useNavigate();
@@ -185,11 +197,15 @@ export const Rooms = () => {
       display: ({ _id, room_number, room_photo }: RoomsInterface) => {
         return (
           <>
-            <RoomPhoto src={room_photo[0]} />
+            {room_photo[0] === "" ? (
+              <H4>No photo</H4>
+            ) : (
+              <RoomPhoto src={room_photo[0]} />
+            )}
             <TextFormatter>N° {room_number}</TextFormatter>
             <NavLink to={`/rooms/${_id}`}>
               <TextFormatter small={"small"} color={colors.green}>
-                #{_id &&_id.slice(0, 15)}...
+                #{_id?.slice(0, 15)}...
               </TextFormatter>
             </NavLink>
           </>
@@ -311,7 +327,9 @@ export const Rooms = () => {
           </TabButton>
         </TabsMenuContainer>
         <Search onChange={(event) => setSearch(event.target.value)}></Search>
-        <Button green onClick={() => navigate("./create")}>Create New Room</Button>
+        <Button green onClick={() => navigate("./create")}>
+          Create New Room
+        </Button>
         <Select onChange={(event) => setOrderBy(event.target.value as string)}>
           <option value="price_up">Price: Up</option>
           <option value="price_down">Price: Down</option>

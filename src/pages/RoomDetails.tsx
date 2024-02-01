@@ -91,6 +91,11 @@ const PersonalSwiper = styled(Swiper)`
   border-radius: 20px;
   margin: 0;
   transition: all 250ms ease-in-out;
+  & .swiper-slide{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+  }
 `;
 
 const AmenitiesContainer = styled.div`
@@ -112,6 +117,18 @@ const Amenity = styled.button`
   &:hover {
   }
 `;
+const H1 = styled.h1`
+  width: 95%;
+  height: 95%;
+  border-radius: 20px;
+  text-align: center;
+  color: ${colors.green};
+  border: solid 2px ${colors.green};
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+`;
+
 
 export const RoomDetails = () => {
   const navigate = useNavigate();
@@ -199,7 +216,11 @@ export const RoomDetails = () => {
               {room?.room_photo.map((photo, index) => {
                 return (
                   <SwiperSlide key={index}>
-                    <RoomPhoto src={photo} />
+                    {photo === "" ? (
+                      <H1>No photo</H1>
+                    ) : (
+                      <RoomPhoto src={photo} />
+                    )}
                   </SwiperSlide>
                 );
               })}
