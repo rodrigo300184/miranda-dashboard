@@ -54,14 +54,15 @@ const Label = styled.label`
   }
 `;
 
-const Input = styled.input`
+const Input = styled.input<Props>`
   font-family: poppins;
   font-size: 16px;
   padding: 5px;
   margin-bottom: 30px;
-  border: none;
+  border: ${(props) => (props.valid ? `solid 2px red` : `none`)};
   outline: none;
-  border-bottom: 2px solid ${colors.bottomBorderGray};
+  border-bottom: ${(props) =>
+    props.valid ? `solid 2px red` : `2px solid ${colors.bottomBorderGray}`};
   width: 220px;
   text-overflow: ellipsis;
 `;
@@ -81,6 +82,7 @@ const Ul = styled.ul`
   text-align: right;
   list-style: none;
   & li {
+    position:relative;
     display: flex;
     justify-content: end;
   }
@@ -135,6 +137,7 @@ const ChoicesContainer = styled.div`
 
 type Props = {
   active?: boolean;
+  valid?: boolean;
 };
 
 const Amenity = styled.div<Props>`
@@ -180,8 +183,22 @@ const PhotoInput = styled.input`
   border-bottom: 2px solid ${colors.bottomBorderGray};
 `;
 
+const ValidationMessage = styled.div`
+top: 40px;
+left: 240px;
+position:absolute;
+font-family: poppins;
+font-size: 13px;
+color: red;
+`;
+
 export const RoomCreate = () => {
   const navigate = useNavigate();
+
+  interface Errors {
+    room_number?: boolean;
+  }
+  const [errors, setErrors] = useState<Errors>({});
   const [newRoom, setNewRoom] = useState<RoomsInterface>({
     room_number: "",
     room_photo: [""],
@@ -219,23 +236,19 @@ export const RoomCreate = () => {
     { name: "1/2 Bathroom", description: "Private half bathroom" },
   ];
 
-  const availableDescriptions = 
-    {
-      "Single Bed":
-        "Immerse yourself in comfort with our Single Bed rooms. Thoughtfully designed for solo travelers, these cozy spaces offer a perfect blend of relaxation and functionality, ensuring a delightful stay for individuals seeking a comfortable retreat",
-    
-    
-      "Double Bed":
-        "Indulge in the warmth and charm of our Double Bed rooms. Perfect for pairs, these inviting spaces provide a harmonious blend of comfort and style. Enjoy a restful night's sleep in a well-appointed room designed to cater to the needs of both leisure and business travelers",
-    
-    
-      "Double Superior":
-        "Elevate your stay with our Double Superior rooms, where luxury meets convenience. Experience refined comfort in these spacious accommodations, featuring enhanced amenities and a stylish ambiance. Perfect for those seeking an extra touch of sophistication during their visit",
-    
-    
-      "Suite":
-        "Discover the epitome of luxury in our Suites. These expansive and elegantly furnished spaces offer a premium experience for discerning travelers. Immerse yourself in opulence with exclusive amenities, a spacious layout, and personalized service, ensuring an unforgettable stay for those seeking the pinnacle of hospitality",
-    };
+  const availableDescriptions = {
+    "Single Bed":
+      "Immerse yourself in comfort with our Single Bed rooms. Thoughtfully designed for solo travelers, these cozy spaces offer a perfect blend of relaxation and functionality, ensuring a delightful stay for individuals seeking a comfortable retreat",
+
+    "Double Bed":
+      "Indulge in the warmth and charm of our Double Bed rooms. Perfect for pairs, these inviting spaces provide a harmonious blend of comfort and style. Enjoy a restful night's sleep in a well-appointed room designed to cater to the needs of both leisure and business travelers",
+
+    "Double Superior":
+      "Elevate your stay with our Double Superior rooms, where luxury meets convenience. Experience refined comfort in these spacious accommodations, featuring enhanced amenities and a stylish ambiance. Perfect for those seeking an extra touch of sophistication during their visit",
+
+    Suite:
+      "Discover the epitome of luxury in our Suites. These expansive and elegantly furnished spaces offer a premium experience for discerning travelers. Immerse yourself in opulence with exclusive amenities, a spacious layout, and personalized service, ensuring an unforgettable stay for those seeking the pinnacle of hospitality",
+  };
 
   // useEffect(() => {
   //   setNewRoom(selectRoom);
@@ -287,15 +300,37 @@ export const RoomCreate = () => {
               ]
             : value,
       };
-      if (name === "room_type") updatedRoom = {...updatedRoom, description: availableDescriptions[value as keyof typeof availableDescriptions] || ""}
+      if (name === "room_type")
+        updatedRoom = {
+          ...updatedRoom,
+          description:
+            availableDescriptions[
+              value as keyof typeof availableDescriptions
+            ] || "",
+        };
       return updatedRoom;
     });
   };
 
+  const validateForm = () => {
+    const validationErrors: Errors = {};
+    newRoom.room_number === "" && (validationErrors.room_number = true);
+    setErrors(validationErrors);
+    console.log(errors);
+    return !Object.values(validationErrors).some((error) => error);
+  };
+
   const handleSubmit = async () => {
-    newRoom && (await dispatch(createRoom(newRoom)));
-    showToast({ text: "Room created correctly! " });
-    navigate("/rooms");
+    if (validateForm()) {
+      try {
+        await dispatch(createRoom(newRoom));
+        showToast({ text: "Room created correctly!" });
+        navigate("/rooms");
+      } catch (error) {
+        const style = { backgroundColor: "red" };
+        showToast({ text: "Something went wrong!", style });
+      }
+    }
   };
   return (
     <>
@@ -327,10 +362,14 @@ export const RoomCreate = () => {
               <li>
                 <Label>Room Number:</Label>
                 <Input
+                  valid={errors.room_number}
                   name="room_number"
                   onChange={handleInputChange}
                   defaultValue={newRoom.room_number}
                 ></Input>
+              {errors.room_number && (
+                <ValidationMessage>Room number can't be empty</ValidationMessage>
+              )}
               </li>
               <li>
                 <Label>Price:</Label>
