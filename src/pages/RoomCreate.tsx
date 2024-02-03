@@ -85,6 +85,7 @@ const Ul = styled.ul`
     position:relative;
     display: flex;
     justify-content: end;
+    margin-bottom: 5px;
   }
 `;
 
@@ -190,14 +191,17 @@ position:absolute;
 font-family: poppins;
 font-size: 13px;
 color: red;
+text-align: left;
+z-index:2;
 `;
 
 export const RoomCreate = () => {
   const navigate = useNavigate();
 
   interface Errors {
-    room_number?: boolean;
+    room_number?: { value: boolean; type: string; message: string };
   }
+  
   const [errors, setErrors] = useState<Errors>({});
   const [newRoom, setNewRoom] = useState<RoomsInterface>({
     room_number: "",
@@ -314,11 +318,37 @@ export const RoomCreate = () => {
 
   const validateForm = () => {
     const validationErrors: Errors = {};
-    newRoom.room_number === "" && (validationErrors.room_number = true);
+    const numberPattern = /^\d+$/;
+  
+    if (newRoom.room_number === "") {
+      validationErrors.room_number = {
+        value: true,
+        type: "required",
+        message: "Room number can't be empty",
+      };
+    } else if (!numberPattern.test(newRoom.room_number)) {
+      validationErrors.room_number = {
+        value: true,
+        type: "numeric",
+        message: "Room number should contain only numeric digits",
+      };
+    } else if (newRoom.room_number.length !== 3) {
+      validationErrors.room_number = {
+        value: true,
+        type: "length",
+        message: "Room number should be exactly three digits",
+      };
+    } else {
+      validationErrors.room_number = { value: false, type: "", message: "" };
+    }
+  
     setErrors(validationErrors);
     console.log(errors);
-    return !Object.values(validationErrors).some((error) => error);
+    return !Object.values(validationErrors).some((error) => error.value);
   };
+  
+  
+  
 
   const handleSubmit = async () => {
     if (validateForm()) {
@@ -362,13 +392,13 @@ export const RoomCreate = () => {
               <li>
                 <Label>Room Number:</Label>
                 <Input
-                  valid={errors.room_number}
+                  valid={errors.room_number?.value}
                   name="room_number"
                   onChange={handleInputChange}
                   defaultValue={newRoom.room_number}
                 ></Input>
               {errors.room_number && (
-                <ValidationMessage>Room number can't be empty</ValidationMessage>
+                <ValidationMessage>{errors.room_number.message}</ValidationMessage>
               )}
               </li>
               <li>
