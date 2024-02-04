@@ -98,7 +98,7 @@ export const Header = () => {
             <Title>{headerTitle === "" ? "Dashboard" : headerTitle}</Title>
           </InnerLeft>
           <InnerRight>
-            <HeaderButton>{icons.message}</HeaderButton>
+            <HeaderButton onClick={() => navigate("/contact")}>{icons.message}</HeaderButton>
             <NonReadMessages>
               {contactsData.reduce((accumulator, currentValue) => {
                 if (currentValue.status === "Not Archived") {
