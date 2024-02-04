@@ -89,4 +89,10 @@ export interface IContactsInitialState {
   status: 'idle' | 'pending' | 'fulfilled' | 'rejected'
 }
 
+export interface Errors {
+  room_number?: { value: boolean; type: string; message: string };
+  room_type?: { value: boolean; type: string; message: string };
+  price?: { value: boolean; type: string; message: string };
+}
+
 export type bodyInterface = RoomsInterface | BookingsInterface | EmployeesInterface | ContactsInterface;

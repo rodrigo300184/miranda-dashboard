@@ -10,11 +10,16 @@ import {
 } from "../features/rooms/roomsSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { Iamenities, RoomsInterface } from "../features/interfaces/interfaces";
+import {
+  Errors,
+  Iamenities,
+  RoomsInterface,
+} from "../features/interfaces/interfaces";
 import { useState, useEffect } from "react";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { Spinner } from "../components/Spinner";
 import showToast from "../utils/toastMessages";
+import roomValidation from "../utils/roomFormValidation";
 
 const Container = styled.div`
   margin: 50px;
@@ -53,14 +58,15 @@ const Label = styled.label`
   }
 `;
 
-const Input = styled.input`
+const Input = styled.input<Props>`
   font-family: poppins;
   font-size: 16px;
   padding: 5px;
   margin-bottom: 30px;
-  border: none;
+  border: ${(props) => (props.valid ? `solid 2px red` : `none`)};
   outline: none;
-  border-bottom: 2px solid ${colors.bottomBorderGray};
+  border-bottom: ${(props) =>
+    props.valid ? `solid 2px red` : `2px solid ${colors.bottomBorderGray}`};
   width: 220px;
   text-overflow: ellipsis;
 `;
@@ -80,8 +86,10 @@ const Ul = styled.ul`
   text-align: right;
   list-style: none;
   & li {
+    position: relative;
     display: flex;
     justify-content: end;
+    margin-bottom: 5px;
   }
 `;
 
@@ -110,6 +118,7 @@ const Button = styled.button`
 const Select = styled.select`
   border: none;
   outline: none;
+  border: none;
   border-bottom: 2px solid ${colors.bottomBorderGray};
   width: 220px;
   font-family: poppins;
@@ -134,6 +143,8 @@ const ChoicesContainer = styled.div`
 
 type Props = {
   active?: boolean;
+  valid?: boolean;
+  select?: boolean;
 };
 
 const Amenity = styled.div<Props>`
@@ -179,7 +190,19 @@ const PhotoInput = styled.input`
   border-bottom: 2px solid ${colors.bottomBorderGray};
 `;
 
+const ValidationMessage = styled.div<Props>`
+  top: ${(props) => (props.select ? `30px` : `40px`)};
+  left: 237px;
+  position: absolute;
+  font-family: poppins;
+  font-size: 13px;
+  color: red;
+  text-align: left;
+  z-index: 2;
+`;
+
 export const RoomUpdate = () => {
+  const [errors, setErrors] = useState<Errors>({});
   const navigate = useNavigate();
   const roomId = useParams().roomId || "";
   const selectRoom = useAppSelector(getRoom);
@@ -271,9 +294,20 @@ export const RoomUpdate = () => {
   };
 
   const handleSubmit = async () => {
-    newRoom && (await dispatch(updateRoom(newRoom)));
-    showToast({ text: "Room updated correctly! " });
-    navigate("/rooms");
+    if (newRoom !== null) {
+      const { validation, validationErrors } = roomValidation(newRoom);
+      setErrors(validationErrors);
+      if (validation) {
+        try {
+          await dispatch(updateRoom(newRoom));
+          showToast({ text: "Room updated correctly!" });
+          navigate("/rooms");
+        } catch (error) {
+          const style = { backgroundColor: "red" };
+          showToast({ text: "Something went wrong!", style });
+        }
+      }
+    }
   };
   return (
     <>
@@ -312,19 +346,31 @@ export const RoomUpdate = () => {
                 <li>
                   <Label>Room Number:</Label>
                   <Input
+                    valid={errors.room_number?.value}
                     name="room_number"
                     onChange={handleInputChange}
                     defaultValue={newRoom.room_number}
                   ></Input>
+                  {errors.room_number && (
+                    <ValidationMessage>
+                      {errors.room_number.message}
+                    </ValidationMessage>
+                  )}
                 </li>
                 <li>
                   <Label>Price:</Label>
                   <Input
+                    valid={errors.price?.value}
                     name="price"
                     type="text"
                     onChange={handleInputChange}
                     defaultValue={newRoom.price}
                   ></Input>
+                  {errors.room_number && (
+                    <ValidationMessage>
+                      {errors.price?.message}
+                    </ValidationMessage>
+                  )}
                 </li>
                 <li>
                   <ChoicesContainer>

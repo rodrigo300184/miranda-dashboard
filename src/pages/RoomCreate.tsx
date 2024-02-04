@@ -3,9 +3,10 @@ import colors from "../styles/colors";
 import { createRoom } from "../features/rooms/roomsSlice";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../app/hooks";
-import { Iamenities, RoomsInterface } from "../features/interfaces/interfaces";
+import { Errors, Iamenities, RoomsInterface } from "../features/interfaces/interfaces";
 import { useState } from "react";
 import showToast from "../utils/toastMessages";
+import roomValidation from "../utils/roomFormValidation";
 
 const Container = styled.div`
   margin: 50px;
@@ -191,12 +192,6 @@ const ValidationMessage = styled.div<Props>`
 export const RoomCreate = () => {
   const navigate = useNavigate();
 
-  interface Errors {
-    room_number?: { value: boolean; type: string; message: string };
-    room_type?: { value: boolean; type: string; message: string };
-    price?: { value: boolean; type: string; message: string };
-  }
-
   const [errors, setErrors] = useState<Errors>({});
   const [newRoom, setNewRoom] = useState<RoomsInterface>({
     room_number: "",
@@ -306,51 +301,10 @@ export const RoomCreate = () => {
     });
   };
 
-  const validateForm = () => {
-    const validationErrors: Errors = {};
-    const numberPattern = /^\d+(\.\d+)?$/;
-    if (newRoom.room_type === "") {
-      validationErrors.room_type = {
-        value: true,
-        type: "required",
-        message: "Please, select room type",
-      };
-    }
-    if (!numberPattern.test(newRoom.price.toString())) {
-      validationErrors.price = {
-        value: true,
-        type: "numeric",
-        message: "Room price should contain only numeric digits",
-      };
-    }
-    if (newRoom.room_number === "") {
-      validationErrors.room_number = {
-        value: true,
-        type: "required",
-        message: "Room number can't be empty",
-      };
-    } else if (!numberPattern.test(newRoom.room_number)) {
-      validationErrors.room_number = {
-        value: true,
-        type: "numeric",
-        message: "Room number should contain only numeric digits",
-      };
-    } else if (newRoom.room_number.length !== 3) {
-      validationErrors.room_number = {
-        value: true,
-        type: "length",
-        message: "Room number should be exactly three digits",
-      };
-    } else {
-      validationErrors.room_number = { value: false, type: "", message: "" };
-    }
-
-    setErrors(validationErrors);
-    return !Object.values(validationErrors).some((error) => error.value);
-  };
-
   const handleSubmit = async () => {
-    if (validateForm()) {
+    const {validation,validationErrors } = roomValidation(newRoom);
+    setErrors(validationErrors);
+    if (validation) {
       try {
         await dispatch(createRoom(newRoom));
         showToast({ text: "Room created correctly!" });
