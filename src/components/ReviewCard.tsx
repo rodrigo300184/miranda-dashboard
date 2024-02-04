@@ -2,8 +2,9 @@ import styled from "styled-components";
 import { ContactsInterface } from "../features/interfaces/interfaces";
 import colors from "../styles/colors";
 import { useAppDispatch } from "../app/hooks";
-import { updateContact } from "../features/contacts/contactsSlice";
+import { fetchContacts, updateContact } from "../features/contacts/contactsSlice";
 import showToast from "../utils/toastMessages";
+import { useEffect } from "react";
 
 const CardContainer = styled.div`
   margin: 30px 0 5px 6px;
@@ -93,6 +94,7 @@ export const ReviewCard = (props: ReviewProps) => {
   const handleClick = (contact: ContactsInterface) => {
     const archiveContact = { ...contact, status: "Archived" };
     dispatch(updateContact(archiveContact));
+    dispatch(fetchContacts());
     showToast({ text: "Contact archived correctly! " });
   };
   return (
