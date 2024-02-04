@@ -1,10 +1,6 @@
 import styled from "styled-components";
 import { ContactsInterface } from "../features/interfaces/interfaces";
 import colors from "../styles/colors";
-import { useAppDispatch } from "../app/hooks";
-import { fetchContacts, updateContact } from "../features/contacts/contactsSlice";
-import showToast from "../utils/toastMessages";
-import { useEffect } from "react";
 
 const CardContainer = styled.div`
   margin: 30px 0 5px 6px;
@@ -87,16 +83,10 @@ const TextContainer = styled.div`
 
 type ReviewProps = {
   contact: ContactsInterface;
+  handleArchive: Function;
 };
 
 export const ReviewCard = (props: ReviewProps) => {
-  const dispatch = useAppDispatch();
-  const handleClick = (contact: ContactsInterface) => {
-    const archiveContact = { ...contact, status: "Archived" };
-    dispatch(updateContact(archiveContact));
-    dispatch(fetchContacts());
-    showToast({ text: "Contact archived correctly! " });
-  };
   return (
     <>
       <CardContainer>
@@ -116,7 +106,7 @@ export const ReviewCard = (props: ReviewProps) => {
               <a href="tel:+">{props.contact.phone_number}</a>
             </span>
           </TextContainer>
-          <Button green onClick={() => handleClick(props.contact)}>
+          <Button green onClick={() => props.handleArchive(props.contact)}>
             Archive
           </Button>
         </InnerCardContainer>

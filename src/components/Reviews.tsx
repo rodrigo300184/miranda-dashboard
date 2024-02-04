@@ -4,6 +4,7 @@ import {
   fetchContacts,
   getContacts,
   getContactsStatus,
+  updateContact,
 } from "../features/contacts/contactsSlice";
 import "../styles/styles.css";
 import styled from "styled-components";
@@ -13,6 +14,8 @@ import "swiper/css/bundle";
 import { ReviewCard } from "./ReviewCard";
 import { ErrorMessage } from "./ErrorMessage";
 import { Spinner } from "./Spinner";
+import { ContactsInterface } from "../features/interfaces/interfaces";
+import showToast from "../utils/toastMessages";
 
 const ReviewsContainer = styled.div`
   margin: 50px;
@@ -39,6 +42,13 @@ export const Reviews = () => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
+  const handleArchive = async (contact: ContactsInterface) => {
+    const archiveContact = { ...contact, status: "Archived" };
+    await dispatch(updateContact(archiveContact));
+    dispatch(fetchContacts());
+    showToast({ text: "Contact archived correctly! " });
+  };
+
   return (
     <>
       <ReviewsContainer>
@@ -62,7 +72,7 @@ export const Reviews = () => {
               .map((contact, index) => {
                 return (
                   <SwiperSlide key={index}>
-                    <ReviewCard contact={contact} />
+                    <ReviewCard contact={contact} handleArchive={handleArchive} />
                   </SwiperSlide>
                 );
               })}
