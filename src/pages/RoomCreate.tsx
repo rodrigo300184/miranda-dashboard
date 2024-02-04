@@ -1,20 +1,10 @@
-import Toastify from "toastify-js";
-import "toastify-js/src/toastify.css";
 import styled from "styled-components";
 import colors from "../styles/colors";
-import {
-  getRoomsStatus,
-  getRoom,
-  updateRoom,
-  fetchRoom,
-  createRoom,
-} from "../features/rooms/roomsSlice";
-import { useNavigate, useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { createRoom } from "../features/rooms/roomsSlice";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../app/hooks";
 import { Iamenities, RoomsInterface } from "../features/interfaces/interfaces";
-import { useState, useEffect } from "react";
-import { ErrorMessage } from "../components/ErrorMessage";
-import { Spinner } from "../components/Spinner";
+import { useState } from "react";
 import showToast from "../utils/toastMessages";
 
 const Container = styled.div`
@@ -82,7 +72,7 @@ const Ul = styled.ul`
   text-align: right;
   list-style: none;
   & li {
-    position:relative;
+    position: relative;
     display: flex;
     justify-content: end;
     margin-bottom: 5px;
@@ -111,10 +101,12 @@ const Button = styled.button`
   }
 `;
 
-const Select = styled.select`
+const Select = styled.select<Props>`
   border: none;
   outline: none;
-  border-bottom: 2px solid ${colors.bottomBorderGray};
+  border: ${(props) => (props.valid ? `solid 2px red` : `none`)};
+  border-bottom: ${(props) =>
+    props.valid ? `solid 2px red` : `2px solid ${colors.bottomBorderGray}`};
   width: 220px;
   font-family: poppins;
   font-size: 16px;
@@ -139,6 +131,7 @@ const ChoicesContainer = styled.div`
 type Props = {
   active?: boolean;
   valid?: boolean;
+  select?: boolean;
 };
 
 const Amenity = styled.div<Props>`
@@ -184,15 +177,15 @@ const PhotoInput = styled.input`
   border-bottom: 2px solid ${colors.bottomBorderGray};
 `;
 
-const ValidationMessage = styled.div`
-top: 40px;
-left: 240px;
-position:absolute;
-font-family: poppins;
-font-size: 13px;
-color: red;
-text-align: left;
-z-index:2;
+const ValidationMessage = styled.div<Props>`
+  top: ${(props) => (props.select ? `30px` : `40px`)};
+  left: 237px;
+  position: absolute;
+  font-family: poppins;
+  font-size: 13px;
+  color: red;
+  text-align: left;
+  z-index: 2;
 `;
 
 export const RoomCreate = () => {
@@ -200,8 +193,10 @@ export const RoomCreate = () => {
 
   interface Errors {
     room_number?: { value: boolean; type: string; message: string };
+    room_type?: { value: boolean; type: string; message: string };
+    price?: { value: boolean; type: string; message: string };
   }
-  
+
   const [errors, setErrors] = useState<Errors>({});
   const [newRoom, setNewRoom] = useState<RoomsInterface>({
     room_number: "",
@@ -254,11 +249,6 @@ export const RoomCreate = () => {
       "Discover the epitome of luxury in our Suites. These expansive and elegantly furnished spaces offer a premium experience for discerning travelers. Immerse yourself in opulence with exclusive amenities, a spacious layout, and personalized service, ensuring an unforgettable stay for those seeking the pinnacle of hospitality",
   };
 
-  // useEffect(() => {
-  //   setNewRoom(selectRoom);
-  //   setSliderOnOff(selectRoom?.offer_price);
-  // }, [selectRoom, roomsStatus]);
-
   const toggleAmenity = (amenity: Iamenities) => {
     if (newRoom) {
       const copyOfData = structuredClone(newRoom);
@@ -290,7 +280,7 @@ export const RoomCreate = () => {
     const { name, value } = event.target;
     setNewRoom((prevRoom) => {
       if (!prevRoom) {
-        return prevRoom; //No previous state, do nothing
+        return prevRoom;
       }
 
       let updatedRoom = {
@@ -318,8 +308,21 @@ export const RoomCreate = () => {
 
   const validateForm = () => {
     const validationErrors: Errors = {};
-    const numberPattern = /^\d+$/;
-  
+    const numberPattern = /^\d+(\.\d+)?$/;
+    if (newRoom.room_type === "") {
+      validationErrors.room_type = {
+        value: true,
+        type: "required",
+        message: "Please, select room type",
+      };
+    }
+    if (!numberPattern.test(newRoom.price.toString())) {
+      validationErrors.price = {
+        value: true,
+        type: "numeric",
+        message: "Room price should contain only numeric digits",
+      };
+    }
     if (newRoom.room_number === "") {
       validationErrors.room_number = {
         value: true,
@@ -341,14 +344,11 @@ export const RoomCreate = () => {
     } else {
       validationErrors.room_number = { value: false, type: "", message: "" };
     }
-  
+
     setErrors(validationErrors);
     console.log(errors);
     return !Object.values(validationErrors).some((error) => error.value);
   };
-  
-  
-  
 
   const handleSubmit = async () => {
     if (validateForm()) {
@@ -372,6 +372,7 @@ export const RoomCreate = () => {
               <li>
                 <Label>Room Type:</Label>
                 <Select
+                  valid={errors.room_type?.value}
                   name="room_type"
                   onChange={handleInputChange}
                   defaultValue={newRoom.room_type}
@@ -388,6 +389,11 @@ export const RoomCreate = () => {
                     );
                   })}
                 </Select>
+                {errors.room_type && (
+                  <ValidationMessage select>
+                    {errors.room_type.message}
+                  </ValidationMessage>
+                )}
               </li>
               <li>
                 <Label>Room Number:</Label>
@@ -397,18 +403,24 @@ export const RoomCreate = () => {
                   onChange={handleInputChange}
                   defaultValue={newRoom.room_number}
                 ></Input>
-              {errors.room_number && (
-                <ValidationMessage>{errors.room_number.message}</ValidationMessage>
-              )}
+                {errors.room_number && (
+                  <ValidationMessage>
+                    {errors.room_number.message}
+                  </ValidationMessage>
+                )}
               </li>
               <li>
                 <Label>Price:</Label>
                 <Input
+                  valid={errors.price?.value}
                   name="price"
                   type="text"
                   onChange={handleInputChange}
                   defaultValue={newRoom.price}
                 ></Input>
+                {errors.room_number && (
+                  <ValidationMessage>{errors.price?.message}</ValidationMessage>
+                )}
               </li>
               <li>
                 <ChoicesContainer>
