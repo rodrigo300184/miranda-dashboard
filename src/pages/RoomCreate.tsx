@@ -346,7 +346,6 @@ export const RoomCreate = () => {
     }
 
     setErrors(validationErrors);
-    console.log(errors);
     return !Object.values(validationErrors).some((error) => error.value);
   };
 
