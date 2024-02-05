@@ -43,16 +43,18 @@ const Title = styled.h1`
 `;
 
 const NonReadMessages = styled.div`
+display:flex;
+align-items:center;
+justify-content: center;
 top: 25px;
 right: 190px;
 position: absolute;
 background: red;
 font-size: 13px;
 color: ${colors.white};
-text-align: center;
 border-radius: 50%;
 width: 20px;
-height; 20px;
+height 20px;
 `;
 
 export const Header = () => {
